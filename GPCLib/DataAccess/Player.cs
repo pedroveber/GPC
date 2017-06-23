@@ -14,7 +14,7 @@ namespace GPCLib.DataAccess
         public Models.PlayerModels ObterPlayer(int id)
         {
             SqlConnection conn = new SqlConnection();
-            SqlCommand sqlCom = new SqlCommand();
+            SqlCommand sqlCom = new SqlCommand(); 
 
             conn.ConnectionString = ConfigurationManager.ConnectionStrings[2].ToString();
 
