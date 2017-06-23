@@ -1,0 +1,129 @@
+﻿@model GPCLib.Models.PainelControleModels
+<p></p>
+
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+
+<script>
+    $(document).ready(function () {
+        $('#tabelaPedro').DataTable(
+            {
+                "language": {
+                    search: "Pesquisar:",
+                    "lengthMenu": "Exibindo _MENU_ linhas por página",
+                    "zeroRecords": "Nenhum registro encontrado",
+                    "info": "Exibindo página _PAGE_ de _PAGES_",
+                    "infoFiltered": "(selecionado _MAX_ registros)",
+                    paginate: {
+                        first: "Primeira",
+                        previous: "Anterior",
+                        next: "Próxima",
+                        last: "Última"
+                    }
+                },
+                "pageLength": 50,
+
+
+
+            }
+
+            );
+
+    });
+
+    $(function () {
+        $(".date-picker").datepicker({
+            dateFormat: 'dd/mm/yy'
+        });
+        $("#txtDataInicio").inputmask("99/99/9999");
+        $("#txtDataFim").inputmask("99/99/9999");
+
+
+    });
+</script>
+
+<h1>Ataques da Semana</h1>
+<p></p>
+<p></p>
+
+<div class="jumbotron">
+    @using (Html.BeginForm("filtro", "PainelControle", FormMethod.Post))
+    {
+
+        <div>
+            <div style="display:inline;">Data Início:</div>
+            @Html.TextBox("txtDataInicio", "", new { @class = "form-control date-picker", @style = "width:100px;display:inline" })
+            <div style="display:inline;">Data Fim:</div>
+            @Html.TextBox("txtDataFim", "", new { @class = "form-control date-picker", @style = "width:100px;display:inline" })
+
+            <input type="submit" value="PESQUISAR" class="btn btn-primary btn-sm" />
+
+
+
+
+        </div>
+
+
+
+    }
+</div>
+<p></p>
+<p>
+    Período:
+    De: <b>@Html.DisplayFor(m => m.DataInicio)</b>
+    Até: <b>@Html.DisplayFor(m => m.DataFim)</b>
+</p>
+
+
+<table class="table" id="tabelaPedro">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Ataques[0].Player.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ataques[0].Escalado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ataques[0].NAtacou)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ataques[0].Vitoria)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ataques[0].Empate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ataques[0].Derrota)
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Ataques)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Player.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Escalado)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NAtacou)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vitoria)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Empate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Derrota)
+                </td>
+
+            </tr>
+        }
+    </tbody>
+
+</table>

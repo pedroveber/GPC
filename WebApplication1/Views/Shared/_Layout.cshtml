@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guild Painel Controle</title>
+    
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/jqueryui")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/inputmask")
+ 
+    
+  
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Ataques Semana", "index", "PainelControle")</li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Defesas Semana", "index", "DefesasSemana")</li>
+                </ul>
+            
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Pedrocalindo</p>
+        </footer>
+    </div>
+
+    
+    
+       
+
+    <script type="text/javascript">
+        $(function () {
+            // This will make every element with the class "date-picker" into a DatePicker element
+            $(".jqueryui-marker-datepicker").datepicker(
+                {
+                    dateFormat: "dd-mm-yy",
+                    changeYear: false,
+                    showOn: "button"
+                }).css("display", "inline-block").next("button").button({
+                    icons: { primary: "ui-icon-calendar" },
+                    text: false
+                });
+
+          
+
+        });
+    </script>
+    
+ 
+    
+    @RenderSection("scripts", required: false)
+</body>
+</html>
