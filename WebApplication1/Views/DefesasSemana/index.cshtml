@@ -59,7 +59,7 @@
             <input type="submit" value="PESQUISAR" class="btn btn-primary btn-sm" />
 
         </div>
-        
+
     }
 </div>
 <p></p>
@@ -79,16 +79,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.Defesas[0].Player.Nome)
             </th>
-            <th>
+            <th style="text-align:center">
                 @Html.DisplayNameFor(model => model.Defesas[0].Vitoria)
             </th>
-            <th>
+            <th style="text-align:center">
                 @Html.DisplayNameFor(model => model.Defesas[0].Empate)
             </th>
-            <th>
+            <th style="text-align:center">
                 @Html.DisplayNameFor(model => model.Defesas[0].Derrota)
             </th>
-
+            <th style="text-align:center">
+                Atks Sofridos
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -96,20 +98,23 @@
             {
             <tr>
                 <td>
-                    @Html.DisplayFor(model => model.DataInicio) a 
+                    @Html.DisplayFor(model => model.DataInicio) a
                     @Html.DisplayFor(model => model.DataFim)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Player.Nome)
+                    @Html.ActionLink(item.Player.Nome, "index", "Capivara", new { id = item.Player.Id }, null)
                 </td>
-                <td>
+                <td style="text-align:center">
                     @Html.DisplayFor(modelItem => item.Vitoria)
                 </td>
-                <td>
+                <td style="text-align:center">
                     @Html.DisplayFor(modelItem => item.Empate)
                 </td>
-                <td>
+                <td style="text-align:center">
                     @Html.DisplayFor(modelItem => item.Derrota)
+                </td>
+                <td style="text-align:center">
+                    @Html.DisplayFor(modelItem => item.AtaquesSofridos)
                 </td>
 
             </tr>

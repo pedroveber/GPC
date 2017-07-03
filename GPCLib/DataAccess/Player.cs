@@ -60,6 +60,54 @@ namespace GPCLib.DataAccess
 
         }
 
+        public List<Models.PlayerModels> ListarPlayers()
+        {
+            SqlConnection conn = new SqlConnection();
+            SqlCommand sqlCom = new SqlCommand();
+
+            conn.ConnectionString = ConfigurationManager.ConnectionStrings[2].ToString();
+
+
+            StringBuilder cmd = new StringBuilder();
+            cmd.Append("SELECT * FROM dbo.Player WHERE Status = 'S' order by Nome");
+
+
+            sqlCom.CommandText = cmd.ToString();
+            sqlCom.CommandType = System.Data.CommandType.Text;
+            
+            try
+            {
+                Models.PlayerModels objPlayer;
+                List<Models.PlayerModels> objRetorno = new List<PlayerModels>();
+                conn.Open();
+
+                sqlCom.Connection = conn;
+                SqlDataReader reader = sqlCom.ExecuteReader();
+
+
+                while (reader.Read())
+                {
+                    objPlayer = new Models.PlayerModels();
+                    objPlayer.Id = Convert.ToInt32(reader["ID"].ToString());
+                    objPlayer.Nome = reader["Nome"].ToString();
+                    objPlayer.Level = Convert.ToInt32(reader["Level"].ToString());
+                    objPlayer.PontoArena = Convert.ToInt32(reader["PontoArena"].ToString());
+                    objPlayer.Ativo = (reader["Status"].ToString() == "S") ? true : false;
+
+                    objRetorno.Add(objPlayer);
+
+                }
+                conn.Close();
+                conn.Dispose();
+                return objRetorno;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public CapivaraModels ObterPlayerCapivara(int idPlayer)
         {
             SqlConnection conexao = new SqlConnection();

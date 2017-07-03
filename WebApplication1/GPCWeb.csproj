@@ -442,6 +442,7 @@
     <Content Include="Views\PainelControle\index.cshtml" />
     <Content Include="Views\DefesasSemana\index.cshtml" />
     <Content Include="Views\Capivara\index.cshtml" />
+    <Content Include="Views\Player\ComboPlayers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

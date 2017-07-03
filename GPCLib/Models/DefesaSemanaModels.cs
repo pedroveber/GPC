@@ -16,6 +16,7 @@ namespace GPCLib.Models
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DataFim { get; set; }
 
+
     }
 
     public class DefesaModels
@@ -25,6 +26,15 @@ namespace GPCLib.Models
         public int Vitoria { get; set; }
         public int Empate { get; set; }
         public int Derrota { get; set; }
+
+        public int AtaquesSofridos
+        {
+            get
+            {
+                return this.Vitoria + this.Derrota + this.Empate;
+            }
+
+        }
     }
 
 

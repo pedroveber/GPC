@@ -18,6 +18,39 @@ namespace WebApplication1.Controllers
             //ObterPlayer
             Capivara = new Player().ObterPlayerCapivara(id);
 
+            if (Capivara.Player != null)
+            {
+                //Obter a segunda da semana passada
+                DateTime segundaFeira = DateTime.Today.AddDays(((int)(DateTime.Today.DayOfWeek) * -1) + 1);
+
+                //Defesas da Semana
+                Capivara.DefesasConsolidado = new GPCLib.DataAccess.DefesaPlayer().ListarDefesaConsolidado(segundaFeira.AddDays(-7), segundaFeira.AddDays(-1), id);
+
+                //Ataques da Semana
+                Capivara.AtaquesConsolidado = new GPCLib.DataAccess.AtaquesPlayer().ListarAtaqueConsolidado(segundaFeira, segundaFeira.AddDays(6), id);
+
+                Capivara = CalcularStreak(new AtaquesPlayer().ListarAtaques(id), Capivara);
+            }
+            else
+            {
+                Capivara.Player = new PlayerModels();
+                Capivara.AtaquesConsolidado = new List<AtaquesPlayerConsolidado>();
+                Capivara.DefesasConsolidado = new List<DefesasPlayerConsolidado>();
+
+            }
+            
+            return View(Capivara);
+        }
+
+        [HttpPost]
+        public ActionResult Index(string ddlPlayer)
+        {
+            CapivaraModels Capivara = new CapivaraModels();
+            int id = Convert.ToInt32(Request.Form[0]);
+
+            //ObterPlayer
+            Capivara = new Player().ObterPlayerCapivara(id);
+
             //Obter a segunda da semana passada
             DateTime segundaFeira = DateTime.Today.AddDays(((int)(DateTime.Today.DayOfWeek) * -1) + 1);
 
@@ -27,8 +60,8 @@ namespace WebApplication1.Controllers
             //Ataques da Semana
             Capivara.AtaquesConsolidado = new GPCLib.DataAccess.AtaquesPlayer().ListarAtaqueConsolidado(segundaFeira, segundaFeira.AddDays(6), id);
 
-            Capivara = CalcularStreak(new AtaquesPlayer().ListarAtaques(id),Capivara);
-            
+            Capivara = CalcularStreak(new AtaquesPlayer().ListarAtaques(id), Capivara);
+
             return View(Capivara);
         }
 

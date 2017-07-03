@@ -81,21 +81,22 @@
             <th>
                 @Html.DisplayNameFor(model => model.Ataques[0].Player.Nome)
             </th>
-            <th>
+            <th style="text-align:center">
                 @Html.DisplayNameFor(model => model.Ataques[0].Escalado)
             </th>
-            <th>
+            <th style="text-align:center">
                 @Html.DisplayNameFor(model => model.Ataques[0].NAtacou)
             </th>
-            <th>
+            <th style="text-align:center">
                 @Html.DisplayNameFor(model => model.Ataques[0].Vitoria)
             </th>
-            <th>
+            <th style="text-align:center">
                 @Html.DisplayNameFor(model => model.Ataques[0].Empate)
             </th>
-            <th>
+            <th style="text-align:center">
                 @Html.DisplayNameFor(model => model.Ataques[0].Derrota)
             </th>
+            
 
         </tr>
     </thead>
@@ -104,24 +105,24 @@
             {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Player.Nome)
+                    @Html.ActionLink(item.Player.Nome, "index", "Capivara", new { id = item.Player.Id }, null)
                 </td>
-                <td>
+                <td style="text-align:center">
                     @Html.DisplayFor(modelItem => item.Escalado)
                 </td>
-                <td>
+                <td style="text-align:center">
                     @Html.DisplayFor(modelItem => item.NAtacou)
                 </td>
-                <td>
+                <td style="text-align:center">
                     @Html.DisplayFor(modelItem => item.Vitoria)
                 </td>
-                <td>
+                <td style="text-align:center">
                     @Html.DisplayFor(modelItem => item.Empate)
                 </td>
-                <td>
+                <td style="text-align:center">
                     @Html.DisplayFor(modelItem => item.Derrota)
                 </td>
-
+               
             </tr>
         }
     </tbody>

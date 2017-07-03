@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
+
 
 namespace GPCLib.Models
 {
@@ -10,8 +12,13 @@ namespace GPCLib.Models
         public int Level { get; set; }
         public int PontoArena { get; set; }
         public bool Ativo { get; set; }
-               
-       
-     }
+
+    }
+    public class PlayerComboModels
+    {
+        public string SelectedOption { get; set; }
+
+        public IEnumerable<SelectListItem> SelectOptions { get; set; }
+    }
 
 }

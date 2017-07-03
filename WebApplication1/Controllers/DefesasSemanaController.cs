@@ -15,9 +15,10 @@ namespace WebApplication1.Controllers
             DateTime segundaFeira = DateTime.Today.AddDays(((int)(DateTime.Today.DayOfWeek) * -1) + 1);
 
             GPCLib.Models.DefesaSemanaModels retorno = new GPCLib.Models.DefesaSemanaModels();
-            retorno = new GPCLib.DataAccess.DefesaPlayer().ListarDefesasSemana(segundaFeira, segundaFeira.AddDays(6));
-            
+            retorno = new GPCLib.DataAccess.DefesaPlayer().ListarDefesasSemana(segundaFeira.AddDays(-7), segundaFeira.AddDays(-1));
+
             return View(retorno);
+            
         }
 
         [HttpPost]

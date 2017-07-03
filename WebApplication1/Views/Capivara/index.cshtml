@@ -72,15 +72,26 @@
 </script>
 <table>
     <tr>
-        <td><img src="~/Resources/capivara.png" width="60" height="60" /></td>
+        <td><img src="~/Resources/capivara.png" width="60" height="60" alt="Capivara" /></td>
         <td><h1 style="display:inline">&nbsp;Capivara</h1></td>
 
     </tr>
 
 </table>
 
-
 <p></p>
+<p></p>
+<div class="jumbotron">
+    @using (Html.BeginForm("Index", "Capivara", FormMethod.Post))
+    {
+        <div>
+            <h2>Player</h2>
+
+            @Html.Action("ComboPlayers", "Player")
+            <input type="submit" value="Filtrar Player" class="btn btn-primary btn-sm" />
+        </div>
+    }
+</div>
 <p></p>
 
 <div class="container">
@@ -88,20 +99,24 @@
         <div class="col-md-2">
 
             <div style="position:relative;top:10px;left:10px;width:200px;height:250px">
-                <h3>
-                    <div style="width:150px;">@Html.DisplayFor(m => m.Player.Nome)</div>
-                </h3>
+                <div style="width:150px;">
+                    <h3>
+                        @Html.DisplayFor(m => m.Player.Nome)
+                    </h3>
+                </div>
                 <p></p>
                 <div style="width:150px;height:150px;">
-                    <img src="~/Resources/@Html.DisplayFor(m => m.Imagem)" width="150" height="150" />
+                    <img src="~/Resources/@Html.DisplayFor(m => m.Imagem)" width="150" height="150" alt="Imagem Player" />
                 </div>
             </div>
 
         </div>
         <div class="col-md-5">
-            <h4>
-                <div style="position:relative;top:10px">Ataques Semana:</div>
-            </h4>
+            <div style="position:relative;top:10px">
+                <h4>
+                    Ataques Semana:
+                </h4>
+            </div>
             <p></p>
             <table class="table" id="tblAtaqueSemana">
                 <thead>
@@ -162,7 +177,7 @@
                         </h4>
                     </div>
                     <div style="float: left;margin-left:5px">
-                        <img src="~/Resources/ataque.png" width="25px" height="25px" />
+                        <img src="~/Resources/ataque.png" width="25" height="25" alt="Ataques" />
                     </div>
 
                     <div style="text-align:center">
@@ -187,7 +202,7 @@
                         </h4>
                     </div>
                     <div style="float: left;margin-left:5px">
-                        <img src="~/Resources/defesa.png" width="25px" height="25px" />
+                        <img src="~/Resources/defesa.png" width="25" height="25" alt="Defesas" />
                     </div>
 
                     <div style="text-align:center">
@@ -218,9 +233,11 @@
         </div>
 
         <div class="col-md-5">
-            <h4>
-                <div style="position:relative;top:10px">Defesas Semana:</div>
-            </h4>
+            <div style="position:relative;top:10px">
+                <h4>
+                    Defesas Semana:
+                </h4>
+            </div>
             <p></p>
             <table class="table" id="tabelaPedro">
                 <thead>
@@ -246,25 +263,25 @@
                 <tbody>
                     @foreach (var item in Model.DefesasConsolidado)
             {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(model => item.Data)
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(model => item.Data)
 
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.NomeGuild)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Vitoria)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Empate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Derrota)
-                        </td>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NomeGuild)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Vitoria)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Empate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Derrota)
+                            </td>
 
-                    </tr>
+                        </tr>
                     }
                 </tbody>
 
@@ -279,7 +296,7 @@
                     </h4>
                 </div>
                 <div style="float: left;margin-left:5px">
-                    <img src="~/Resources/participacao.png" width="25px" height="25px" />
+                    <img src="~/Resources/participacao.png" width="25" height="25" alt="Participação" />
                 </div>
 
                 <div style="text-align:center">
@@ -299,14 +316,18 @@
 
 
             </div>
-            
+
             <div style="float: left;margin-left:30px">
-                <h3>
-                    <div>@Html.DisplayFor(m => m.StreakVitoria) vitórias consecutivas!</div>
-                </h3>
-                <h5>
-                    <div>entre @Html.DisplayFor(m => m.InicioStreak) a @Html.DisplayFor(m => m.FimStreak)</div>
-                </h5>
+                <div>
+                    <h3>
+                        @Html.DisplayFor(m => m.StreakVitoria) vitórias consecutivas!
+                    </h3>
+                </div>
+                <div>
+                    <h5>
+                        entre @Html.DisplayFor(m => m.InicioStreak) a @Html.DisplayFor(m => m.FimStreak)
+                    </h5>
+                </div>
 
             </div>
         </div>

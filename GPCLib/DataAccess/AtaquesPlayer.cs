@@ -36,7 +36,7 @@ namespace GPCLib.DataAccess
                 select.AppendLine(", (select count(Vitoria) from dbo.Lutas y where y.CodPlayer = tabela.CodPlayer and y.CodBatalhas = tabela.CodBatalhas and y.Vitoria = 1) Empate");
                 select.AppendLine(", (select count(Vitoria) from dbo.Lutas y where y.CodPlayer = tabela.CodPlayer and y.CodBatalhas = tabela.CodBatalhas and y.Vitoria = 0) Derrota");
                 select.AppendLine("from tabela");
-                select.AppendLine("order by datab");
+                select.AppendLine("order by datab,CodBatalhas");
 
                 command.CommandText = select.ToString();
                 command.CommandType = System.Data.CommandType.Text;
