@@ -13,6 +13,9 @@ namespace GPCLib.Models
 
         public List<AtaquesPlayerConsolidado> AtaquesConsolidado { get; set; }
 
+        public List<AtaquesSemana> AtaquesSemana { get; set; }
+
+
         public double PercentualVitoria { get; set; }
         public double PercentualDefesa { get; set; }
 

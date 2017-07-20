@@ -15,6 +15,7 @@ namespace WebApplication1.Controllers
         {
             CapivaraModels Capivara = new CapivaraModels();
 
+
             //ObterPlayer
             Capivara = new Player().ObterPlayerCapivara(id);
 
@@ -26,10 +27,13 @@ namespace WebApplication1.Controllers
                 //Defesas da Semana
                 Capivara.DefesasConsolidado = new GPCLib.DataAccess.DefesaPlayer().ListarDefesaConsolidado(segundaFeira.AddDays(-7), segundaFeira.AddDays(-1), id);
 
+                GPCLib.DataAccess.AtaquesPlayer daAtaquesPlayer = new AtaquesPlayer();
                 //Ataques da Semana
-                Capivara.AtaquesConsolidado = new GPCLib.DataAccess.AtaquesPlayer().ListarAtaqueConsolidado(segundaFeira, segundaFeira.AddDays(6), id);
-
+                Capivara.AtaquesConsolidado = daAtaquesPlayer.ListarAtaqueConsolidado(segundaFeira, segundaFeira.AddDays(6), id);
+                
                 Capivara = CalcularStreak(new AtaquesPlayer().ListarAtaques(id), Capivara);
+
+
             }
             else
             {
@@ -38,7 +42,7 @@ namespace WebApplication1.Controllers
                 Capivara.DefesasConsolidado = new List<DefesasPlayerConsolidado>();
 
             }
-            
+
             return View(Capivara);
         }
 
@@ -57,13 +61,19 @@ namespace WebApplication1.Controllers
             //Defesas da Semana
             Capivara.DefesasConsolidado = new GPCLib.DataAccess.DefesaPlayer().ListarDefesaConsolidado(segundaFeira.AddDays(-7), segundaFeira.AddDays(-1), id);
 
+            GPCLib.DataAccess.AtaquesPlayer daAtaquesPlayer = new AtaquesPlayer();
             //Ataques da Semana
-            Capivara.AtaquesConsolidado = new GPCLib.DataAccess.AtaquesPlayer().ListarAtaqueConsolidado(segundaFeira, segundaFeira.AddDays(6), id);
-
+            Capivara.AtaquesConsolidado = daAtaquesPlayer.ListarAtaqueConsolidado(segundaFeira, segundaFeira.AddDays(6), id);
+                        
             Capivara = CalcularStreak(new AtaquesPlayer().ListarAtaques(id), Capivara);
 
             return View(Capivara);
         }
+
+        #region Calcular Streak Vitórias
+
+
+
 
         private CapivaraModels CalcularStreak(List<GPCLib.Models.LutasModels> Lutas, CapivaraModels capi)
         {
@@ -131,7 +141,8 @@ namespace WebApplication1.Controllers
             capi.StreakVitoria = countMaiorStreak;
 
             return capi;
-            
+
         }
+        #endregion
     }
 }

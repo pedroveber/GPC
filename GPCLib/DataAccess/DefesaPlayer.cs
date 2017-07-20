@@ -53,7 +53,7 @@ namespace GPCLib.DataAccess
                 command.Connection = conexao;
                 SqlDataReader reader = command.ExecuteReader();
 
-                objRetorno.Defesas= new List<DefesaModels>();
+                objRetorno.Defesas = new List<DefesaModels>();
 
                 while (reader.Read())
                 {
@@ -68,7 +68,7 @@ namespace GPCLib.DataAccess
                 }
 
                 //Retornar somente os que tem pelo menos 1 em um campo.
-                objRetorno.Defesas = objRetorno.Defesas.Where(x => x.Vitoria > 0 || x.Empate>0 || x.Derrota>0).ToList();
+                objRetorno.Defesas = objRetorno.Defesas.Where(x => x.Vitoria > 0 || x.Empate > 0 || x.Derrota > 0).ToList();
 
                 conexao.Close();
                 conexao.Dispose();
@@ -87,7 +87,7 @@ namespace GPCLib.DataAccess
             }
         }
 
-        public  List<DefesasPlayerConsolidado> ListarDefesaConsolidado(DateTime dataInicio, DateTime dataFim,int idPlayer)
+        public List<DefesasPlayerConsolidado> ListarDefesaConsolidado(DateTime dataInicio, DateTime dataFim, int idPlayer)
         {
             try
             {
@@ -102,9 +102,9 @@ namespace GPCLib.DataAccess
                 select.AppendLine("as(");
                 select.AppendLine("select idplayer,NOMEGUILDA,");
                 select.AppendLine("dataHora data,");
-                select.AppendLine("(select count(vitoria) from dbo.PlayerDefesas a where a.NomeGuilda = c.NOMEGUILDA and vitoria=2 and a.IdPlayer = c.idplayer)vitoria,");
-                select.AppendLine("(select count(vitoria) from dbo.PlayerDefesas a where a.NomeGuilda = c.NOMEGUILDA and vitoria=1 and a.IdPlayer = c.idplayer)empate,");
-                select.AppendLine("(select count(vitoria) from dbo.PlayerDefesas a where a.NomeGuilda = c.NOMEGUILDA and vitoria=0 and a.IdPlayer = c.idplayer)derrota");
+                select.AppendLine("(select count(vitoria) from dbo.PlayerDefesas a where a.NomeGuilda = c.NOMEGUILDA and vitoria=2 and a.IdPlayer = c.idplayer and convert(date,a.DataHora) = convert(date,c.DataHora))vitoria,");
+                select.AppendLine("(select count(vitoria) from dbo.PlayerDefesas a where a.NomeGuilda = c.NOMEGUILDA and vitoria=1 and a.IdPlayer = c.idplayer and convert(date,a.DataHora) = convert(date,c.DataHora))empate,");
+                select.AppendLine("(select count(vitoria) from dbo.PlayerDefesas a where a.NomeGuilda = c.NOMEGUILDA and vitoria=0 and a.IdPlayer = c.idplayer and convert(date,a.DataHora) = convert(date,c.DataHora))derrota");
                 select.AppendLine("from dbo.PlayerDefesas c");
                 select.AppendLine("where idplayer = @idplayer");
                 select.AppendLine(")");
@@ -159,7 +159,89 @@ namespace GPCLib.DataAccess
 
                 throw ex;
             }
-           
+
+        }
+        public List<Models.DefesasSemana> ListarDefesasPorSemana(int idPlayer)
+        {
+            try
+            {
+                SqlConnection conexao = new SqlConnection();
+                SqlCommand command = new SqlCommand();
+
+                conexao.ConnectionString = ConfigurationManager.ConnectionStrings["DB_SW"].ToString();
+                StringBuilder select = new StringBuilder();
+
+                select.AppendLine("");
+
+                select.AppendLine("select");
+                select.AppendLine("a.IdPlayer, DATEPART(wk, a.DataHora)     weekno,");
+                select.AppendLine("isnull(b.Vitorias, 0) Vitorias,isnull(c.Empates, 0) Empates,isnull(d.Derrotas, 0)Derrotas");
+                select.AppendLine("from");
+                select.AppendLine("dbo.PlayerDefesas a");
+                select.AppendLine("left join (");
+                select.AppendLine("select");
+                select.AppendLine("  DATEPART(wk, DataHora) weekno,");
+                select.AppendLine("count(Vitoria) Vitorias");
+                select.AppendLine("from dbo.PlayerDefesas y where y.IdPlayer = @idplayer and y.Vitoria = 2");
+                select.AppendLine("GROUP BY    DATEPART(wk, DataHora)");
+                select.AppendLine(") ");
+                select.AppendLine("b on b.weekno = DATEPART(wk, a.DataHora)");
+                select.AppendLine("left join (");
+                select.AppendLine("            select");
+                select.AppendLine("DATEPART(wk, DataHora) weekno,");
+                select.AppendLine("count(Vitoria) Empates");
+                select.AppendLine("             from dbo.PlayerDefesas y where y.IdPlayer = @idplayer and y.Vitoria = 1");
+                select.AppendLine("GROUP BY    DATEPART(wk, DataHora)");
+                select.AppendLine(") ");
+                select.AppendLine("c on c.weekno = DATEPART(wk, a.DataHora)");
+                select.AppendLine("left join (");
+                select.AppendLine("select");
+                select.AppendLine("            DATEPART(wk, DataHora) weekno,");
+                select.AppendLine("count(Vitoria) Derrotas");
+                select.AppendLine("             from dbo.PlayerDefesas y where y.IdPlayer = @idplayer and y.Vitoria = 0");
+                select.AppendLine("GROUP BY    DATEPART(wk, DataHora)");
+                select.AppendLine(") ");
+                select.AppendLine("d on d.weekno = DATEPART(wk, a.DataHora)");
+                select.AppendLine("where a.IdPlayer = @idplayer");
+                select.AppendLine("GROUP BY    a.IdPlayer,DATEPART(wk, a.DataHora),b.Vitorias,c.Empates,d.Derrotas");
+
+                command.CommandText = select.ToString();
+                command.CommandType = System.Data.CommandType.Text;
+                command.Parameters.Add(new SqlParameter("@idplayer", System.Data.SqlDbType.Int));
+                command.Parameters["@idplayer"].Value = idPlayer;
+
+                List<DefesasSemana> objRetorno = new List<DefesasSemana>();
+                DefesasSemana objDefesaSemana;
+
+                conexao.Open();
+                command.Connection = conexao;
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    objDefesaSemana = new DefesasSemana();
+
+                    objDefesaSemana.Semana = Convert.ToInt32(reader["weekno"].ToString());
+                    objDefesaSemana.Vitorias = Convert.ToInt32(reader["Vitorias"].ToString());
+                    objDefesaSemana.Empates = Convert.ToInt32(reader["Empates"].ToString());
+                    objDefesaSemana.Derrotas = Convert.ToInt32(reader["Derrotas"].ToString());
+
+
+                    objRetorno.Add(objDefesaSemana);
+
+                }
+
+                conexao.Close();
+                conexao.Dispose();
+
+                return objRetorno;
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+
+            }
         }
     }
 }

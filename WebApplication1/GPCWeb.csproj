@@ -172,6 +172,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AtaquesSemanaController.cs" />
     <Compile Include="Controllers\CapivaraController.cs" />
     <Compile Include="Controllers\DefesasSemanaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -443,6 +444,7 @@
     <Content Include="Views\DefesasSemana\index.cshtml" />
     <Content Include="Views\Capivara\index.cshtml" />
     <Content Include="Views\Player\ComboPlayers.cshtml" />
+    <Content Include="Views\AtaquesSemana\index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

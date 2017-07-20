@@ -47,6 +47,7 @@
     <Compile Include="DataAccess\DefesaPlayer.cs" />
     <Compile Include="DataAccess\PainelControle.cs" />
     <Compile Include="DataAccess\Player.cs" />
+    <Compile Include="Models\AtaquesSemana.cs" />
     <Compile Include="Models\BatalhaModels.cs" />
     <Compile Include="Models\CapivaraModels.cs" />
     <Compile Include="Models\DefesaSemanaModels.cs" />

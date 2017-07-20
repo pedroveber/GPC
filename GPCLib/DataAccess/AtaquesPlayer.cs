@@ -129,7 +129,91 @@ namespace GPCLib.DataAccess
             catch (Exception ex)
             {
                 throw ex;
-             
+
+            }
+        }
+
+        public List<Models.AtaquesSemana> ListarAtaquesPorSemana(int idPlayer)
+        {
+            try
+            {
+                SqlConnection conexao = new SqlConnection();
+                SqlCommand command = new SqlCommand();
+
+                conexao.ConnectionString = ConfigurationManager.ConnectionStrings["DB_SW"].ToString();
+                StringBuilder select = new StringBuilder();
+
+                select.AppendLine("");
+
+                select.AppendLine("select");
+                select.AppendLine("a.CodPlayer, DATEPART(wk, a.DataHora)     weekno,");
+                select.AppendLine("isnull(b.Vitorias, 0) Vitorias,isnull(c.Empates, 0) Empates,isnull(d.Derrotas, 0)Derrotas");
+                select.AppendLine("from");
+                select.AppendLine("dbo.Lutas a");
+                select.AppendLine("left join (");
+                select.AppendLine("select");
+                select.AppendLine("DATEPART(wk, DataHora) weekno,");
+                select.AppendLine("count(Vitoria) Vitorias");
+                select.AppendLine("from DB_SW.dbo.Lutas y where y.CodPlayer = @idPlayer and y.Vitoria = 2");
+                select.AppendLine("GROUP BY    DATEPART(wk, DataHora)");
+                select.AppendLine(") ");
+                select.AppendLine("b on b.weekno = DATEPART(wk, a.DataHora)");
+                select.AppendLine("left join (");
+                select.AppendLine("select");
+                select.AppendLine("DATEPART(wk, DataHora) weekno,");
+                select.AppendLine("count(Vitoria) Empates");
+                select.AppendLine("from DB_SW.dbo.Lutas y where y.CodPlayer = @idPlayer and y.Vitoria = 1");
+                select.AppendLine("GROUP BY    DATEPART(wk, DataHora)");
+                select.AppendLine(") ");
+                select.AppendLine("c on c.weekno = DATEPART(wk, a.DataHora)");
+                select.AppendLine("left join (");
+                select.AppendLine("select");
+                select.AppendLine("DATEPART(wk, DataHora) weekno,");
+                select.AppendLine("count(Vitoria) Derrotas");
+                select.AppendLine("from DB_SW.dbo.Lutas y where y.CodPlayer = @idPlayer and y.Vitoria = 0");
+                select.AppendLine("GROUP BY    DATEPART(wk, DataHora)");
+                select.AppendLine(") ");
+                select.AppendLine("d on d.weekno = DATEPART(wk, a.DataHora)");
+                select.AppendLine("where a.CodPlayer = @idPlayer");
+                select.AppendLine("GROUP BY    a.CodPlayer,DATEPART(wk, a.DataHora),b.Vitorias,c.Empates,d.Derrotas");
+                
+                command.CommandText = select.ToString();
+                command.CommandType = System.Data.CommandType.Text;
+
+                command.Parameters.Add(new SqlParameter("@idplayer", System.Data.SqlDbType.Int));
+                command.Parameters["@idplayer"].Value = idPlayer;
+
+                List<AtaquesSemana> objRetorno = new List<AtaquesSemana>();
+                AtaquesSemana objAtaqueSemana;
+
+                conexao.Open();
+                command.Connection = conexao;
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    objAtaqueSemana = new AtaquesSemana();
+
+                    objAtaqueSemana.Semana = Convert.ToInt32(reader["weekno"].ToString());
+                    objAtaqueSemana.Vitorias = Convert.ToInt32(reader["Vitorias"].ToString());
+                    objAtaqueSemana.Empates = Convert.ToInt32(reader["Empates"].ToString());
+                    objAtaqueSemana.Derrotas = Convert.ToInt32(reader["Derrotas"].ToString());
+
+
+                    objRetorno.Add(objAtaqueSemana);
+
+                }
+
+                conexao.Close();
+                conexao.Dispose();
+
+                return objRetorno;
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+
             }
         }
     }
