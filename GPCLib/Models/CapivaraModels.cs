@@ -15,6 +15,7 @@ namespace GPCLib.Models
 
         public List<AtaquesSemana> AtaquesSemana { get; set; }
 
+        public TimeDefesaModels TimeGVG { get; set; }
 
         public double PercentualVitoria { get; set; }
         public double PercentualDefesa { get; set; }

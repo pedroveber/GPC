@@ -7,6 +7,7 @@ using GPCLib;
 
 namespace WebApplication1.Controllers
 {
+    [Authorize]
     public class PlayerController : Controller
     {
         // GET: Player/Edit/5

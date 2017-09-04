@@ -14,13 +14,13 @@ namespace GPCLib.DataAccess
         public Models.PlayerModels ObterPlayer(int id)
         {
             SqlConnection conn = new SqlConnection();
-            SqlCommand sqlCom = new SqlCommand(); 
+            SqlCommand sqlCom = new SqlCommand();
 
-            conn.ConnectionString = ConfigurationManager.ConnectionStrings[2].ToString();
+            conn.ConnectionString = ConfigurationManager.ConnectionStrings["DB_SW"].ToString();
 
 
             StringBuilder cmd = new StringBuilder();
-            cmd.Append("SELECT * FROM dbo.Player WHERE ID = @ID");
+            cmd.Append("SELECT * FROM DB_SW.dbo.Player WHERE ID = @ID");
 
 
             sqlCom.CommandText = cmd.ToString();
@@ -65,7 +65,7 @@ namespace GPCLib.DataAccess
             SqlConnection conn = new SqlConnection();
             SqlCommand sqlCom = new SqlCommand();
 
-            conn.ConnectionString = ConfigurationManager.ConnectionStrings[2].ToString();
+            conn.ConnectionString = ConfigurationManager.ConnectionStrings["DB_SW"].ToString();
 
 
             StringBuilder cmd = new StringBuilder();
@@ -95,7 +95,7 @@ namespace GPCLib.DataAccess
                     objPlayer.Ativo = (reader["Status"].ToString() == "S") ? true : false;
 
                     objRetorno.Add(objPlayer);
-
+                    
                 }
                 conn.Close();
                 conn.Dispose();

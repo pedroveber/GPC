@@ -9,6 +9,7 @@ using GPCLib.DataAccess;
 namespace WebApplication1.Controllers
 
 {
+    [Authorize]
     public class AtaquesSemanaController : Controller
     {
 

@@ -6,40 +6,40 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 <script type="text/javascript">
-    
-      google.charts.load('current', {'packages':['bar']});
-      google.charts.setOnLoadCallback(pedroca);
-      google.charts.setOnLoadCallback(pedroca2);
 
-      $(window).resize(function(){
-          pedroca();
-          pedroca2();
-      });
+    google.charts.load('current', {'packages':['bar']});
+    google.charts.setOnLoadCallback(pedroca);
+    google.charts.setOnLoadCallback(pedroca2);
 
-      function pedroca() {
-          
-          $.ajax(
-          {
-              type: 'POST',
-              dataType: 'json',
-              traditional: true,
-              contentType: "application/json; charset=utf-8",
-              dataType: "json",
-              url: '/AtaquesSemana/ListarAtaquesSemana',
-              data: JSON.stringify({ Id: @Model.Player.Id }),
-              success: function (response) {
-                  
-                  drawchart(response); // calling method  
-              },
+    $(window).resize(function(){
+        pedroca();
+        pedroca2();
+    });
 
-              error: function () {
-                  alert("Error loading data! Please try again.");
-              }
-          });
-      }
+    function pedroca() {
+
+        $.ajax(
+        {
+            type: 'POST',
+            dataType: 'json',
+            traditional: true,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: '/AtaquesSemana/ListarAtaquesSemana',
+            data: JSON.stringify({ Id: @Model.Player.Id }),
+            success: function (response) {
+
+                drawchart(response); // calling method
+            },
+
+            error: function () {
+                alert("Error loading data! Please try again.");
+            }
+        });
+    }
 
     function pedroca2() {
-          
+
         $.ajax(
         {
             type: 'POST',
@@ -50,8 +50,8 @@
             url: '/AtaquesSemana/ListarDefesasSemana',
             data: JSON.stringify({ Id: @Model.Player.Id }),
             success: function (response) {
-                  
-                drawchart2(response); // calling method  
+
+                drawchart2(response); // calling method
             },
 
             error: function () {
@@ -60,74 +60,74 @@
         });
     }
 
-      function drawchart(dataValues) {
-          // Callback that creates and populates a data table,  
-          // instantiates the pie chart, passes in the data and  
-          // draws it.  
-          
-
-          var data = new google.visualization.DataTable();
-          
-          data.addColumn('number', 'Semanas');
-          data.addColumn('number', 'Vitórias');
-          data.addColumn('number', 'Empates');
-          data.addColumn('number', 'Derrotas');
+    function drawchart(dataValues) {
+        // Callback that creates and populates a data table,
+        // instantiates the pie chart, passes in the data and
+        // draws it.
 
 
-          for (var i = 0; i < dataValues.length; i++) {
-              data.addRow([dataValues[i].Semana, dataValues[i].Vitorias, dataValues[i].Empates, dataValues[i].Derrotas]);
-          }
+        var data = new google.visualization.DataTable();
 
-          // Instantiate and draw our chart, passing in some options  
+        data.addColumn('number', 'Semanas');
+        data.addColumn('number', 'Vitórias');
+        data.addColumn('number', 'Empates');
+        data.addColumn('number', 'Derrotas');
 
-          
 
-          var options = {
-              chart: {
+        for (var i = 0; i < dataValues.length; i++) {
+            data.addRow([dataValues[i].Semana, dataValues[i].Vitorias, dataValues[i].Empates, dataValues[i].Derrotas]);
+        }
+
+        // Instantiate and draw our chart, passing in some options
+
+
+
+        var options = {
+            chart: {
                 title: 'Ataques',
 
-              }
-            };
-          
-          var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
-          chart.draw(data, google.charts.Bar.convertOptions(options));
-      }
+            }
+        };
 
-      function drawchart2(dataValues) {
-          // Callback that creates and populates a data table,  
-          // instantiates the pie chart, passes in the data and  
-          // draws it.  
-          
+        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+    }
 
-          var data = new google.visualization.DataTable();
-          
-          data.addColumn('number', 'Semanas');
-          data.addColumn('number', 'Vitórias');
-          data.addColumn('number', 'Empates');
-          data.addColumn('number', 'Derrotas');
+    function drawchart2(dataValues) {
+        // Callback that creates and populates a data table,
+        // instantiates the pie chart, passes in the data and
+        // draws it.
 
 
-          for (var i = 0; i < dataValues.length; i++) {
-              data.addRow([dataValues[i].Semana, dataValues[i].Vitorias, dataValues[i].Empates, dataValues[i].Derrotas]);
-          }
+        var data = new google.visualization.DataTable();
 
-          // Instantiate and draw our chart, passing in some options  
-
-          
-
-          var options = {
-              chart: {
-                  title: 'Defesas',
-
-              }
-          };
-          
-          var chart = new google.charts.Bar(document.getElementById('columnchart_material2'));
-          chart.draw(data, google.charts.Bar.convertOptions(options));
-      }
+        data.addColumn('number', 'Semanas');
+        data.addColumn('number', 'Vitórias');
+        data.addColumn('number', 'Empates');
+        data.addColumn('number', 'Derrotas');
 
 
-    </script>
+        for (var i = 0; i < dataValues.length; i++) {
+            data.addRow([dataValues[i].Semana, dataValues[i].Vitorias, dataValues[i].Empates, dataValues[i].Derrotas]);
+        }
+
+        // Instantiate and draw our chart, passing in some options
+
+
+
+        var options = {
+            chart: {
+                title: 'Defesas',
+
+            }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('columnchart_material2'));
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+    }
+
+
+</script>
 
 <script>
     $(document).ready(function () {
@@ -388,25 +388,25 @@
                 <tbody>
                     @foreach (var item in Model.DefesasConsolidado)
             {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(model => item.Data)
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(model => item.Data)
 
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.NomeGuild)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Vitoria)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Empate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Derrota)
-                        </td>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NomeGuild)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Vitoria)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Empate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Derrota)
+                            </td>
 
-                    </tr>
+                        </tr>
                     }
                 </tbody>
 
@@ -458,9 +458,112 @@
         </div>
 
     </div>
+    <p></p>
+    <style>
+        #imagem1
+        {
+            float: inline-block;
+            width: 100%;
+            font-size: 0;
+            line-height: 0;
+            vertical-align: middle;
+            background-size: 100%;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+            content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => m.TimeGVG.Monstro1.Imagem));
+        }
+        #imagem2
+        {
+        display: inline-block;
+            width: 100%;
+            font-size: 0;
+            line-height: 0;
+            vertical-align: middle;
+            background-size: 100%;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+            content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => m.TimeGVG.Monstro2.Imagem));
+        }
+        #imagem3
+        {
+        display: inline-block;
+            width: 100%;
+            font-size: 0;
+            line-height: 0;
+            vertical-align: middle;
+            background-size: 100%;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+            content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => m.TimeGVG.Monstro3.Imagem));
+        }
 
+        #imagem4
+        {
+            float: inline-block;
+            width: 100%;
+            font-size: 0;
+            line-height: 0;
+            vertical-align: middle;
+            background-size: 100%;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+            content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => m.TimeGVG.Monstro4.Imagem));
+        }
+        #imagem5
+        {
+        display: inline-block;
+            width: 100%;
+            font-size: 0;
+            line-height: 0;
+            vertical-align: middle;
+            background-size: 100%;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+            content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => m.TimeGVG.Monstro5.Imagem));
+        }
+        #imagem6
+        {
+        display: inline-block;
+            width: 100%;
+            font-size: 0;
+            line-height: 0;
+            vertical-align: middle;
+            background-size: 100%;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+            content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => m.TimeGVG.Monstro6.Imagem));
+        }
+
+
+
+    </style>
     <div class="row">
-        <div class="clearfix" ></div>
+        <div class="clearfix"></div>
+        <div class="col-md-12"><b>Time do dia: @Html.DisplayFor(m => m.TimeGVG.Data). </b></div>
+        <div class="col-md-12"><b>Vitórias: @Html.DisplayFor(m => m.TimeGVG.Vitoria) | Empates: @Html.DisplayFor(m => m.TimeGVG.Empate) | Derrotas: @Html.DisplayFor(m => m.TimeGVG.Derrota) </b></div>
+        <div class="col-md-6" style="background-color:coral;border-color:black;border:solid;border-width:1px;">
+            <div>Time 1</div>
+            <div style="width:500px;height:150px">
+                <div style="width:166px;float:left;"><div id="imagem1" title="@Html.DisplayFor(m => m.TimeGVG.Monstro1.Nome)"></div></div>
+                <div style="width:166px;float:left;"><div id="imagem2" title="@Html.DisplayFor(m => m.TimeGVG.Monstro2.Nome)"></div></div>
+                <div style="width:166px;float:left;"><div id="imagem3" title="@Html.DisplayFor(m => m.TimeGVG.Monstro3.Nome)"></div></div>
+            </div>
+
+        </div>
+        <div class="col-md-6" style="background-color:burlywood;border-color:black;border:solid;border-width:1px;">
+            <div>Time 1</div>
+            <div style="width:500px;height:150px">
+                <div style="width:166px;float:left;"><div id="imagem4" title="@Html.DisplayFor(m => m.TimeGVG.Monstro4.Nome)"></div></div>
+                <div style="width:166px;float:left;"><div id="imagem5" title="@Html.DisplayFor(m => m.TimeGVG.Monstro5.Nome)"></div></div>
+                <div style="width:166px;float:left;"><div id="imagem6" title="@Html.DisplayFor(m => m.TimeGVG.Monstro6.Nome)"></div></div>
+            </div>
+
+        </div>
+
+    </div>
+    <p></p>
+    <div class="row">
+        <div class="clearfix"></div>
         <div class="col-md-12">
             <div id="columnchart_material" style="width: 100%;min-height: 450px"></div>
         </div>
@@ -474,5 +577,8 @@
         </div>
 
     </div>
+    <p></p>
+
+
 
 </div>

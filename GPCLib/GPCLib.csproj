@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="DataAccess\AtaquesPlayer.cs" />
     <Compile Include="DataAccess\DefesaPlayer.cs" />
+    <Compile Include="DataAccess\Monstro.cs" />
     <Compile Include="DataAccess\PainelControle.cs" />
     <Compile Include="DataAccess\Player.cs" />
     <Compile Include="Models\AtaquesSemana.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="Models\CapivaraModels.cs" />
     <Compile Include="Models\DefesaSemanaModels.cs" />
     <Compile Include="Models\LutasModels.cs" />
+    <Compile Include="Models\MonstroModels.cs" />
     <Compile Include="Models\PainelControleModels.cs" />
     <Compile Include="Models\PlayerModels.cs" />
     <Compile Include="Models\PlayerOponenteModels.cs" />

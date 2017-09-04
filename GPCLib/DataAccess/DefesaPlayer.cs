@@ -243,5 +243,93 @@ namespace GPCLib.DataAccess
 
             }
         }
+
+        public TimeDefesaModels ObterTimeDefesaGVG(int idPlayer, DateTime data)
+        {
+            try
+            {
+                SqlConnection conexao = new SqlConnection();
+                SqlCommand command = new SqlCommand();
+
+                conexao.ConnectionString = ConfigurationManager.ConnectionStrings["DB_SW"].ToString();
+                StringBuilder select = new StringBuilder();
+
+                select.AppendLine("SET DATEFORMAT dmy;");
+                select.AppendLine("select");
+                select.AppendLine("a.Id,");
+                select.AppendLine("(select count(1) from dbo.PlayerDefesas b where a.ID = b.IdPlayer and Vitoria = 2 and DataHora>= @datainicio and DataHora<= @datafim)Vitoria,");
+                select.AppendLine("(select count(1) from dbo.PlayerDefesas c where a.ID = c.IdPlayer and Vitoria = 1 and DataHora>= @datainicio and DataHora<= @datafim)Empate,");
+                select.AppendLine("(select count(1) from dbo.PlayerDefesas d where a.ID = d.IdPlayer and Vitoria = 0 and DataHora>= @datainicio and DataHora<= @datafim)Derrota,");
+                select.AppendLine("e.Monstro1 Monstro1Id, f.Nome Monstro1Nome, f.Imagem Monstro1Imagem,");
+                select.AppendLine("e.Monstro2 Monstro2Id, g.Nome Monstro2Nome, g.Imagem Monstro2Imagem,");
+                select.AppendLine("e.Monstro3 Monstro3Id, h.Nome Monstro3Nome, h.Imagem Monstro3Imagem,");
+                select.AppendLine("e.Monstro4 Monstro4Id, i.Nome Monstro4Nome, i.Imagem Monstro4Imagem,");
+                select.AppendLine("e.Monstro5 Monstro5Id, j.Nome Monstro5Nome, j.Imagem Monstro5Imagem,");
+                select.AppendLine("e.Monstro6 Monstro6Id, k.Nome Monstro6Nome, k.Imagem Monstro6Imagem");
+                select.AppendLine("from dbo.Player a");
+                select.AppendLine("inner");
+                select.AppendLine("join dbo.TimeDefesa e on e.IdPlayer = a.ID");
+                select.AppendLine("left");
+                select.AppendLine("join dbo.Monstro f on f.Id = e.Monstro1");
+                select.AppendLine("left");
+                select.AppendLine("join dbo.Monstro g on g.Id = e.Monstro2");
+                select.AppendLine("left");
+                select.AppendLine("join dbo.Monstro h on h.Id = e.Monstro3");
+                select.AppendLine("left");
+                select.AppendLine("join dbo.Monstro i on i.Id = e.Monstro4");
+                select.AppendLine("left");
+                select.AppendLine("join dbo.Monstro j on j.Id = e.Monstro5");
+                select.AppendLine("left");
+                select.AppendLine("join dbo.Monstro k on k.Id = e.Monstro6");
+                select.AppendLine("where a.Id = @idplayer");
+                select.AppendLine("and e.data = @datafim");
+
+                command.CommandText = select.ToString();
+                command.CommandType = System.Data.CommandType.Text;
+
+                //Parametros
+                command.Parameters.Add(new SqlParameter("@idplayer", System.Data.SqlDbType.Int));
+                command.Parameters["@idplayer"].Value = idPlayer;
+
+                command.Parameters.Add(new SqlParameter("@datainicio", System.Data.SqlDbType.Date));
+                command.Parameters["@datainicio"].Value = data.AddDays(-7);
+
+                command.Parameters.Add(new SqlParameter("@datafim", System.Data.SqlDbType.Date));
+                command.Parameters["@datafim"].Value = data;
+
+                TimeDefesaModels objTimeDefesa = new TimeDefesaModels();
+
+                conexao.Open();
+                command.Connection = conexao;
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    objTimeDefesa = new TimeDefesaModels();
+                    objTimeDefesa.Data = data;
+                    objTimeDefesa.Monstro1 = new MonstroModels() { Id = Convert.ToInt32(reader["Monstro1Id"].ToString()), Nome = reader["Monstro1Nome"].ToString(), Imagem = reader["Monstro1Imagem"].ToString() };
+                    objTimeDefesa.Monstro2 = new MonstroModels() { Id = Convert.ToInt32(reader["Monstro2Id"].ToString()), Nome = reader["Monstro2Nome"].ToString(), Imagem = reader["Monstro2Imagem"].ToString() };
+                    objTimeDefesa.Monstro3 = new MonstroModels() { Id = Convert.ToInt32(reader["Monstro3Id"].ToString()), Nome = reader["Monstro3Nome"].ToString(), Imagem = reader["Monstro3Imagem"].ToString() };
+                    objTimeDefesa.Monstro4 = new MonstroModels() { Id = Convert.ToInt32(reader["Monstro4Id"].ToString()), Nome = reader["Monstro4Nome"].ToString(), Imagem = reader["Monstro4Imagem"].ToString() };
+                    objTimeDefesa.Monstro5 = new MonstroModels() { Id = Convert.ToInt32(reader["Monstro5Id"].ToString()), Nome = reader["Monstro5Nome"].ToString(), Imagem = reader["Monstro5Imagem"].ToString() };
+                    objTimeDefesa.Monstro6 = new MonstroModels() { Id = Convert.ToInt32(reader["Monstro6Id"].ToString()), Nome = reader["Monstro6Nome"].ToString(), Imagem = reader["Monstro6Imagem"].ToString() };
+                    objTimeDefesa.Vitoria = Convert.ToInt32(reader["Vitoria"].ToString());
+                    objTimeDefesa.Empate = Convert.ToInt32(reader["Empate"].ToString());
+                    objTimeDefesa.Derrota = Convert.ToInt32(reader["Derrota"].ToString());
+                }
+
+                conexao.Close();
+                conexao.Dispose();
+
+                return objTimeDefesa;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
     }
 }

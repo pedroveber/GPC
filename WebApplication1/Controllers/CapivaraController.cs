@@ -8,6 +8,7 @@ using GPCLib.DataAccess;
 
 namespace WebApplication1.Controllers
 {
+    [Authorize]
     public class CapivaraController : Controller
     {
         // GET: Capivara
@@ -30,6 +31,9 @@ namespace WebApplication1.Controllers
                 GPCLib.DataAccess.AtaquesPlayer daAtaquesPlayer = new AtaquesPlayer();
                 //Ataques da Semana
                 Capivara.AtaquesConsolidado = daAtaquesPlayer.ListarAtaqueConsolidado(segundaFeira, segundaFeira.AddDays(6), id);
+
+                //Obter Time Defesa GVG (passar data de Domingo)
+              Capivara.TimeGVG = new DefesaPlayer().ObterTimeDefesaGVG(id, segundaFeira.AddDays(-1));
                 
                 Capivara = CalcularStreak(new AtaquesPlayer().ListarAtaques(id), Capivara);
 
@@ -64,7 +68,10 @@ namespace WebApplication1.Controllers
             GPCLib.DataAccess.AtaquesPlayer daAtaquesPlayer = new AtaquesPlayer();
             //Ataques da Semana
             Capivara.AtaquesConsolidado = daAtaquesPlayer.ListarAtaqueConsolidado(segundaFeira, segundaFeira.AddDays(6), id);
-                        
+
+            //Obter Time Defesa GVG (passar data de Domingo)
+            Capivara.TimeGVG = new DefesaPlayer().ObterTimeDefesaGVG(id, segundaFeira.AddDays(-1));
+
             Capivara = CalcularStreak(new AtaquesPlayer().ListarAtaques(id), Capivara);
 
             return View(Capivara);

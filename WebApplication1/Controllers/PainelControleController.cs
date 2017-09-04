@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace WebApplication1.Controllers
 {
+    [Authorize]
     public class PainelControleController : Controller
     {
         // GET: PainelControle
