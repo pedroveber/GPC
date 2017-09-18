@@ -34,10 +34,10 @@ namespace WebApplication1.Controllers
 
                 return Json(ataques.ToArray(), JsonRequestBehavior.AllowGet);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
             
         }

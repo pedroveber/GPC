@@ -115,25 +115,27 @@ namespace GPCLib.DataAccess
 
             conexao.ConnectionString = ConfigurationManager.ConnectionStrings["DB_SW"].ToString();
             StringBuilder select = new StringBuilder();
-
+            //multiguild
             select.AppendLine("SET DATEFORMAT dmy;");
             select.AppendLine("select a.Nome,a.Imagem,");
-            select.AppendLine("(select count(vitoria) from dbo.Lutas b where b.CodPlayer = a.id and  b.vitoria = 2) Vitorias,");
-            select.AppendLine("(select count(vitoria) from dbo.Lutas c where c.CodPlayer = a.id and  c.vitoria = 1) Empates,");
-            select.AppendLine("(select count(vitoria) from dbo.Lutas d where d.CodPlayer = a.id and  d.vitoria = 0) Derrotas,");
-            select.AppendLine("(select count(d1.vitoria) from dbo.PlayerDefesas d1 where d1.vitoria = 2 and d1.IdPlayer = a.id) DefesaSucesso,");
-            select.AppendLine("(select count(d2.vitoria) from dbo.PlayerDefesas d2 where d2.vitoria = 1 and d2.IdPlayer = a.id) DefesaEmpate,");
-            select.AppendLine("(select count(d3.vitoria) from dbo.PlayerDefesas d3 where d3.vitoria = 0 and d3.IdPlayer = a.id ) DefesaDerrota,");
+            select.AppendLine("(select count(vitoria) from dbo.Lutas b inner join dbo.Guilda_Player b1 on b1.idPlayer = b.CodPlayer and b1.ativo = 1 and b1.idGuilda = @idGuilda where b.CodPlayer = a.id and  b.vitoria = 2) Vitorias,");
+            select.AppendLine("(select count(vitoria) from dbo.Lutas c inner join dbo.Guilda_Player b1 on b1.idPlayer = c.CodPlayer and b1.ativo = 1 and b1.idGuilda = @idGuilda where c.CodPlayer = a.id and  c.vitoria = 1) Empates,");
+            select.AppendLine("(select count(vitoria) from dbo.Lutas d inner join dbo.Guilda_Player b1 on b1.idPlayer = d.CodPlayer and b1.ativo = 1 and b1.idGuilda = @idGuilda where d.CodPlayer = a.id and  d.vitoria = 0) Derrotas,");
+            select.AppendLine("(select count(d1.vitoria) from dbo.PlayerDefesas d1 inner join dbo.Guilda_Player b1 on b1.idPlayer = d1.IdPlayer and b1.ativo = 1 and b1.idGuilda = @idGuilda where d1.vitoria = 2 and d1.IdPlayer = a.id) DefesaSucesso,");
+            select.AppendLine("(select count(d2.vitoria) from dbo.PlayerDefesas d2 inner join dbo.Guilda_Player b1 on b1.idPlayer = d2.IdPlayer and b1.ativo = 1 and b1.idGuilda = @idGuilda where d2.vitoria = 1 and d2.IdPlayer = a.id) DefesaEmpate,");
+            select.AppendLine("(select count(d3.vitoria) from dbo.PlayerDefesas d3 inner join dbo.Guilda_Player b1 on b1.idPlayer = d3.IdPlayer and b1.ativo = 1 and b1.idGuilda = @idGuilda where d3.vitoria = 0 and d3.IdPlayer = a.id ) DefesaDerrota,");
             select.AppendLine("(select count(1) from ");
             select.AppendLine("DB_SW.dbo.PlayerStatus e ");
-            select.AppendLine("inner join DB_SW.dbo.Batalhas f on f.id = e.idBatalha");
+            select.AppendLine("inner join DB_SW.dbo.Batalhas f on f.id = e.idBatalha and f.IdGuildaAtacante = @idGuilda");
+            select.AppendLine("inner join dbo.Guilda_Player b1 on b1.idPlayer = e.IdPlayer and b1.ativo = 1 and b1.idGuilda = @idGuilda");
             select.AppendLine("where ");
             select.AppendLine("e.idPlayer = a.id and e.Status = 'S') Escalado,");
             select.AppendLine("(select count(1) from ");
             select.AppendLine("DB_SW.dbo.PlayerStatus g ");
-            select.AppendLine("inner join DB_SW.dbo.Batalhas h on h.id = g.idBatalha");
+            select.AppendLine("inner join DB_SW.dbo.Batalhas h on h.id = g.idBatalha and h.IdGuildaAtacante = @idGuilda");
+            select.AppendLine("inner join dbo.Guilda_Player b1 on b1.idPlayer = g.IdPlayer and b1.ativo = 1 and b1.idGuilda = @idGuilda");
             select.AppendLine("where g.idPlayer = a.id and g.Status = 'S'");
-            select.AppendLine("and not exists (select 0 from DB_SW.dbo.Lutas i where i.CodPlayer = g.IdPlayer and i.CodBatalhas = g.IdBatalha))NAtacou");
+            select.AppendLine("and not exists (select 0 from DB_SW.dbo.Lutas i inner join dbo.Guilda_Player b1 on b1.idPlayer = i.CodPlayer and b1.ativo = 1 and b1.idGuilda = @idGuilda where i.CodPlayer = g.IdPlayer and i.CodBatalhas = g.IdBatalha))NAtacou");
             select.AppendLine("from dbo.Player a");
             select.AppendLine("where ");
             select.AppendLine("a.id = @idPlayer");
@@ -143,6 +145,9 @@ namespace GPCLib.DataAccess
 
             command.Parameters.Add(new SqlParameter("@idPlayer", System.Data.SqlDbType.Int));
             command.Parameters["@idPlayer"].Value = idPlayer;
+
+            command.Parameters.Add(new SqlParameter("@idGuilda", System.Data.SqlDbType.BigInt));
+            command.Parameters["@idGuilda"].Value = 147123;//TODO: Alterar
 
             CapivaraModels objRetorno = new CapivaraModels();
 

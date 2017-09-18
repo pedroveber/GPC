@@ -21,19 +21,26 @@ namespace GPCLib.DataAccess
 
                 conexao.ConnectionString = ConfigurationManager.ConnectionStrings["DB_SW"].ToString();
                 StringBuilder select = new StringBuilder();
-
+                //Multiguid
                 select.AppendLine("SET DATEFORMAT dmy");
                 select.AppendLine("select a.Nome,a.ID,");
 
-                select.AppendLine("(select count(b.vitoria) from dbo.PlayerDefesas b where b.vitoria = 2 and b.IdPlayer = a.ID and");
+                select.AppendLine("(select count(b.vitoria) from dbo.PlayerDefesas b ");
+                select.AppendLine("inner join dbo.Guilda_Player b1 on b1.idPlayer = b.IdPlayer and b1.ativo = 1 and b1.idGuilda = @idGuilda ");
+                select.AppendLine("where b.vitoria = 2 and b.IdPlayer = a.ID and");
                 select.AppendLine("cast(dataHora as date) between Cast(@dataini as date) and Cast(@datafim as date)) Vitoria,");
 
-                select.AppendLine("(select count(c.vitoria) from dbo.PlayerDefesas c where c.vitoria = 1 and c.IdPlayer = a.ID and");
+                select.AppendLine("(select count(c.vitoria) from dbo.PlayerDefesas c ");
+                select.AppendLine("inner join dbo.Guilda_Player c1 on c1.idPlayer = c.IdPlayer and c1.ativo = 1 and c1.idGuilda = @idGuilda ");
+                select.AppendLine("where c.vitoria = 1 and c.IdPlayer = a.ID and");
                 select.AppendLine("cast(dataHora as date) between Cast(@dataini as date) and Cast(@datafim as date)) Empate,");
 
-                select.AppendLine("(select count(d.vitoria) from dbo.PlayerDefesas d where d.vitoria = 0 and d.IdPlayer = a.ID and");
+                select.AppendLine("(select count(d.vitoria) from dbo.PlayerDefesas d ");
+                select.AppendLine("inner join dbo.Guilda_Player d1 on d1.idPlayer = d.IdPlayer and d1.ativo = 1 and d1.idGuilda = @idGuilda ");
+                select.AppendLine("where d.vitoria = 0 and d.IdPlayer = a.ID and");
                 select.AppendLine("cast(dataHora as date) between Cast(@dataini as date) and Cast(@datafim as date)) Derrota");
                 select.AppendLine("from dbo.Player a ");
+                select.AppendLine("inner join dbo.Guilda_Player a1 on a1.idPlayer = a.ID and a1.ativo = 1 and a1.idGuilda = @idGuilda ");
                 select.AppendLine("order by 3 desc,4 desc,5 desc");
 
                 command.CommandText = select.ToString();
@@ -44,6 +51,9 @@ namespace GPCLib.DataAccess
 
                 command.Parameters.Add(new SqlParameter("@datafim", System.Data.SqlDbType.Date));
                 command.Parameters["@datafim"].Value = dataFim;
+
+                command.Parameters.Add(new SqlParameter("@idGuilda", System.Data.SqlDbType.BigInt));
+                command.Parameters["@idGuilda"].Value = 147123;//TODO: Alterar
 
                 //coly
                 DefesaModels objDefesa;
@@ -97,16 +107,28 @@ namespace GPCLib.DataAccess
                 conexao.ConnectionString = ConfigurationManager.ConnectionStrings["DB_SW"].ToString();
                 StringBuilder select = new StringBuilder();
 
+                //Multiguild
                 select.AppendLine("SET DATEFORMAT dmy;");
                 select.AppendLine("with teste (idplayer,nome, data,vitoria,empate,derrota)");
                 select.AppendLine("as(");
-                select.AppendLine("select idplayer,NOMEGUILDA,");
+                select.AppendLine("select c.idplayer,NOMEGUILDA,");
                 select.AppendLine("dataHora data,");
-                select.AppendLine("(select count(vitoria) from dbo.PlayerDefesas a where a.NomeGuilda = c.NOMEGUILDA and vitoria=2 and a.IdPlayer = c.idplayer and convert(date,a.DataHora) = convert(date,c.DataHora))vitoria,");
-                select.AppendLine("(select count(vitoria) from dbo.PlayerDefesas a where a.NomeGuilda = c.NOMEGUILDA and vitoria=1 and a.IdPlayer = c.idplayer and convert(date,a.DataHora) = convert(date,c.DataHora))empate,");
-                select.AppendLine("(select count(vitoria) from dbo.PlayerDefesas a where a.NomeGuilda = c.NOMEGUILDA and vitoria=0 and a.IdPlayer = c.idplayer and convert(date,a.DataHora) = convert(date,c.DataHora))derrota");
-                select.AppendLine("from dbo.PlayerDefesas c");
-                select.AppendLine("where idplayer = @idplayer");
+
+                select.AppendLine("(select count(vitoria) from dbo.PlayerDefesas a ");
+                select.AppendLine("inner join dbo.Guilda_Player a1 on a1.idPlayer = a.IdPlayer and a1.ativo = 1 and a1.idGuilda = @idGuilda ");
+                select.AppendLine("where a.NomeGuilda = c.NOMEGUILDA and vitoria=2 and a.IdPlayer = c.idplayer and convert(date,a.DataHora) = convert(date,c.DataHora))vitoria,");
+
+                select.AppendLine("(select count(vitoria) from dbo.PlayerDefesas a ");
+                select.AppendLine("inner join dbo.Guilda_Player a2 on a2.idPlayer = a.IdPlayer and a2.ativo = 1 and a2.idGuilda = @idGuilda ");
+                select.AppendLine("where a.NomeGuilda = c.NOMEGUILDA and vitoria=1 and a.IdPlayer = c.idplayer and convert(date,a.DataHora) = convert(date,c.DataHora))empate,");
+
+                select.AppendLine("(select count(vitoria) from dbo.PlayerDefesas a ");
+                select.AppendLine("inner join dbo.Guilda_Player a3 on a3.idPlayer = a.IdPlayer and a3.ativo = 1 and a3.idGuilda = @idGuilda");
+                select.AppendLine("where a.NomeGuilda = c.NOMEGUILDA and vitoria=0 and a.IdPlayer = c.idplayer and convert(date,a.DataHora) = convert(date,c.DataHora))derrota");
+
+                select.AppendLine("from dbo.PlayerDefesas c ");
+                select.AppendLine("inner join dbo.Guilda_Player c1 on c1.idPlayer = c.IdPlayer and c1.ativo = 1 and c1.idGuilda = @idGuilda ");
+                select.AppendLine("where c.idplayer = @idplayer");
                 select.AppendLine(")");
                 select.AppendLine("select ");
                 select.AppendLine("Nome,vitoria,empate,derrota,");
@@ -128,6 +150,9 @@ namespace GPCLib.DataAccess
 
                 command.Parameters.Add(new SqlParameter("@idplayer", System.Data.SqlDbType.Int));
                 command.Parameters["@idplayer"].Value = idPlayer;
+
+                command.Parameters.Add(new SqlParameter("@idGuilda", System.Data.SqlDbType.BigInt));
+                command.Parameters["@idGuilda"].Value = 147123;//TODO: Alterar
 
                 List<DefesasPlayerConsolidado> objRetorno = new List<DefesasPlayerConsolidado>();
                 DefesasPlayerConsolidado objDefesa;
@@ -254,33 +279,38 @@ namespace GPCLib.DataAccess
                 conexao.ConnectionString = ConfigurationManager.ConnectionStrings["DB_SW"].ToString();
                 StringBuilder select = new StringBuilder();
 
+                //MultiGuild
                 select.AppendLine("SET DATEFORMAT dmy;");
                 select.AppendLine("select");
                 select.AppendLine("a.Id,");
-                select.AppendLine("(select count(1) from dbo.PlayerDefesas b where a.ID = b.IdPlayer and Vitoria = 2 and DataHora>= @datainicio and DataHora<= @datafim)Vitoria,");
-                select.AppendLine("(select count(1) from dbo.PlayerDefesas c where a.ID = c.IdPlayer and Vitoria = 1 and DataHora>= @datainicio and DataHora<= @datafim)Empate,");
-                select.AppendLine("(select count(1) from dbo.PlayerDefesas d where a.ID = d.IdPlayer and Vitoria = 0 and DataHora>= @datainicio and DataHora<= @datafim)Derrota,");
+
+                select.AppendLine("(select count(1) from dbo.PlayerDefesas b ");
+                select.AppendLine("inner join dbo.Guilda_Player b1 on b1.idPlayer = b.IdPlayer and b1.ativo = 1 and b1.idGuilda = @idGuilda ");
+                select.AppendLine("where a.ID = b.IdPlayer and Vitoria = 2 and DataHora>= @datainicio and DataHora<= @datafim)Vitoria,");
+
+                select.AppendLine("(select count(1) from dbo.PlayerDefesas c ");
+                    select.AppendLine("inner join dbo.Guilda_Player c1 on c1.idPlayer = c.IdPlayer and c1.ativo = 1 and c1.idGuilda = @idGuilda ");
+                select.AppendLine("where a.ID = c.IdPlayer and Vitoria = 1 and DataHora>= @datainicio and DataHora<= @datafim)Empate,");
+
+                select.AppendLine("(select count(1) from dbo.PlayerDefesas d ");
+                    select.AppendLine("inner join dbo.Guilda_Player d1 on d1.idPlayer = d.IdPlayer and d1.ativo = 1 and d1.idGuilda = @idGuilda");
+                select.AppendLine("where a.ID = d.IdPlayer and Vitoria = 0 and DataHora>= @datainicio and DataHora<= @datafim)Derrota,");
+
                 select.AppendLine("e.Monstro1 Monstro1Id, f.Nome Monstro1Nome, f.Imagem Monstro1Imagem,");
                 select.AppendLine("e.Monstro2 Monstro2Id, g.Nome Monstro2Nome, g.Imagem Monstro2Imagem,");
                 select.AppendLine("e.Monstro3 Monstro3Id, h.Nome Monstro3Nome, h.Imagem Monstro3Imagem,");
                 select.AppendLine("e.Monstro4 Monstro4Id, i.Nome Monstro4Nome, i.Imagem Monstro4Imagem,");
                 select.AppendLine("e.Monstro5 Monstro5Id, j.Nome Monstro5Nome, j.Imagem Monstro5Imagem,");
                 select.AppendLine("e.Monstro6 Monstro6Id, k.Nome Monstro6Nome, k.Imagem Monstro6Imagem");
-                select.AppendLine("from dbo.Player a");
-                select.AppendLine("inner");
-                select.AppendLine("join dbo.TimeDefesa e on e.IdPlayer = a.ID");
-                select.AppendLine("left");
-                select.AppendLine("join dbo.Monstro f on f.Id = e.Monstro1");
-                select.AppendLine("left");
-                select.AppendLine("join dbo.Monstro g on g.Id = e.Monstro2");
-                select.AppendLine("left");
-                select.AppendLine("join dbo.Monstro h on h.Id = e.Monstro3");
-                select.AppendLine("left");
-                select.AppendLine("join dbo.Monstro i on i.Id = e.Monstro4");
-                select.AppendLine("left");
-                select.AppendLine("join dbo.Monstro j on j.Id = e.Monstro5");
-                select.AppendLine("left");
-                select.AppendLine("join dbo.Monstro k on k.Id = e.Monstro6");
+                select.AppendLine("from dbo.Player a ");
+                select.AppendLine("inner join dbo.Guilda_Player a1 on a1.idPlayer = a.Id and a1.ativo = 1 and a1.idGuilda = @idGuilda ");
+                select.AppendLine("inner join dbo.TimeDefesa e on e.IdPlayer = a.ID");
+                select.AppendLine("left join dbo.Monstro f on f.Id = e.Monstro1");
+                select.AppendLine("left join dbo.Monstro g on g.Id = e.Monstro2");
+                select.AppendLine("left join dbo.Monstro h on h.Id = e.Monstro3");
+                select.AppendLine("left join dbo.Monstro i on i.Id = e.Monstro4");
+                select.AppendLine("left join dbo.Monstro j on j.Id = e.Monstro5");
+                select.AppendLine("left join dbo.Monstro k on k.Id = e.Monstro6");
                 select.AppendLine("where a.Id = @idplayer");
                 select.AppendLine("and e.data = @datafim");
 
@@ -296,6 +326,9 @@ namespace GPCLib.DataAccess
 
                 command.Parameters.Add(new SqlParameter("@datafim", System.Data.SqlDbType.Date));
                 command.Parameters["@datafim"].Value = data;
+
+                command.Parameters.Add(new SqlParameter("@idGuilda", System.Data.SqlDbType.BigInt));
+                command.Parameters["@idGuilda"].Value = 147123;//TODO: Alterar
 
                 TimeDefesaModels objTimeDefesa = new TimeDefesaModels();
 
