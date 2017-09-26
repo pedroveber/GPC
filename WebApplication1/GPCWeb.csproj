@@ -175,6 +175,7 @@
     <Compile Include="Controllers\AtaquesSemanaController.cs" />
     <Compile Include="Controllers\CapivaraController.cs" />
     <Compile Include="Controllers\DefesasSemanaController.cs" />
+    <Compile Include="Controllers\GuildaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PainelControleController.cs" />
@@ -445,6 +446,8 @@
     <Content Include="Views\Capivara\index.cshtml" />
     <Content Include="Views\Player\ComboPlayers.cshtml" />
     <Content Include="Views\AtaquesSemana\index.cshtml" />
+    <Content Include="Views\Guilda\index.cshtml" />
+    <Content Include="Views\Guilda\GuildaPlayer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
