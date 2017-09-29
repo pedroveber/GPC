@@ -122,7 +122,7 @@ namespace GPCLib.DataAccess
             select.AppendLine("from dbo.Guilda_Player a ");
             select.AppendLine("inner join dbo.Guilda b on b.Id = a.IdGuilda ");
             select.AppendLine("inner join dbo.Player c on c.ID = a.IdPlayer ");
-            select.AppendLine("inner join dbo.AspNetUsers d on d.Id = a.IdUsuario ");
+            select.AppendLine("left join dbo.AspNetUsers d on d.Id = a.IdUsuario ");
             select.AppendLine("where a.IdGuilda = @idGuilda ");
 
             command.Parameters.Add(new SqlParameter("@idGuilda", System.Data.SqlDbType.Int));
@@ -173,6 +173,74 @@ namespace GPCLib.DataAccess
 
                 throw ex;
             }
+        }
+        public void ExcluirMembrosGuilda(long idGuilda)
+        {
+            SqlConnection conexao = new SqlConnection();
+            SqlCommand command = new SqlCommand();
+
+            conexao.ConnectionString = ConfigurationManager.ConnectionStrings["DB_SW"].ToString();
+            StringBuilder select = new StringBuilder();
+
+            select.AppendLine("delete from dbo.Guilda_Player where idGuilda = @idGuilda");
+
+            command.Parameters.Add(new SqlParameter("@idGuilda", System.Data.SqlDbType.BigInt));
+            command.Parameters["@idGuilda"].Value = idGuilda;
+
+            command.CommandText = select.ToString();
+            command.CommandType = System.Data.CommandType.Text;
+
+            try
+            {
+
+                conexao.Open();
+
+                command.Connection = conexao;
+                command.ExecuteNonQuery();
+
+                conexao.Close();
+                conexao.Dispose();
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public void InserirMembroGuilda(Models.GuildaPlayer player)
+        {
+            SqlConnection conexao = new SqlConnection();
+            SqlCommand command = new SqlCommand();
+
+            conexao.ConnectionString = ConfigurationManager.ConnectionStrings["DB_SW"].ToString();
+            StringBuilder select = new StringBuilder();
+
+            select.AppendLine("insert into dbo.Guilda_Player (IdGuilda,IdUsuario,IdPlayer,Ativo) ");
+            select.AppendLine("values (@IdGuilda,null,@IdPlayer,@Ativo)");
+
+            command.Parameters.Add(new SqlParameter("@IdGuilda", System.Data.SqlDbType.BigInt));
+            command.Parameters["@IdGuilda"].Value = player.idGuilda;
+
+            command.Parameters.Add(new SqlParameter("@IdPlayer", System.Data.SqlDbType.BigInt));
+            command.Parameters["@IdPlayer"].Value = player.idPlayer;
+
+            command.Parameters.Add(new SqlParameter("@Ativo", System.Data.SqlDbType.Int));
+            command.Parameters["@Ativo"].Value = player.Ativo;
+
+
+
+            command.CommandText = select.ToString();
+            command.CommandType = System.Data.CommandType.Text;
+
+
+            conexao.Open();
+            command.Connection = conexao;
+            command.ExecuteNonQuery();
+
+            conexao.Close();
+            conexao.Dispose();
+
         }
     }
 }

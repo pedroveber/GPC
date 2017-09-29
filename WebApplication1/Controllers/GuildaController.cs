@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using GPCLib;
 
 namespace WebApplication1.Controllers
 {
@@ -24,7 +25,7 @@ namespace WebApplication1.Controllers
 
             //Lista os Players para ambos ListBox
             GPCLib.Models.GuildaPlayerModels listGuilda = daGuilda.ListarUsuariosGuilda(id);
-            List<GPCLib.Models.PlayerModels> PlayersTodos  = new GPCLib.DataAccess.Player().ListarPlayers();
+            List<GPCLib.Models.PlayerModels> PlayersTodos  = new GPCLib.DataAccess.Player().ListarPlayersSemGuild();
 
             //Monta o Objeto da Listbox
             foreach (GPCLib.Models.PlayerModels item in listGuilda.Players)
@@ -63,12 +64,28 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public ActionResult GravarUsuariosGuilda(IEnumerable<string> idPlayer)
+        public ActionResult GravarUsuariosGuilda(GPCLib.Models.GuildaPlayerModels model)
         {
-            //Excluir todos da GUild_player e depois incluir novamente. 
+            
 
-            string teste = "asdasds";
-            return View();
+            GPCLib.DataAccess.Guilda daGuilda = new GPCLib.DataAccess.Guilda();
+
+            //Excluir membros da GUild e inserir novamente. 
+            daGuilda.ExcluirMembrosGuilda(model.Guilda.Id);
+
+            GPCLib.Models.GuildaPlayer objPlayer;
+
+            foreach (int item in model.GuildaUsuarioListBox.idPlayer)
+            {
+                objPlayer = new GPCLib.Models.GuildaPlayer();
+                objPlayer.Ativo = 1;
+                objPlayer.idGuilda = model.Guilda.Id;
+                objPlayer.idPlayer = item;
+                daGuilda.InserirMembroGuilda(objPlayer);
+            }
+            TempData["Success"] = "Gravado com sucesso";
+            return RedirectToAction("GuildaPlayer", new { id = model.Guilda.Id});
+            
         }
     }
 }

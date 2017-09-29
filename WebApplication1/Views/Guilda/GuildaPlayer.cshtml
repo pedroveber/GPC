@@ -5,88 +5,91 @@
 }
 
 <script type="text/javascript">
-        $(document).ready(
-            function () {
-                $('#btnAdd').click(
-                    function (e) {
-                        $('#lstTodosUsuarios > option:selected').appendTo('#myList');
-                        e.preventDefault();
-                    });
-
-                $('#btnAddAll').click(
-                    function (e) {
-                        $('#lstTodosUsuarios > option').appendTo('#myList');
-                        e.preventDefault();
-                    });
-
-                $('#btnRemove').click(
-                    function (e) {
-                        $('#myList > option:selected').appendTo('#lstTodosUsuarios');
-                        e.preventDefault();
-                    });
-
-                $('#btnRemoveAll').click(
-                    function (e) {
-                        $('#myList > option').appendTo('#lstTodosUsuarios');
-                        e.preventDefault();
-                    });
-
-                $("#myForm").submit(function (e) {
-
-                    $("#myList option").prop("selected", "selected");
-
+    $(document).ready(
+        function () {
+            $('#btnAdd').click(
+                function (e) {
+                    $('#lstTodosUsuarios > option:selected').appendTo('#myList');
+                    e.preventDefault();
                 });
-            });
 
-        
+            $('#btnAddAll').click(
+                function (e) {
+                    $('#lstTodosUsuarios > option').appendTo('#myList');
+                    e.preventDefault();
+                });
+
+            $('#btnRemove').click(
+                function (e) {
+                    $('#myList > option:selected').appendTo('#lstTodosUsuarios');
+                    e.preventDefault();
+                });
+
+            $('#btnRemoveAll').click(
+                function (e) {
+                    $('#myList > option').appendTo('#lstTodosUsuarios');
+                    e.preventDefault();
+                });
+
+            $("#myForm").submit(function (e) {
+
+                $("#myList option").prop("selected", "selected");
+
+            });
+        });
+
+
 
 </script>
 
 
-<h2>GuildaPlayer</h2>
+<h2>Jogadores x Guild</h2>
 
 <div>
-    <h4>GuildaPlayerModels</h4>
-    <hr />
     <dl class="dl-horizontal"></dl>
 </div>
-Players:<p></p>
+
 <div class="container" style="padding-top:20px;">
-@using (Html.BeginForm("GravarUsuariosGuilda", "Guilda", FormMethod.Post, new { id = "myForm" }))
-{
-    <div class="row">
+    @using (Html.BeginForm("GravarUsuariosGuilda", "Guilda", FormMethod.Post, new { id = "myForm" }))
+    {
+        @Html.HiddenFor(model => model.Guilda.Id, new { id = "hdnGuilda" })
+        <div class="row">
 
-        @*Todos usuarios*@
-        <div class="col-lg-5" align="center">
-            <h3 class="h3cus">Usuários s/ Guilda</h3>
-            @Html.ListBoxFor(model => model.TodosPlayersListBox.idPlayer, Model.TodosPlayersListBox.Players, new { size = 12, id = "lstTodosUsuarios", @class = "form-control" })
+            @*Todos usuarios*@
+            <div class="col-md-4">
+                <h3 class="h3cus">Usuários s/ Guilda</h3>
+                @Html.ListBoxFor(model => model.TodosPlayersListBox.idPlayer, Model.TodosPlayersListBox.Players, new { size = 12, id = "lstTodosUsuarios", @class = "form-control" })
+            </div>
+
+            @*Button div*@
+
+            <div class="col-md-1" style="padding-top:50px">
+                <h3 class="h3"></h3>
+                <button title="Move Selected to Approve Box" type="button" class="btn btn-default" id="btnAdd"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button><br />
+                <button title="Move All to Approve Box" type="button" class="btn btn-default" id="btnAddAll"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></button><br />
+                <button title="Move Selected to Deny Box" type="button" class="btn btn-default" id="btnRemove"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true" title="Move Selected"></span></button><br />
+                <button title="Move All to Deny Box" type="button" class="btn btn-default" id="btnRemoveAll"><span class="glyphicon glyphicon-backward" aria-hidden="true" title="Move All"></span></button><br />
+            </div>
+
+
+            @*Usuários da GUilda*@
+            <div class="col-md-4">
+                <h3 class="h3cus">Usuários - Guilda</h3>
+                @Html.ListBoxFor(model => model.GuildaUsuarioListBox.idPlayer, Model.GuildaUsuarioListBox.Players, new { size = 12, id = "myList", @class = "form-control" })
+
+            </div>
         </div>
-
-        @*Button div*@
-
-        <div class="col-lg-2" align="center" style="padding-top:7%;">
-            <h3 class="h3"></h3>
-            <button title="Move Selected to Approve Box" type="button" class="btn btn-default" id="btnAdd"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button><br />
-            <button title="Move All to Approve Box" type="button" class="btn btn-default" id="btnAddAll"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></button><br />
-            <button title="Move Selected to Deny Box" type="button" class="btn btn-default" id="btnRemove"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true" title="Move Selected"></span></button><br />
-            <button title="Move All to Deny Box" type="button" class="btn btn-default" id="btnRemoveAll"><span class="glyphicon glyphicon-backward" aria-hidden="true" title="Move All"></span></button><br />
-        </div>
-
-
-        @*Usuários da GUilda*@
-        <div class="col-lg-5" align="center">
-            <h3 class="h3cus">Usuários - Guilda</h3>
-            @Html.ListBoxFor(model => model.GuildaUsuarioListBox.idPlayer, Model.GuildaUsuarioListBox.Players, new { size = 12, id = "myList",@class="form-control" })
-            
-        </div>
-    </div>
+        <p></p>
+        <div class="row">
+            <div class="col-md-12" style="padding-top:50px;">
+                <button type="submit" class="btn btn-primary" style="width:100px">Gravar</button>
+            </div>
+            </div>
+    }
     <p></p>
-        
+    @if (TempData["Success"] != null)
+    {
+        <p class="alert alert-success" id="successMessage">@TempData["Success"]</p>
 
-
-    <div class="col-lg-12" align="right" style="padding-top:3px;">
-        <button type="submit" class="btn btn-primary">Submit &raquo;</button>
-    </div>
-}
-    
+    }
 </div>

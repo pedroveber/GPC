@@ -107,7 +107,7 @@ namespace GPCLib.DataAccess
                 throw ex;
             }
         }
-
+                
         public List<Models.PlayerModels> ListarPlayersSemGuild()
         {
             SqlConnection conn = new SqlConnection();
@@ -117,9 +117,13 @@ namespace GPCLib.DataAccess
 
 
             StringBuilder cmd = new StringBuilder();
-            cmd.Append("SELECT * FROM dbo.Player WHERE Status = 'S' order by Nome");
+            
+            cmd.Append("SELECT a.* FROM dbo.Player a ");
+            cmd.Append("WHERE Status = 'S' ");
+            cmd.Append("and not exists(select 0 from dbo.Guilda_Player b where b.IdPlayer = a.ID) ");
+            cmd.Append("order by a.Nome");
 
-
+            
             sqlCom.CommandText = cmd.ToString();
             sqlCom.CommandType = System.Data.CommandType.Text;
 
