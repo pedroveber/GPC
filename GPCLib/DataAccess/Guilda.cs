@@ -105,7 +105,7 @@ namespace GPCLib.DataAccess
             }
         }
 
-        public GuildaPlayerModels ListarUsuariosGuilda(long idGuilda)
+        public GuildaPlayersModels ListarUsuariosGuilda(long idGuilda)
         {
             SqlConnection conexao = new SqlConnection();
             SqlCommand command = new SqlCommand();
@@ -138,7 +138,7 @@ namespace GPCLib.DataAccess
                 command.Connection = conexao;
                 SqlDataReader reader = command.ExecuteReader();
 
-                GuildaPlayerModels objGuildaPlayer = new GuildaPlayerModels();
+                GuildaPlayersModels objGuildaPlayer = new GuildaPlayersModels();
 
                 objGuildaPlayer.Guilda = ObterGuilda(idGuilda);
                 objGuildaPlayer.Usuarios = new List<UsuarioModels>();
@@ -149,7 +149,7 @@ namespace GPCLib.DataAccess
                     UsuarioModels objUsuario = new UsuarioModels();
                     objUsuario.Id = reader["IdUsuario"].ToString();
                     objUsuario.Email = reader["Email"].ToString();
-                    objUsuario.Username = reader["UserName"].ToString();
+                    objUsuario.UserName = reader["UserName"].ToString();
                     objGuildaPlayer.Usuarios.Add(objUsuario);
 
                     PlayerModels objPlayer = new PlayerModels();
@@ -233,6 +233,40 @@ namespace GPCLib.DataAccess
             command.CommandText = select.ToString();
             command.CommandType = System.Data.CommandType.Text;
 
+
+            conexao.Open();
+            command.Connection = conexao;
+            command.ExecuteNonQuery();
+
+            conexao.Close();
+            conexao.Dispose();
+
+        }
+
+        public void AtualizarPlayerUsuario(Models.PlayerUsuarioModels objPlayerUsuario)
+        {
+            SqlConnection conexao = new SqlConnection();
+            SqlCommand command = new SqlCommand();
+
+            conexao.ConnectionString = ConfigurationManager.ConnectionStrings["DB_SW"].ToString();
+            StringBuilder select = new StringBuilder();
+
+            select.AppendLine("update dbo.Guilda_Player set ativo = @ativo,idUsuario=@idUsuario  where idGuilda = @idGuilda and idPlayer=@idPlayer");
+
+            command.Parameters.Add(new SqlParameter("@idGuilda", System.Data.SqlDbType.BigInt));
+            command.Parameters["@idGuilda"].Value = objPlayerUsuario.Guilda.Id;
+
+            command.Parameters.Add(new SqlParameter("@idPlayer", System.Data.SqlDbType.BigInt));
+            command.Parameters["@idPlayer"].Value = objPlayerUsuario.Player.Id;
+
+            command.Parameters.Add(new SqlParameter("@ativo", System.Data.SqlDbType.Bit));
+            command.Parameters["@ativo"].Value = objPlayerUsuario.Ativo;
+
+            command.Parameters.Add(new SqlParameter("@idUsuario", System.Data.SqlDbType.VarChar));
+            command.Parameters["@idUsuario"].Value = objPlayerUsuario.UsuarioCombo.SelectedOption;
+
+            command.CommandText = select.ToString();
+            command.CommandType = System.Data.CommandType.Text;
 
             conexao.Open();
             command.Connection = conexao;

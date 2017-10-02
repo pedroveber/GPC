@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace GPCLib.Models
 {
-    public class GuildaPlayerModels
+    public class GuildaPlayersModels
     {
         public GuildaModels Guilda { get; set; }
         public List<UsuarioModels> Usuarios { get; set; }
@@ -29,5 +29,17 @@ namespace GPCLib.Models
     {
         public int[] idPlayer { get; set; }
         public IEnumerable<SelectListItem> Players { get; set; }
+    }
+
+    public class PlayerUsuarioModels
+    {
+        public GuildaModels Guilda { get; set; }
+        public UsuarioModels Usuario { get; set; }
+        public PlayerModels Player { get; set; }
+
+        public bool Ativo { get; set; }
+
+        public UsuarioCombo UsuarioCombo { get; set; }
+
     }
 }

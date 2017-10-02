@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -448,6 +449,8 @@
     <Content Include="Views\AtaquesSemana\index.cshtml" />
     <Content Include="Views\Guilda\index.cshtml" />
     <Content Include="Views\Guilda\GuildaPlayer.cshtml" />
+    <Content Include="Views\Guilda\UsuarioPlayer.cshtml" />
+    <Content Include="Views\Guilda\EditUsuarioPlayer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

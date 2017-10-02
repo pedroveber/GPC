@@ -7,6 +7,7 @@ using GPCLib;
 
 namespace WebApplication1.Controllers
 {
+    [Authorize]
     public class GuildaController : Controller
     {
         // GET: Guilda
@@ -24,7 +25,7 @@ namespace WebApplication1.Controllers
             List<SelectListItem> listSelectListItemTodos = new List<SelectListItem>();
 
             //Lista os Players para ambos ListBox
-            GPCLib.Models.GuildaPlayerModels listGuilda = daGuilda.ListarUsuariosGuilda(id);
+            GPCLib.Models.GuildaPlayersModels listGuilda = daGuilda.ListarUsuariosGuilda(id);
             List<GPCLib.Models.PlayerModels> PlayersTodos  = new GPCLib.DataAccess.Player().ListarPlayersSemGuild();
 
             //Monta o Objeto da Listbox
@@ -64,7 +65,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public ActionResult GravarUsuariosGuilda(GPCLib.Models.GuildaPlayerModels model)
+        public ActionResult GravarUsuariosGuilda(GPCLib.Models.GuildaPlayersModels model)
         {
             
 
@@ -86,6 +87,59 @@ namespace WebApplication1.Controllers
             TempData["Success"] = "Gravado com sucesso";
             return RedirectToAction("GuildaPlayer", new { id = model.Guilda.Id});
             
+        }
+        public ActionResult UsuarioPlayer()
+        {
+            GPCLib.DataAccess.Player daPlayer = new GPCLib.DataAccess.Player();
+            
+
+
+            List<GPCLib.Models.PlayerUsuarioModels> lstPlayersUsuarios = new List<GPCLib.Models.PlayerUsuarioModels>();
+            
+            
+
+            lstPlayersUsuarios = daPlayer.ListarPlayerUsuario();
+                        
+            return View(lstPlayersUsuarios);
+
+        }
+
+        public ActionResult EditUsuarioPlayer(int id)
+        {
+            //Listar todos Usuários
+            GPCLib.Models.PlayerUsuarioModels objPlayerUsuario = new GPCLib.Models.PlayerUsuarioModels();
+            List<GPCLib.Models.UsuarioModels> lstUsuarios = new List<GPCLib.Models.UsuarioModels>();
+            GPCLib.DataAccess.Player daPlayer = new GPCLib.DataAccess.Player();
+            GPCLib.DataAccess.Usuario daUsuario = new GPCLib.DataAccess.Usuario();
+
+            objPlayerUsuario = daPlayer.ObterPlayerUsuario(id);
+            lstUsuarios = daUsuario.ListarUsuarios();
+
+            objPlayerUsuario.UsuarioCombo = new GPCLib.Models.UsuarioCombo();
+
+            lstUsuarios.Insert(0,new GPCLib.Models.UsuarioModels() {Id="",UserName="Selecione" });
+            objPlayerUsuario.UsuarioCombo.SelectOptions = lstUsuarios.Select(x => new SelectListItem {
+                Value = x.Id.ToString(),
+                Text = x.UserName
+            }).ToList();
+
+
+            if (objPlayerUsuario.Usuario != null)
+            {
+                objPlayerUsuario.UsuarioCombo.SelectedOption = objPlayerUsuario.Usuario.Id;
+            }
+                
+            return View(objPlayerUsuario);
+
+        }
+
+        public ActionResult GravarUsuariosPlayer(GPCLib.Models.PlayerUsuarioModels model)
+        {
+            GPCLib.DataAccess.Guilda daGuilda = new GPCLib.DataAccess.Guilda();
+            daGuilda.AtualizarPlayerUsuario(model);
+            TempData["Success"] = "Gravado com sucesso";
+            return RedirectToAction("EditUsuarioPlayer", new { id = model.Player.Id });
+                    
         }
     }
 }

@@ -74,7 +74,7 @@ namespace GPCLib.DataAccess
 
             sqlCom.CommandText = cmd.ToString();
             sqlCom.CommandType = System.Data.CommandType.Text;
-            
+
             try
             {
                 Models.PlayerModels objPlayer;
@@ -95,7 +95,7 @@ namespace GPCLib.DataAccess
                     objPlayer.Ativo = (reader["Status"].ToString() == "S") ? true : false;
 
                     objRetorno.Add(objPlayer);
-                    
+
                 }
                 conn.Close();
                 conn.Dispose();
@@ -107,7 +107,7 @@ namespace GPCLib.DataAccess
                 throw ex;
             }
         }
-                
+
         public List<Models.PlayerModels> ListarPlayersSemGuild()
         {
             SqlConnection conn = new SqlConnection();
@@ -117,13 +117,13 @@ namespace GPCLib.DataAccess
 
 
             StringBuilder cmd = new StringBuilder();
-            
+
             cmd.Append("SELECT a.* FROM dbo.Player a ");
             cmd.Append("WHERE Status = 'S' ");
             cmd.Append("and not exists(select 0 from dbo.Guilda_Player b where b.IdPlayer = a.ID) ");
             cmd.Append("order by a.Nome");
 
-            
+
             sqlCom.CommandText = cmd.ToString();
             sqlCom.CommandType = System.Data.CommandType.Text;
 
@@ -219,8 +219,8 @@ namespace GPCLib.DataAccess
                 objRetorno.Derrotas = Convert.ToInt32(reader["Derrotas"].ToString());
                 objRetorno.Escalado = Convert.ToInt32(reader["Escalado"].ToString());
                 objRetorno.NAtacou = Convert.ToInt32(reader["NAtacou"].ToString());
-                objRetorno.DefesaVitorias = Convert.ToInt32(reader["DefesaSucesso"].ToString()); 
-                objRetorno.DefesaEmpates  = Convert.ToInt32(reader["DefesaEmpate"].ToString()); 
+                objRetorno.DefesaVitorias = Convert.ToInt32(reader["DefesaSucesso"].ToString());
+                objRetorno.DefesaEmpates = Convert.ToInt32(reader["DefesaEmpate"].ToString());
                 objRetorno.DefesaDerrotas = Convert.ToInt32(reader["DefesaDerrota"].ToString());
                 objRetorno.Imagem = reader["Imagem"].ToString();
 
@@ -246,6 +246,116 @@ namespace GPCLib.DataAccess
 
             return objRetorno;
 
+        }
+
+        public List<PlayerUsuarioModels> ListarPlayerUsuario()
+        {
+            SqlConnection conn = new SqlConnection();
+            SqlCommand sqlCom = new SqlCommand();
+
+            conn.ConnectionString = ConfigurationManager.ConnectionStrings["DB_SW"].ToString();
+
+
+            StringBuilder cmd = new StringBuilder();
+            cmd.Append("select b.Ativo,b.IdGuilda,a.ID idPlayer,d.Id IdUsuario from dbo.Player a ");
+            cmd.Append("left join dbo.Guilda_Player b on b.IdPlayer = a.ID ");
+            cmd.Append("left join dbo.Guilda c on c.Id = b.IdGuilda ");
+            cmd.Append("left join dbo.AspNetUsers d on d.Id = b.IdUsuario ");
+
+            sqlCom.CommandText = cmd.ToString();
+            sqlCom.CommandType = System.Data.CommandType.Text;
+
+            try
+            {
+                Models.PlayerUsuarioModels objPlayerUsuario;
+
+                List<Models.PlayerUsuarioModels> objRetorno = new List<PlayerUsuarioModels>();
+                conn.Open();
+
+                sqlCom.Connection = conn;
+                SqlDataReader reader = sqlCom.ExecuteReader();
+
+
+                while (reader.Read())
+                {
+                    objPlayerUsuario = new Models.PlayerUsuarioModels();
+                    if (reader["Ativo"].ToString() != string.Empty)
+                        objPlayerUsuario.Ativo = bool.Parse(reader["Ativo"].ToString());
+
+                    if (reader["IdGuilda"].ToString() != string.Empty)
+                        objPlayerUsuario.Guilda = new Guilda().ObterGuilda(long.Parse(reader["IdGuilda"].ToString()));
+
+                    objPlayerUsuario.Player = new Player().ObterPlayer(int.Parse(reader["idPlayer"].ToString())); ;
+
+                    if (reader["IdUsuario"].ToString() != string.Empty)
+                        objPlayerUsuario.Usuario = new Usuario().ObterUsario(reader["IdUsuario"].ToString());
+
+                    objRetorno.Add(objPlayerUsuario);
+                }
+                conn.Close();
+                conn.Dispose();
+                return objRetorno;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public PlayerUsuarioModels ObterPlayerUsuario(int idPlayer)
+        {
+            SqlConnection conn = new SqlConnection();
+            SqlCommand sqlCom = new SqlCommand();
+
+            conn.ConnectionString = ConfigurationManager.ConnectionStrings["DB_SW"].ToString();
+
+
+            StringBuilder cmd = new StringBuilder();
+            cmd.Append("select b.Ativo,b.IdGuilda,a.ID idPlayer,d.Id IdUsuario from dbo.Player a ");
+            cmd.Append("left join dbo.Guilda_Player b on b.IdPlayer = a.ID ");
+            cmd.Append("left join dbo.Guilda c on c.Id = b.IdGuilda ");
+            cmd.Append("left join dbo.AspNetUsers d on d.Id = b.IdUsuario ");
+            cmd.Append("where a.Id = @id");
+
+            sqlCom.CommandText = cmd.ToString();
+            sqlCom.CommandType = System.Data.CommandType.Text;
+
+            sqlCom.Parameters.Add(new SqlParameter("@id", System.Data.SqlDbType.Int));
+            sqlCom.Parameters["@id"].Value = idPlayer;
+
+            try
+            {
+                Models.PlayerUsuarioModels objRetorno = new PlayerUsuarioModels();
+                conn.Open();
+
+                sqlCom.Connection = conn;
+                SqlDataReader reader = sqlCom.ExecuteReader();
+
+
+                while (reader.Read())
+                {
+                    objRetorno = new Models.PlayerUsuarioModels();
+                    if (reader["Ativo"].ToString() != string.Empty)
+                        objRetorno.Ativo = bool.Parse(reader["Ativo"].ToString());
+
+                    if (reader["IdGuilda"].ToString() != string.Empty)
+                        objRetorno.Guilda = new Guilda().ObterGuilda(long.Parse(reader["IdGuilda"].ToString()));
+
+                    objRetorno.Player = new Player().ObterPlayer(int.Parse(reader["idPlayer"].ToString())); ;
+
+                    if (reader["IdUsuario"].ToString() != string.Empty)
+                        objRetorno.Usuario = new Usuario().ObterUsario(reader["IdUsuario"].ToString());
+
+                }
+                conn.Close();
+                conn.Dispose();
+                return objRetorno;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
     }

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace GPCLib.Models
 {
@@ -10,6 +8,13 @@ namespace GPCLib.Models
     {
         public string Id { get; set; }
         public string Email { get; set; }
-        public string Username { get; set; }
+        public string UserName { get; set; }
+    }
+
+    public class UsuarioCombo
+    {
+        public string SelectedOption { get; set; }
+
+        public IEnumerable<SelectListItem> SelectOptions { get; set; }
     }
 }
