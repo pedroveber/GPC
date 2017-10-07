@@ -1,0 +1,81 @@
+﻿@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.Owin;
+
+@{
+    var menus = new[]
+                {
+                   new { LinkText="Resultado Geral", ActionName="ListaBatalhas",ControllerName="Relatorios",Roles="All"  },
+                   new { LinkText="Ataques Semana", ActionName="index",ControllerName="PainelControle",Roles="All"  },
+                   new { LinkText="Defesas Semana", ActionName="index",ControllerName="DefesasSemana",Roles="All"  },
+                   new { LinkText="Capivara", ActionName="index/0",ControllerName="Capivara",Roles="All"  },
+                   new { LinkText="Player x Guilda", ActionName="index",ControllerName="Guilda",Roles="Admin"  },
+                   new { LinkText="Usuário x Player", ActionName="UsuarioPlayer",ControllerName="Guilda",Roles="Admin"  },
+
+                };
+}
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul id="menu" class="nav navbar-nav">
+
+                @if (Request.IsAuthenticated)
+                {
+                    var userManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                    var userRoles = userManager.GetRoles(User.Identity.GetUserId());
+
+                    var links = from item in menus
+                                where item.Roles.Split(new String[] { "," }, StringSplitOptions.RemoveEmptyEntries)
+                                .Any(x => x == "All")
+                                select item;
+                    foreach (var link in links)
+                    {
+                        @:
+                        <li> @Html.ActionLink(link.LinkText, link.ActionName, link.ControllerName)</li>
+                    }
+
+                    var links2 = from item in menus
+                                 where item.Roles.Split(new String[] { "," }, StringSplitOptions.RemoveEmptyEntries)
+                                 .Any(x => x == "Admin")
+                                 select item;
+
+                    if (userRoles.Contains("Admin"))
+                    {
+                        @:<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin</a><ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                        
+                        foreach (var link in links2)
+                        {
+                            @:
+                            <li> @Html.ActionLink(link.LinkText, link.ActionName, link.ControllerName)</li>
+                        }
+
+                        @:</ul></li>
+                    }
+
+
+
+                }
+                else
+                {
+                    var links = from item in menus
+                                where item.Roles.Split(new String[] { "," }, StringSplitOptions.RemoveEmptyEntries)
+                                .Any(x => new String[] { "All", "Anonymous" }.Contains(x))
+                                select item;
+                    foreach (var link in links)
+                    {
+                        @:
+                        <li> @Html.ActionLink(link.LinkText, link.ActionName, link.ControllerName)</li>
+                    }
+                }
+            </ul>
+            @Html.Partial("_LoginPartial")
+        </div>
+    </div>
+</div>

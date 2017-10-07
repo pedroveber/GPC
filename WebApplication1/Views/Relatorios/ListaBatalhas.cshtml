@@ -1,0 +1,72 @@
+﻿@model IEnumerable<GPCLib.Models.BatalhaModels>
+
+@{
+    ViewBag.Title = "ListaBatalhas";
+}
+
+<h2>ListaBatalhas</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.GuildaOponente)
+        </th>
+        <th style="text-align:center">
+            @Html.DisplayNameFor(model => model.Life)
+        </th>
+        <th style="text-align:center">
+            @Html.DisplayNameFor(model => model.Data)
+        </th>
+        <th style="text-align:center">
+            @Html.DisplayNameFor(model => model.PontuacaoOponente)
+        </th>
+        <th style="text-align:center">
+            @Html.DisplayNameFor(model => model.PontuacaoGuild)
+        </th>
+        <th style="text-align:center">
+            @Html.DisplayNameFor(model => model.RankGuild)
+        </th>
+        <th style="text-align:center">
+            @Html.DisplayNameFor(model => model.Vitoria)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.GuildaOponente)
+        </td>
+        <td style="text-align:center">
+            @Html.DisplayFor(modelItem => item.Life)
+        </td>
+        <td style="text-align:center">
+            @Html.DisplayFor(modelItem => item.Data)
+        </td>
+        <td style="text-align:center">
+            @Html.DisplayFor(modelItem => item.PontuacaoOponente)
+        </td>
+        <td style="text-align:center">
+            @Html.DisplayFor(modelItem => item.PontuacaoGuild)
+        </td>
+        <td style="text-align:center">
+            @Html.DisplayFor(modelItem => item.RankGuild)
+        </td>
+        <td style="text-align:center">
+            @if (item.Vitoria)
+            {
+                @:V
+            }
+            else
+            {
+                @:D
+            }
+        </td>
+        <td>
+            @Html.ActionLink("Detalhes", "ResultadoGeral", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

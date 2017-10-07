@@ -9,6 +9,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using WebApplication1.Models;
+using Microsoft.Owin.Security.DataProtection;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Text;
 
 namespace WebApplication1.Controllers
 {
@@ -73,9 +76,20 @@ namespace WebApplication1.Controllers
                 return View(model);
             }
 
+            var user = await UserManager.FindByNameAsync(model.Email);
+            if (user != null)
+            {
+                if (!await UserManager.IsEmailConfirmedAsync(user.Id))
+                {
+                    ViewBag.errorMessage = "Seu cadastro ainda não foi validado. Acesse seu email e clique no link recebido.";
+                    return View("Error");
+                }
+            }
+
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            Session["MyMenu"] = null;
             switch (result)
             {
                 case SignInStatus.Success:
@@ -155,15 +169,41 @@ namespace WebApplication1.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    ApplicationDbContext context = new ApplicationDbContext();
+                    var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+
+                    UserManager.AddToRole(user.Id, "Membros");
+
+
+                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    var provider = new Microsoft.Owin.Security.DataProtection.DpapiDataProtectionProvider("GPC");
+                    UserManager.UserTokenProvider = new Microsoft.AspNet.Identity.Owin.DataProtectorTokenProvider<ApplicationUser>(provider.Create("EmailConfirmation"));
+                    var token = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+
+                    //string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = token }, protocol: Request.Url.Scheme);
+                    UserManager.EmailService = new EmailService();
+
+                    StringBuilder Mensagem = new StringBuilder();
+                    Mensagem.AppendLine("Ólá! ");
+                    Mensagem.AppendLine("Recebemos uma requisição de cadastro no GPC - Guilda Painel de Controle. ");
+                    Mensagem.AppendLine("Para confirmar seu cadastro acesse o link abaixo.  ");
+                    Mensagem.AppendLine(@"<a href=" + callbackUrl + ">" + callbackUrl + " </a>");
+
+                    await UserManager.SendEmailAsync(user.Id, "GPC - Confirmação de Cadastro", Mensagem.ToString());
+
+                    // Uncomment to debug locally 
+                    // TempData["ViewBagLink"] = callbackUrl;
+
+                    ViewBag.Message = "Um email de confirmação foi enviado a seu email de cadastro. Por favor acesse o link recebido para validação do seu cadastro. ";
+                         
+                    return View("Info");
+                    //return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
             }
@@ -175,13 +215,17 @@ namespace WebApplication1.Controllers
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
+        [ValidateInput(false)]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
             if (userId == null || code == null)
             {
                 return View("Error");
             }
-            var result = await UserManager.ConfirmEmailAsync(userId, code);
+
+            var emailConfirmationCode = await UserManager.GenerateEmailConfirmationTokenAsync(userId);
+
+            var result = await UserManager.ConfirmEmailAsync(userId, emailConfirmationCode);
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
@@ -392,6 +436,7 @@ namespace WebApplication1.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            Session["MyMenu"] = null;
             return RedirectToAction("Index", "Home");
         }
 
