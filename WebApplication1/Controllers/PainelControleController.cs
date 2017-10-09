@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using App.Extensions;
 
 namespace WebApplication1.Controllers
 {
@@ -17,7 +19,7 @@ namespace WebApplication1.Controllers
             DateTime segundaFeira = DateTime.Today.AddDays(((int)(DateTime.Today.DayOfWeek) * -1) + 1);
 
             GPCLib.Models.PainelControleModels retorno = new GPCLib.Models.PainelControleModels();
-            retorno = new GPCLib.DataAccess.PainelControle().ListaConsolidada(segundaFeira, segundaFeira.AddDays(6));
+            retorno = new GPCLib.DataAccess.PainelControle().ListaConsolidada(segundaFeira, segundaFeira.AddDays(6), long.Parse(User.Identity.GetIdGuilda()));
             
             return View(retorno);
 
@@ -33,7 +35,7 @@ namespace WebApplication1.Controllers
             fimSemana = Convert.ToDateTime(txtDataFim);
 
             
-            return View("index",new GPCLib.DataAccess.PainelControle().ListaConsolidada(inicioSemana, fimSemana));
+            return View("index",new GPCLib.DataAccess.PainelControle().ListaConsolidada(inicioSemana, fimSemana, long.Parse(User.Identity.GetIdGuilda())));
         }
     }
 }

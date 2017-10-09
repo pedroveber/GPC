@@ -1,72 +1,136 @@
 ﻿@model IEnumerable<GPCLib.Models.BatalhaModels>
 
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+
 @{
-    ViewBag.Title = "ListaBatalhas";
+    ViewBag.Title = "Lista Batalhas";
 }
 
-<h2>ListaBatalhas</h2>
+<h2>Lista de GVGs - @Html.DisplayFor(model => model.First().GuildaAtacante.Nome) </h2>
 
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.GuildaOponente)
-        </th>
-        <th style="text-align:center">
-            @Html.DisplayNameFor(model => model.Life)
-        </th>
-        <th style="text-align:center">
-            @Html.DisplayNameFor(model => model.Data)
-        </th>
-        <th style="text-align:center">
-            @Html.DisplayNameFor(model => model.PontuacaoOponente)
-        </th>
-        <th style="text-align:center">
-            @Html.DisplayNameFor(model => model.PontuacaoGuild)
-        </th>
-        <th style="text-align:center">
-            @Html.DisplayNameFor(model => model.RankGuild)
-        </th>
-        <th style="text-align:center">
-            @Html.DisplayNameFor(model => model.Vitoria)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.GuildaOponente)
-        </td>
-        <td style="text-align:center">
-            @Html.DisplayFor(modelItem => item.Life)
-        </td>
-        <td style="text-align:center">
-            @Html.DisplayFor(modelItem => item.Data)
-        </td>
-        <td style="text-align:center">
-            @Html.DisplayFor(modelItem => item.PontuacaoOponente)
-        </td>
-        <td style="text-align:center">
-            @Html.DisplayFor(modelItem => item.PontuacaoGuild)
-        </td>
-        <td style="text-align:center">
-            @Html.DisplayFor(modelItem => item.RankGuild)
-        </td>
-        <td style="text-align:center">
-            @if (item.Vitoria)
-            {
-                @:V
+<script>
+    $(document).ready(function () {
+        jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+            "extract-date-pre": function (value) {
+                var date = $(value, 'span')[0].innerHTML;
+                date = date.split('/');
+                return Date.parse(date[1] + '/' + date[0] + '/' + date[2])
+            },
+            "extract-date-asc": function (a, b) {
+                return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+            },
+            "extract-date-desc": function (a, b) {
+                return ((a < b) ? 1 : ((a > b) ? -1 : 0));
             }
-            else
+        });
+        $('#tblListaBatalhas').DataTable(
             {
-                @:D
-            }
-        </td>
-        <td>
-            @Html.ActionLink("Detalhes", "ResultadoGeral", new { id=item.Id })
-        </td>
-    </tr>
-}
+                "paging": true,
+                "searching": false,
+                "lengthChange": false,
+                "language": {
+                    search: "Pesquisar:",
+                    "lengthMenu": "Exibindo _MENU_ linhas por página",
+                    "zeroRecords": "Nenhum registro encontrado",
+                    "info": "Exibindo página _PAGE_ de _PAGES_",
+                    "infoFiltered": "(selecionado _MAX_ registros)",
+                    paginate: {
+                        first: "Primeira",
+                        previous: "Anterior",
+                        next: "Próxima",
+                        last: "Última"
+                    }
+                },
+                "pageLength": 20,
+                "order": [[2, "desc"]],
+                columnDefs: [{
+                    type: 'extract-date',
+                    targets: [2]
+                }
 
+                ]
+
+
+            }
+
+            );
+        
+    });
+
+   
+</script>
+
+<table class="table" id="tblListaBatalhas">
+    <thead>
+        <tr>
+            <th>
+                Guilda
+            </th>
+            <th style="text-align:center">
+                @Html.DisplayNameFor(model => model.Life)
+            </th>
+            <th style="text-align:center">
+                @Html.DisplayNameFor(model => model.Data)
+            </th>
+            <th style="text-align:center">
+                Pontuação Oponente
+            </th>
+            <th style="text-align:center">
+                Pontuação Guild
+            </th>
+            <th style="text-align:center">
+                Rank Guild
+            </th>
+            <th style="text-align:center">
+                Resultado
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GuildaOponente)
+                </td>
+                <td style="text-align:center">
+                    @Html.DisplayFor(modelItem => item.Life)
+                </td>
+                <td style="text-align:center">
+                    <span id="@Html.DisplayFor(modelItem => item.Data)">
+                        @Html.DisplayFor(modelItem => item.Data)
+                    </span>
+                </td>
+                <td style="text-align:center">
+                    @Html.DisplayFor(modelItem => item.PontuacaoOponente)
+                </td>
+                <td style="text-align:center">
+                    @Html.DisplayFor(modelItem => item.PontuacaoGuild)
+                </td>
+                <td style="text-align:center">
+                    @Html.DisplayFor(modelItem => item.RankGuild)
+                </td>
+                <td style="text-align:center">
+                    @if (item.Vitoria)
+                    {
+                        @:V
+            }
+                    else
+                    {
+                        @:D
+            }
+                </td>
+                <td>
+                    @Html.ActionLink("Detalhes", "ResultadoGeral", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
+<h6 style="text-align:right">
+    <p>Exibindo somente as últimas 100 GVGs. Clique @Html.ActionLink("aqui", "ListaBatalhasTodas") para listar todas.</p>
+</h6>
+

@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using GPCLib.Models;
 using GPCLib.DataAccess;
+using Microsoft.AspNet.Identity;
+using App.Extensions;
 
 namespace WebApplication1.Controllers
 
@@ -17,7 +19,7 @@ namespace WebApplication1.Controllers
         {
             GPCLib.DataAccess.AtaquesPlayer daAtaquesPlayer = new AtaquesPlayer();
             List<AtaquesSemana> ataques = new List<AtaquesSemana>();
-            ataques = daAtaquesPlayer.ListarAtaquesPorSemana(id);
+            ataques = daAtaquesPlayer.ListarAtaquesPorSemana(id, long.Parse(User.Identity.GetIdGuilda()));
             return View(ataques);
         }
 
@@ -30,7 +32,7 @@ namespace WebApplication1.Controllers
                 GPCLib.DataAccess.AtaquesPlayer daAtaquesPlayer = new AtaquesPlayer();
                 //Obter Ataques Totais (Gráfico)a
                 List<AtaquesSemana> ataques = new List<AtaquesSemana>();
-                ataques = daAtaquesPlayer.ListarAtaquesPorSemana(id);
+                ataques = daAtaquesPlayer.ListarAtaquesPorSemana(id, long.Parse(User.Identity.GetIdGuilda()));
 
                 return Json(ataques.ToArray(), JsonRequestBehavior.AllowGet);
             }

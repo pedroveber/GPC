@@ -11,7 +11,7 @@ namespace GPCLib.DataAccess
 {
     public class PainelControle
     {
-        public PainelControleModels ListaConsolidada(DateTime inicioSemana, DateTime fimSemana)
+        public PainelControleModels ListaConsolidada(DateTime inicioSemana, DateTime fimSemana,long idGuilda)
         {
             SqlConnection conexao = new SqlConnection();
             SqlCommand command = new SqlCommand();
@@ -60,7 +60,7 @@ namespace GPCLib.DataAccess
             command.Parameters["@FimSemana"].Value = fimSemana;
 
             command.Parameters.Add(new SqlParameter("@idGuilda", System.Data.SqlDbType.BigInt));
-            command.Parameters["@idGuilda"].Value = 147123;//TODO: Alterar
+            command.Parameters["@idGuilda"].Value = idGuilda;
 
             try
             {

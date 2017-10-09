@@ -160,7 +160,7 @@ namespace GPCLib.DataAccess
             }
         }
 
-        public CapivaraModels ObterPlayerCapivara(int idPlayer)
+        public CapivaraModels ObterPlayerCapivara(int idPlayer,long idGuilda)
         {
             SqlConnection conexao = new SqlConnection();
             SqlCommand command = new SqlCommand();
@@ -199,7 +199,7 @@ namespace GPCLib.DataAccess
             command.Parameters["@idPlayer"].Value = idPlayer;
 
             command.Parameters.Add(new SqlParameter("@idGuilda", System.Data.SqlDbType.BigInt));
-            command.Parameters["@idGuilda"].Value = 147123;//TODO: Alterar
+            command.Parameters["@idGuilda"].Value = idGuilda;
 
             CapivaraModels objRetorno = new CapivaraModels();
 

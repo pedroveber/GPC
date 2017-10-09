@@ -70,9 +70,13 @@ namespace WebApplication1.Controllers
             
 
             GPCLib.DataAccess.Guilda daGuilda = new GPCLib.DataAccess.Guilda();
+            GPCLib.DataAccess.Player daPlayer = new GPCLib.DataAccess.Player();
+            GPCLib.DataAccess.Usuario daUsuario = new GPCLib.DataAccess.Usuario();
+            GPCLib.Models.PlayerUsuarioModels playerUsuario;
 
             //Excluir membros da GUild e inserir novamente. 
             daGuilda.ExcluirMembrosGuilda(model.Guilda.Id);
+            //TODO: Quando exclui os membros perde o ID do Usuario, corrigir.
 
             GPCLib.Models.GuildaPlayer objPlayer;
 
@@ -83,6 +87,17 @@ namespace WebApplication1.Controllers
                 objPlayer.idGuilda = model.Guilda.Id;
                 objPlayer.idPlayer = item;
                 daGuilda.InserirMembroGuilda(objPlayer);
+
+                //Se já tiver Usuario x Player já grava a Guilda no ASPNETUSERs.
+                playerUsuario = daPlayer.ObterPlayerUsuario(item);
+                if (playerUsuario.Usuario!=null)
+                {
+                    //Atualiza o codigo da Guilda
+                    daUsuario.AtualizarCodGuilda(model.Guilda.Id, playerUsuario.Usuario.Id);
+                    
+                }
+                
+
             }
             TempData["Success"] = "Gravado com sucesso";
             return RedirectToAction("GuildaPlayer", new { id = model.Guilda.Id});

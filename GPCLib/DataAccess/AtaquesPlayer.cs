@@ -11,7 +11,7 @@ namespace GPCLib.DataAccess
 {
     public class AtaquesPlayer
     {
-        public List<AtaquesPlayerConsolidado> ListarAtaqueConsolidado(DateTime dataInicio, DateTime dataFim, int idPlayer)
+        public List<AtaquesPlayerConsolidado> ListarAtaqueConsolidado(DateTime dataInicio, DateTime dataFim, int idPlayer,long idGuilda)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace GPCLib.DataAccess
                 command.Parameters["@idplayer"].Value = idPlayer;
 
                 command.Parameters.Add(new SqlParameter("@idGuilda", System.Data.SqlDbType.BigInt));
-                command.Parameters["@idGuilda"].Value = 147123;//TODO: Alterar
+                command.Parameters["@idGuilda"].Value = idGuilda;
 
                 List<AtaquesPlayerConsolidado> objRetorno = new List<AtaquesPlayerConsolidado>();
                 AtaquesPlayerConsolidado objAtaque;
@@ -86,7 +86,7 @@ namespace GPCLib.DataAccess
             }
 
         }
-        public List<Models.LutasModels> ListarAtaques(int idPlayer)
+        public List<Models.LutasModels> ListarAtaques(int idPlayer,long idGuilda)
         {
             try
             {
@@ -108,7 +108,7 @@ namespace GPCLib.DataAccess
                 command.Parameters["@idPlayer"].Value = idPlayer;
 
                 command.Parameters.Add(new SqlParameter("@idGuilda", System.Data.SqlDbType.BigInt));
-                command.Parameters["@idGuilda"].Value = 147123;//TODO: Alterar
+                command.Parameters["@idGuilda"].Value = idGuilda;
 
                 List<LutasModels> objRetorno = new List<LutasModels>();
                 LutasModels objLuta;
@@ -143,7 +143,7 @@ namespace GPCLib.DataAccess
             }
         }
 
-        public List<Models.AtaquesSemana> ListarAtaquesPorSemana(int idPlayer)
+        public List<Models.AtaquesSemana> ListarAtaquesPorSemana(int idPlayer,long idGuilda)
         {
             try
             {
@@ -201,7 +201,7 @@ namespace GPCLib.DataAccess
                 command.Parameters["@idplayer"].Value = idPlayer;
 
                 command.Parameters.Add(new SqlParameter("@idGuilda", System.Data.SqlDbType.BigInt));
-                command.Parameters["@idGuilda"].Value = 147123;//TODO: Alterar
+                command.Parameters["@idGuilda"].Value = idGuilda;
 
                 List<AtaquesSemana> objRetorno = new List<AtaquesSemana>();
                 AtaquesSemana objAtaqueSemana;

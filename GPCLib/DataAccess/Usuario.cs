@@ -105,6 +105,44 @@ namespace GPCLib.DataAccess
             }
         }
 
+        public void AtualizarCodGuilda(long idGuilda,string idUsuario)
+        {
+            SqlConnection conexao = new SqlConnection();
+            SqlCommand command = new SqlCommand();
+
+            conexao.ConnectionString = ConfigurationManager.ConnectionStrings["DB_SW"].ToString();
+            StringBuilder select = new StringBuilder();
+
+            select.AppendLine("update dbo.AspNetUsers set idGuilda = @idGuilda where id= @idUsuario");
+
+            command.Parameters.Add(new SqlParameter("@idGuilda", System.Data.SqlDbType.BigInt));
+            command.Parameters["@idGuilda"].Value = idGuilda;
+
+            command.Parameters.Add(new SqlParameter("@idUsuario", System.Data.SqlDbType.VarChar));
+            command.Parameters["@idUsuario"].Value = idUsuario;
+
+            command.CommandText = select.ToString();
+            command.CommandType = System.Data.CommandType.Text;
+
+            try
+            {
+
+                conexao.Open();
+
+                command.Connection = conexao;
+                command.ExecuteNonQuery();
+
+                conexao.Close();
+                conexao.Dispose();
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
 
     }
 }

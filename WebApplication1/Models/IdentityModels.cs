@@ -14,8 +14,10 @@ namespace WebApplication1.Models
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
+            userIdentity.AddClaim(new Claim("IdGuilda", this.IdGuilda.ToString()));
             return userIdentity;
         }
+        public long? IdGuilda { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -23,6 +25,7 @@ namespace WebApplication1.Models
         public ApplicationDbContext()
             : base("DB_SW", throwIfV1Schema: false)
         {
+            Database.SetInitializer<ApplicationDbContext>(null);
         }
 
         public static ApplicationDbContext Create()

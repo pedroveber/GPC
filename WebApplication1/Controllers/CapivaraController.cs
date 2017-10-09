@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using GPCLib.Models;
 using GPCLib.DataAccess;
+using Microsoft.AspNet.Identity;
+using App.Extensions;
 
 namespace WebApplication1.Controllers
 {
@@ -18,7 +20,7 @@ namespace WebApplication1.Controllers
 
 
             //ObterPlayer
-            Capivara = new Player().ObterPlayerCapivara(id);
+            Capivara = new Player().ObterPlayerCapivara(id, long.Parse(User.Identity.GetIdGuilda()));
 
             if (Capivara.Player != null)
             {
@@ -26,16 +28,16 @@ namespace WebApplication1.Controllers
                 DateTime segundaFeira = DateTime.Today.AddDays(((int)(DateTime.Today.DayOfWeek) * -1) + 1);
 
                 //Defesas da Semana
-                Capivara.DefesasConsolidado = new GPCLib.DataAccess.DefesaPlayer().ListarDefesaConsolidado(segundaFeira.AddDays(-7), segundaFeira.AddDays(-1), id);
+                Capivara.DefesasConsolidado = new GPCLib.DataAccess.DefesaPlayer().ListarDefesaConsolidado(segundaFeira.AddDays(-7), segundaFeira.AddDays(-1), id, long.Parse(User.Identity.GetIdGuilda()));
 
                 GPCLib.DataAccess.AtaquesPlayer daAtaquesPlayer = new AtaquesPlayer();
                 //Ataques da Semana
-                Capivara.AtaquesConsolidado = daAtaquesPlayer.ListarAtaqueConsolidado(segundaFeira, segundaFeira.AddDays(6), id);
+                Capivara.AtaquesConsolidado = daAtaquesPlayer.ListarAtaqueConsolidado(segundaFeira, segundaFeira.AddDays(6), id, long.Parse(User.Identity.GetIdGuilda()));
 
                 //Obter Time Defesa GVG (passar data de Domingo)
-              Capivara.TimeGVG = new DefesaPlayer().ObterTimeDefesaGVG(id, segundaFeira.AddDays(-1));
+              Capivara.TimeGVG = new DefesaPlayer().ObterTimeDefesaGVG(id, segundaFeira.AddDays(-1), long.Parse(User.Identity.GetIdGuilda()));
                 
-                Capivara = CalcularStreak(new AtaquesPlayer().ListarAtaques(id), Capivara);
+                Capivara = CalcularStreak(new AtaquesPlayer().ListarAtaques(id, long.Parse(User.Identity.GetIdGuilda())), Capivara);
 
 
             }
@@ -57,22 +59,22 @@ namespace WebApplication1.Controllers
             int id = Convert.ToInt32(Request.Form[0]);
 
             //ObterPlayer
-            Capivara = new Player().ObterPlayerCapivara(id);
+            Capivara = new Player().ObterPlayerCapivara(id, long.Parse(User.Identity.GetIdGuilda()));
 
             //Obter a segunda da semana passada
             DateTime segundaFeira = DateTime.Today.AddDays(((int)(DateTime.Today.DayOfWeek) * -1) + 1);
 
             //Defesas da Semana
-            Capivara.DefesasConsolidado = new GPCLib.DataAccess.DefesaPlayer().ListarDefesaConsolidado(segundaFeira.AddDays(-7), segundaFeira.AddDays(-1), id);
+            Capivara.DefesasConsolidado = new GPCLib.DataAccess.DefesaPlayer().ListarDefesaConsolidado(segundaFeira.AddDays(-7), segundaFeira.AddDays(-1), id, long.Parse(User.Identity.GetIdGuilda()));
 
             GPCLib.DataAccess.AtaquesPlayer daAtaquesPlayer = new AtaquesPlayer();
             //Ataques da Semana
-            Capivara.AtaquesConsolidado = daAtaquesPlayer.ListarAtaqueConsolidado(segundaFeira, segundaFeira.AddDays(6), id);
+            Capivara.AtaquesConsolidado = daAtaquesPlayer.ListarAtaqueConsolidado(segundaFeira, segundaFeira.AddDays(6), id, long.Parse(User.Identity.GetIdGuilda()));
 
             //Obter Time Defesa GVG (passar data de Domingo)
-            Capivara.TimeGVG = new DefesaPlayer().ObterTimeDefesaGVG(id, segundaFeira.AddDays(-1));
+            Capivara.TimeGVG = new DefesaPlayer().ObterTimeDefesaGVG(id, segundaFeira.AddDays(-1), long.Parse(User.Identity.GetIdGuilda()));
 
-            Capivara = CalcularStreak(new AtaquesPlayer().ListarAtaques(id), Capivara);
+            Capivara = CalcularStreak(new AtaquesPlayer().ListarAtaques(id, long.Parse(User.Identity.GetIdGuilda())), Capivara);
 
             return View(Capivara);
         }
@@ -96,12 +98,16 @@ namespace WebApplication1.Controllers
             DateTime dInicioStreak = DateTime.MinValue;
             DateTime dFimStreak = DateTime.MinValue;
 
-            //se o indice 2 já for uma vitoria, guarda a da inicio e a vitorianAnterir
-            if (Lutas[0].Vitoria == 2)
+            if (Lutas.Count>0)
             {
-                dInicioStreak = Lutas[0].DataHora;
-                vitoriaAnterior = 2;
+                //se o indice 2 já for uma vitoria, guarda a da inicio e a vitorianAnterir
+                if (Lutas[0].Vitoria == 2)
+                {
+                    dInicioStreak = Lutas[0].DataHora;
+                    vitoriaAnterior = 2;
+                }
             }
+            
 
             foreach (LutasModels item in LutasOrdenado)
             {

@@ -12,7 +12,7 @@ namespace GPCLib.DataAccess
 {
     public class DefesaPlayer
     {
-        public DefesaSemanaModels ListarDefesasSemana(DateTime dataInicio, DateTime dataFim)
+        public DefesaSemanaModels ListarDefesasSemana(DateTime dataInicio, DateTime dataFim,long idGuilda)
         {
             try
             {
@@ -53,7 +53,7 @@ namespace GPCLib.DataAccess
                 command.Parameters["@datafim"].Value = dataFim;
 
                 command.Parameters.Add(new SqlParameter("@idGuilda", System.Data.SqlDbType.BigInt));
-                command.Parameters["@idGuilda"].Value = 147123;//TODO: Alterar
+                command.Parameters["@idGuilda"].Value = idGuilda;
 
                 //coly
                 DefesaModels objDefesa;
@@ -97,7 +97,7 @@ namespace GPCLib.DataAccess
             }
         }
 
-        public List<DefesasPlayerConsolidado> ListarDefesaConsolidado(DateTime dataInicio, DateTime dataFim, int idPlayer)
+        public List<DefesasPlayerConsolidado> ListarDefesaConsolidado(DateTime dataInicio, DateTime dataFim, int idPlayer,long idGuilda)
         {
             try
             {
@@ -152,7 +152,7 @@ namespace GPCLib.DataAccess
                 command.Parameters["@idplayer"].Value = idPlayer;
 
                 command.Parameters.Add(new SqlParameter("@idGuilda", System.Data.SqlDbType.BigInt));
-                command.Parameters["@idGuilda"].Value = 147123;//TODO: Alterar
+                command.Parameters["@idGuilda"].Value = idGuilda;
 
                 List<DefesasPlayerConsolidado> objRetorno = new List<DefesasPlayerConsolidado>();
                 DefesasPlayerConsolidado objDefesa;
@@ -269,7 +269,7 @@ namespace GPCLib.DataAccess
             }
         }
 
-        public TimeDefesaModels ObterTimeDefesaGVG(int idPlayer, DateTime data)
+        public TimeDefesaModels ObterTimeDefesaGVG(int idPlayer, DateTime data,long idGuilda)
         {
             try
             {
@@ -328,7 +328,7 @@ namespace GPCLib.DataAccess
                 command.Parameters["@datafim"].Value = data;
 
                 command.Parameters.Add(new SqlParameter("@idGuilda", System.Data.SqlDbType.BigInt));
-                command.Parameters["@idGuilda"].Value = 147123;//TODO: Alterar
+                command.Parameters["@idGuilda"].Value = idGuilda;
 
                 TimeDefesaModels objTimeDefesa = new TimeDefesaModels();
 

@@ -5,6 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using GPCLib.Models;
 using GPCLib.DataAccess;
+using Microsoft.AspNet.Identity;
+using App.Extensions;
+
 
 namespace WebApplication1.Controllers
 {
@@ -28,10 +31,19 @@ namespace WebApplication1.Controllers
         {
             Batalha daBatalha = new Batalha();
             List<BatalhaModels> lstBatalhas = new List<BatalhaModels>();
-            lstBatalhas = daBatalha.ListarBatalhas(147123);
+            lstBatalhas = daBatalha.ListarBatalhas(int.Parse(User.Identity.GetIdGuilda()),false);
+            lstBatalhas = lstBatalhas.OrderByDescending(x => x.Data).ToList();
+            return View(lstBatalhas);
+        }
+
+        public ActionResult ListaBatalhasTodas()
+        {
+            Batalha daBatalha = new Batalha();
+            List<BatalhaModels> lstBatalhas = new List<BatalhaModels>();
+            lstBatalhas = daBatalha.ListarBatalhas(int.Parse(User.Identity.GetIdGuilda()), true);
             lstBatalhas = lstBatalhas.OrderByDescending(x => x.Data).ToList();
             //todo: Listar só a guild do usuario logado
-            return View(lstBatalhas);
+            return View("ListaBatalhas", lstBatalhas);
         }
     }
 

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using App.Extensions;
 
 namespace WebApplication1.Controllers
 {
@@ -16,7 +18,7 @@ namespace WebApplication1.Controllers
             DateTime segundaFeira = DateTime.Today.AddDays(((int)(DateTime.Today.DayOfWeek) * -1) + 1);
 
             GPCLib.Models.DefesaSemanaModels retorno = new GPCLib.Models.DefesaSemanaModels();
-            retorno = new GPCLib.DataAccess.DefesaPlayer().ListarDefesasSemana(segundaFeira.AddDays(-7), segundaFeira.AddDays(-1));
+            retorno = new GPCLib.DataAccess.DefesaPlayer().ListarDefesasSemana(segundaFeira.AddDays(-7), segundaFeira.AddDays(-1), long.Parse(User.Identity.GetIdGuilda()));
 
             return View(retorno);
             
@@ -31,7 +33,7 @@ namespace WebApplication1.Controllers
             inicioSemana = Convert.ToDateTime(txtDataInicio);
             fimSemana = Convert.ToDateTime(txtDataFim);
 
-            return View("index", new GPCLib.DataAccess.DefesaPlayer().ListarDefesasSemana(inicioSemana,fimSemana));
+            return View("index", new GPCLib.DataAccess.DefesaPlayer().ListarDefesasSemana(inicioSemana,fimSemana, long.Parse(User.Identity.GetIdGuilda())));
         }
     }
 }
