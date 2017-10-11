@@ -18,7 +18,7 @@ namespace WebApplication1.Controllers
         }
         public ActionResult GuildaPlayer(int id)
         {
-            
+
             GPCLib.DataAccess.Guilda daGuilda = new GPCLib.DataAccess.Guilda();
 
             List<SelectListItem> listSelectListItem = new List<SelectListItem>();
@@ -26,7 +26,7 @@ namespace WebApplication1.Controllers
 
             //Lista os Players para ambos ListBox
             GPCLib.Models.GuildaPlayersModels listGuilda = daGuilda.ListarUsuariosGuilda(id);
-            List<GPCLib.Models.PlayerModels> PlayersTodos  = new GPCLib.DataAccess.Player().ListarPlayersSemGuild();
+            List<GPCLib.Models.PlayerModels> PlayersTodos = new GPCLib.DataAccess.Player().ListarPlayersSemGuild();
 
             //Monta o Objeto da Listbox
             foreach (GPCLib.Models.PlayerModels item in listGuilda.Players)
@@ -49,7 +49,7 @@ namespace WebApplication1.Controllers
                 };
                 listSelectListItemTodos.Add(selectList);
             }
-            
+
             //Atribui ao objeto de retorno
             GPCLib.Models.GuildaPlayerListModels listModel = new GPCLib.Models.GuildaPlayerListModels();
             listModel.Players = listSelectListItem;
@@ -67,17 +67,19 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public ActionResult GravarUsuariosGuilda(GPCLib.Models.GuildaPlayersModels model)
         {
-            
+
 
             GPCLib.DataAccess.Guilda daGuilda = new GPCLib.DataAccess.Guilda();
             GPCLib.DataAccess.Player daPlayer = new GPCLib.DataAccess.Player();
             GPCLib.DataAccess.Usuario daUsuario = new GPCLib.DataAccess.Usuario();
             GPCLib.Models.PlayerUsuarioModels playerUsuario;
 
+            //Antes de excluir selecioar todos os usuários
+            GPCLib.Models.GuildaPlayersModels usuariosOld = daGuilda.ListarUsuariosGuilda(model.Guilda.Id);
+
             //Excluir membros da GUild e inserir novamente. 
             daGuilda.ExcluirMembrosGuilda(model.Guilda.Id);
-            //TODO: Quando exclui os membros perde o ID do Usuario, corrigir.
-
+            
             GPCLib.Models.GuildaPlayer objPlayer;
 
             foreach (int item in model.GuildaUsuarioListBox.idPlayer)
@@ -86,35 +88,38 @@ namespace WebApplication1.Controllers
                 objPlayer.Ativo = 1;
                 objPlayer.idGuilda = model.Guilda.Id;
                 objPlayer.idPlayer = item;
+                if (usuariosOld.Players.Select(x => x.Id == item).Count() > 0)
+                    objPlayer.idUsuario = usuariosOld.Players.First(x => x.Id == item).Usuario.Id;
+
                 daGuilda.InserirMembroGuilda(objPlayer);
 
                 //Se já tiver Usuario x Player já grava a Guilda no ASPNETUSERs.
                 playerUsuario = daPlayer.ObterPlayerUsuario(item);
-                if (playerUsuario.Usuario!=null)
+                if (playerUsuario.Usuario != null)
                 {
                     //Atualiza o codigo da Guilda
                     daUsuario.AtualizarCodGuilda(model.Guilda.Id, playerUsuario.Usuario.Id);
-                    
+
                 }
-                
+
 
             }
             TempData["Success"] = "Gravado com sucesso";
-            return RedirectToAction("GuildaPlayer", new { id = model.Guilda.Id});
-            
+            return RedirectToAction("GuildaPlayer", new { id = model.Guilda.Id });
+
         }
         public ActionResult UsuarioPlayer()
         {
             GPCLib.DataAccess.Player daPlayer = new GPCLib.DataAccess.Player();
-            
+
 
 
             List<GPCLib.Models.PlayerUsuarioModels> lstPlayersUsuarios = new List<GPCLib.Models.PlayerUsuarioModels>();
-            
-            
+
+
 
             lstPlayersUsuarios = daPlayer.ListarPlayerUsuario();
-                        
+
             return View(lstPlayersUsuarios);
 
         }
@@ -132,8 +137,9 @@ namespace WebApplication1.Controllers
 
             objPlayerUsuario.UsuarioCombo = new GPCLib.Models.UsuarioCombo();
 
-            lstUsuarios.Insert(0,new GPCLib.Models.UsuarioModels() {Id="",UserName="Selecione" });
-            objPlayerUsuario.UsuarioCombo.SelectOptions = lstUsuarios.Select(x => new SelectListItem {
+            lstUsuarios.Insert(0, new GPCLib.Models.UsuarioModels() { Id = "", UserName = "Selecione" });
+            objPlayerUsuario.UsuarioCombo.SelectOptions = lstUsuarios.Select(x => new SelectListItem
+            {
                 Value = x.Id.ToString(),
                 Text = x.UserName
             }).ToList();
@@ -143,7 +149,7 @@ namespace WebApplication1.Controllers
             {
                 objPlayerUsuario.UsuarioCombo.SelectedOption = objPlayerUsuario.Usuario.Id;
             }
-                
+
             return View(objPlayerUsuario);
 
         }
@@ -154,7 +160,7 @@ namespace WebApplication1.Controllers
             daGuilda.AtualizarPlayerUsuario(model);
             TempData["Success"] = "Gravado com sucesso";
             return RedirectToAction("EditUsuarioPlayer", new { id = model.Player.Id });
-                    
+
         }
     }
 }

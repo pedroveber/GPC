@@ -29,20 +29,26 @@ namespace WebApplication1.Controllers
 
         public ActionResult ListaBatalhas()
         {
+            int idGuilda = 0;
+            int.TryParse(User.Identity.GetIdGuilda(), out idGuilda);
+
             Batalha daBatalha = new Batalha();
             List<BatalhaModels> lstBatalhas = new List<BatalhaModels>();
-            lstBatalhas = daBatalha.ListarBatalhas(int.Parse(User.Identity.GetIdGuilda()),false);
+            lstBatalhas = daBatalha.ListarBatalhas(idGuilda, false);
             lstBatalhas = lstBatalhas.OrderByDescending(x => x.Data).ToList();
             return View(lstBatalhas);
         }
 
         public ActionResult ListaBatalhasTodas()
         {
+            int idGuilda = 0;
+            int.TryParse(User.Identity.GetIdGuilda(), out idGuilda);
+
             Batalha daBatalha = new Batalha();
             List<BatalhaModels> lstBatalhas = new List<BatalhaModels>();
-            lstBatalhas = daBatalha.ListarBatalhas(int.Parse(User.Identity.GetIdGuilda()), true);
+            lstBatalhas = daBatalha.ListarBatalhas(idGuilda, true);
             lstBatalhas = lstBatalhas.OrderByDescending(x => x.Data).ToList();
-            //todo: Listar só a guild do usuario logado
+            
             return View("ListaBatalhas", lstBatalhas);
         }
     }

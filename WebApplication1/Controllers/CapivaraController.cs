@@ -18,26 +18,29 @@ namespace WebApplication1.Controllers
         {
             CapivaraModels Capivara = new CapivaraModels();
 
+            long idGuilda = 0;
+            long.TryParse(User.Identity.GetIdGuilda(), out idGuilda);
 
             //ObterPlayer
-            Capivara = new Player().ObterPlayerCapivara(id, long.Parse(User.Identity.GetIdGuilda()));
+            Capivara = new Player().ObterPlayerCapivara(id, idGuilda);
 
             if (Capivara.Player != null)
             {
+
                 //Obter a segunda da semana passada
                 DateTime segundaFeira = DateTime.Today.AddDays(((int)(DateTime.Today.DayOfWeek) * -1) + 1);
 
                 //Defesas da Semana
-                Capivara.DefesasConsolidado = new GPCLib.DataAccess.DefesaPlayer().ListarDefesaConsolidado(segundaFeira.AddDays(-7), segundaFeira.AddDays(-1), id, long.Parse(User.Identity.GetIdGuilda()));
+                Capivara.DefesasConsolidado = new GPCLib.DataAccess.DefesaPlayer().ListarDefesaConsolidado(segundaFeira.AddDays(-7), segundaFeira.AddDays(-1), id, idGuilda);
 
                 GPCLib.DataAccess.AtaquesPlayer daAtaquesPlayer = new AtaquesPlayer();
                 //Ataques da Semana
-                Capivara.AtaquesConsolidado = daAtaquesPlayer.ListarAtaqueConsolidado(segundaFeira, segundaFeira.AddDays(6), id, long.Parse(User.Identity.GetIdGuilda()));
+                Capivara.AtaquesConsolidado = daAtaquesPlayer.ListarAtaqueConsolidado(segundaFeira, segundaFeira.AddDays(6), id, idGuilda);
 
                 //Obter Time Defesa GVG (passar data de Domingo)
-              Capivara.TimeGVG = new DefesaPlayer().ObterTimeDefesaGVG(id, segundaFeira.AddDays(-1), long.Parse(User.Identity.GetIdGuilda()));
+              Capivara.TimeGVG = new DefesaPlayer().ObterTimeDefesaGVG(id, segundaFeira.AddDays(-1), idGuilda);
                 
-                Capivara = CalcularStreak(new AtaquesPlayer().ListarAtaques(id, long.Parse(User.Identity.GetIdGuilda())), Capivara);
+                Capivara = CalcularStreak(new AtaquesPlayer().ListarAtaques(id, idGuilda), Capivara);
 
 
             }
@@ -58,23 +61,26 @@ namespace WebApplication1.Controllers
             CapivaraModels Capivara = new CapivaraModels();
             int id = Convert.ToInt32(Request.Form[0]);
 
+            long idGuilda = 0;
+            long.TryParse(User.Identity.GetIdGuilda(), out idGuilda);
+
             //ObterPlayer
-            Capivara = new Player().ObterPlayerCapivara(id, long.Parse(User.Identity.GetIdGuilda()));
+            Capivara = new Player().ObterPlayerCapivara(id, idGuilda);
 
             //Obter a segunda da semana passada
             DateTime segundaFeira = DateTime.Today.AddDays(((int)(DateTime.Today.DayOfWeek) * -1) + 1);
 
             //Defesas da Semana
-            Capivara.DefesasConsolidado = new GPCLib.DataAccess.DefesaPlayer().ListarDefesaConsolidado(segundaFeira.AddDays(-7), segundaFeira.AddDays(-1), id, long.Parse(User.Identity.GetIdGuilda()));
+            Capivara.DefesasConsolidado = new GPCLib.DataAccess.DefesaPlayer().ListarDefesaConsolidado(segundaFeira.AddDays(-7), segundaFeira.AddDays(-1), id, idGuilda);
 
             GPCLib.DataAccess.AtaquesPlayer daAtaquesPlayer = new AtaquesPlayer();
             //Ataques da Semana
-            Capivara.AtaquesConsolidado = daAtaquesPlayer.ListarAtaqueConsolidado(segundaFeira, segundaFeira.AddDays(6), id, long.Parse(User.Identity.GetIdGuilda()));
+            Capivara.AtaquesConsolidado = daAtaquesPlayer.ListarAtaqueConsolidado(segundaFeira, segundaFeira.AddDays(6), id, idGuilda);
 
             //Obter Time Defesa GVG (passar data de Domingo)
-            Capivara.TimeGVG = new DefesaPlayer().ObterTimeDefesaGVG(id, segundaFeira.AddDays(-1), long.Parse(User.Identity.GetIdGuilda()));
+            Capivara.TimeGVG = new DefesaPlayer().ObterTimeDefesaGVG(id, segundaFeira.AddDays(-1), idGuilda);
 
-            Capivara = CalcularStreak(new AtaquesPlayer().ListarAtaques(id, long.Parse(User.Identity.GetIdGuilda())), Capivara);
+            Capivara = CalcularStreak(new AtaquesPlayer().ListarAtaques(id, idGuilda), Capivara);
 
             return View(Capivara);
         }

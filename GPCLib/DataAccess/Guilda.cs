@@ -159,6 +159,8 @@ namespace GPCLib.DataAccess
                     objPlayer.PontoArena = Convert.ToInt32(reader["PontoArena"].ToString());
                     objPlayer.Ativo = (reader["Status"].ToString() == "S") ? true : false;
 
+                    objPlayer.Usuario = objUsuario;
+
                     objGuildaPlayer.Players.Add(objPlayer);
 
                 }
@@ -217,7 +219,14 @@ namespace GPCLib.DataAccess
             StringBuilder select = new StringBuilder();
 
             select.AppendLine("insert into dbo.Guilda_Player (IdGuilda,IdUsuario,IdPlayer,Ativo) ");
-            select.AppendLine("values (@IdGuilda,null,@IdPlayer,@Ativo)");
+            select.AppendLine("values (@IdGuilda,");
+
+            if (string.IsNullOrEmpty(player.idUsuario))
+                select.Append("null");
+            else
+                select.Append("@IdUsuario");
+
+            select.Append(",@IdPlayer,@Ativo)");
 
             command.Parameters.Add(new SqlParameter("@IdGuilda", System.Data.SqlDbType.BigInt));
             command.Parameters["@IdGuilda"].Value = player.idGuilda;
@@ -228,6 +237,11 @@ namespace GPCLib.DataAccess
             command.Parameters.Add(new SqlParameter("@Ativo", System.Data.SqlDbType.Int));
             command.Parameters["@Ativo"].Value = player.Ativo;
 
+            if (!string.IsNullOrEmpty(player.idUsuario))
+            {
+                command.Parameters.Add(new SqlParameter("@IdUsuario", System.Data.SqlDbType.VarChar));
+                command.Parameters["@IdUsuario"].Value = player.idUsuario;
+            }
 
 
             command.CommandText = select.ToString();

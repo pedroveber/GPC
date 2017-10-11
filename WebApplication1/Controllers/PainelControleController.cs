@@ -18,8 +18,11 @@ namespace WebApplication1.Controllers
             //Obter a segunda desta semana
             DateTime segundaFeira = DateTime.Today.AddDays(((int)(DateTime.Today.DayOfWeek) * -1) + 1);
 
+            long idGuilda=0;
+            long.TryParse(User.Identity.GetIdGuilda(), out idGuilda);
+
             GPCLib.Models.PainelControleModels retorno = new GPCLib.Models.PainelControleModels();
-            retorno = new GPCLib.DataAccess.PainelControle().ListaConsolidada(segundaFeira, segundaFeira.AddDays(6), long.Parse(User.Identity.GetIdGuilda()));
+            retorno = new GPCLib.DataAccess.PainelControle().ListaConsolidada(segundaFeira, segundaFeira.AddDays(6),idGuilda );
             
             return View(retorno);
 
@@ -31,11 +34,14 @@ namespace WebApplication1.Controllers
             DateTime inicioSemana;
             DateTime fimSemana;
 
+            long idGuilda = 0;
+            long.TryParse(User.Identity.GetIdGuilda(), out idGuilda);
+
             inicioSemana = Convert.ToDateTime(txtDataInicio);
             fimSemana = Convert.ToDateTime(txtDataFim);
 
             
-            return View("index",new GPCLib.DataAccess.PainelControle().ListaConsolidada(inicioSemana, fimSemana, long.Parse(User.Identity.GetIdGuilda())));
+            return View("index",new GPCLib.DataAccess.PainelControle().ListaConsolidada(inicioSemana, fimSemana, idGuilda));
         }
     }
 }

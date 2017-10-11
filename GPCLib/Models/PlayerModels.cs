@@ -13,6 +13,8 @@ namespace GPCLib.Models
         public int PontoArena { get; set; }
         public bool Ativo { get; set; }
 
+        public UsuarioModels Usuario { get; set; }
+
     }
     public class PlayerComboModels
     {
@@ -20,7 +22,6 @@ namespace GPCLib.Models
 
         public IEnumerable<SelectListItem> SelectOptions { get; set; }
     }
-
-
+    
 
 }

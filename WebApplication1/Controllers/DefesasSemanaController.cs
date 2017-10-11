@@ -14,11 +14,14 @@ namespace WebApplication1.Controllers
         // GET: DefesasSemana
         public ActionResult Index()
         {
+            long idGuilda = 0;
+            long.TryParse(User.Identity.GetIdGuilda(), out idGuilda);
+
             //Obter a segunda da semana passada
             DateTime segundaFeira = DateTime.Today.AddDays(((int)(DateTime.Today.DayOfWeek) * -1) + 1);
 
             GPCLib.Models.DefesaSemanaModels retorno = new GPCLib.Models.DefesaSemanaModels();
-            retorno = new GPCLib.DataAccess.DefesaPlayer().ListarDefesasSemana(segundaFeira.AddDays(-7), segundaFeira.AddDays(-1), long.Parse(User.Identity.GetIdGuilda()));
+            retorno = new GPCLib.DataAccess.DefesaPlayer().ListarDefesasSemana(segundaFeira.AddDays(-7), segundaFeira.AddDays(-1), idGuilda);
 
             return View(retorno);
             
