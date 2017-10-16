@@ -10,7 +10,7 @@ using App.Extensions;
 
 
 namespace WebApplication1.Controllers
-{
+{[Authorize]
     public class RelatoriosController : Controller
     {
         // GET: Relatorios

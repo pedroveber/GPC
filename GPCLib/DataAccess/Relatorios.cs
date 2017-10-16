@@ -36,8 +36,8 @@ namespace GPCLib.DataAccess
                 select.AppendLine("Stuff((SELECT ' | ' + CONVERT(VARCHAR(1), d.bonus) ");
                 select.AppendLine("FROM   lutas C ");
                 select.AppendLine("INNER JOIN playeroponente D ");
-                select.AppendLine("ON C.codplayeroponente = D.id ");
-
+                select.AppendLine("ON C.codplayeroponente = D.id and d.IdBatalha = c.CodBatalhas");
+                
                 select.AppendLine("LEFT join Batalhas E ");
 
                 select.AppendLine("on c.CodBatalhas = E.ID ");
@@ -53,9 +53,9 @@ namespace GPCLib.DataAccess
                 select.AppendLine("LEFT JOIN lutas A ");
                 select.AppendLine("ON A.codplayer = B.id and a.CodBatalhas = @idBatalha ");
                 select.AppendLine("LEFT JOIN playeroponente C ");
-                select.AppendLine("ON A.codplayeroponente = C.id ");
+                select.AppendLine("ON A.codplayeroponente = C.id and c.IdBatalha = A.CodBatalhas ");
 
-                select.AppendLine("Inner Join PlayerStatus D on B.ID = D.IdPlayer and IdBatalha = @idBatalha ");
+                select.AppendLine("Inner Join PlayerStatus D on B.ID = D.IdPlayer and D.IdBatalha = @idBatalha ");
                 select.AppendLine(") X ");
                 select.AppendLine("GROUP  BY x.IdPlayer,  ");
                 select.AppendLine("x.bonus,  ");

@@ -26,9 +26,9 @@ namespace WebApplication1
 
         private async Task EnivarEmailAutenticacaoConta(IdentityMessage message)
         {
-            var fromAddress = new MailAddress("pedrocaveber@gmail.com");
+            var fromAddress = new MailAddress("swguildgpc@gmail.com");
             var toAddress = new MailAddress(message.Destination);
-            string fromPassword = "Bangaloo15%";
+            string fromPassword = "swguildgpc15%";
             string subject = message.Subject;
             var body = message.Body;
 
@@ -39,7 +39,7 @@ namespace WebApplication1
                 EnableSsl = true,
                 UseDefaultCredentials = false,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
-                Credentials = new NetworkCredential("pedrocaveber@gmail.com", fromPassword),
+                Credentials = new NetworkCredential("swguildgpc@gmail.com", fromPassword),
                 Timeout = 20000
             };
 
