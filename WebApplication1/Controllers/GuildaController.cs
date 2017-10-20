@@ -111,15 +111,9 @@ namespace WebApplication1.Controllers
         public ActionResult UsuarioPlayer()
         {
             GPCLib.DataAccess.Player daPlayer = new GPCLib.DataAccess.Player();
-
-
-
             List<GPCLib.Models.PlayerUsuarioModels> lstPlayersUsuarios = new List<GPCLib.Models.PlayerUsuarioModels>();
 
-
-
             lstPlayersUsuarios = daPlayer.ListarPlayerUsuario();
-
             return View(lstPlayersUsuarios);
 
         }
@@ -150,6 +144,8 @@ namespace WebApplication1.Controllers
                 objPlayerUsuario.UsuarioCombo.SelectedOption = objPlayerUsuario.Usuario.Id;
             }
 
+            
+
             return View(objPlayerUsuario);
 
         }
@@ -158,6 +154,20 @@ namespace WebApplication1.Controllers
         {
             GPCLib.DataAccess.Guilda daGuilda = new GPCLib.DataAccess.Guilda();
             daGuilda.AtualizarPlayerUsuario(model);
+
+            //Se já tiver Usuario x Player já grava a Guilda no ASPNETUSERs.
+            GPCLib.DataAccess.Player daPlayer = new GPCLib.DataAccess.Player();
+            GPCLib.Models.PlayerUsuarioModels playerUsuario = daPlayer.ObterPlayerUsuario(model.Player.Id);
+
+            if (playerUsuario.Usuario != null)
+            {
+                //Atualiza o codigo da Guilda
+                GPCLib.DataAccess.Usuario daUsuario = new GPCLib.DataAccess.Usuario();
+                daUsuario.AtualizarCodGuilda(model.Guilda.Id, playerUsuario.Usuario.Id);
+
+            }
+
+
             TempData["Success"] = "Gravado com sucesso";
             return RedirectToAction("EditUsuarioPlayer", new { id = model.Player.Id });
 

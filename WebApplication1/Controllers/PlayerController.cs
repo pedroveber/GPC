@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using GPCLib;
+using Microsoft.AspNet.Identity;
+using App.Extensions;
 
 namespace WebApplication1.Controllers
 {
@@ -18,10 +20,13 @@ namespace WebApplication1.Controllers
             return View(dPlayer.ObterPlayer(7640372));
         }
 
-        public ActionResult ComboPlayers()
+        public ActionResult ComboPlayers(int id)
         {
+            long idGuilda = 0;
+            long.TryParse(User.Identity.GetIdGuilda(), out idGuilda);
+
             List<GPCLib.Models.PlayerModels> players = new List<GPCLib.Models.PlayerModels>();
-            players = new GPCLib.DataAccess.Player().ListarPlayers();
+            players = new GPCLib.DataAccess.Player().ListarPlayers(idGuilda);
 
             var model = new GPCLib.Models.PlayerComboModels();
             model.SelectOptions = players.Select(x => new SelectListItem
@@ -29,6 +34,8 @@ namespace WebApplication1.Controllers
                 Value = x.Id.ToString(),
                 Text = x.Nome
             }).ToList();
+
+            model.SelectedOption = id.ToString();
 
             return PartialView(model);
         }
