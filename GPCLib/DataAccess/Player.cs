@@ -108,6 +108,61 @@ namespace GPCLib.DataAccess
             }
         }
 
+        public List<Models.PlayerModels> ListarPlayers(long idGuilda)
+        {
+            SqlConnection conn = new SqlConnection();
+            SqlCommand sqlCom = new SqlCommand();
+
+            conn.ConnectionString = ConfigurationManager.ConnectionStrings["DB_SW"].ToString();
+
+
+            StringBuilder cmd = new StringBuilder();
+
+            cmd.Append("SELECT * FROM dbo.Player a ");
+            cmd.Append("inner join dbo.Guilda_Player b on b.IdGuilda = @idGuilda and b.IdPlayer = a.ID ");
+            cmd.Append("WHERE a.Status = 'S' ");
+            cmd.Append("order by a.Nome ");
+
+
+            sqlCom.CommandText = cmd.ToString();
+            sqlCom.CommandType = System.Data.CommandType.Text;
+
+            sqlCom.Parameters.Add(new SqlParameter("@IdGuilda", System.Data.SqlDbType.BigInt));
+            sqlCom.Parameters["@IdGuilda"].Value = idGuilda;
+
+            try
+            {
+                Models.PlayerModels objPlayer;
+                List<Models.PlayerModels> objRetorno = new List<PlayerModels>();
+                conn.Open();
+
+                sqlCom.Connection = conn;
+                SqlDataReader reader = sqlCom.ExecuteReader();
+
+
+                while (reader.Read())
+                {
+                    objPlayer = new Models.PlayerModels();
+                    objPlayer.Id = Convert.ToInt32(reader["ID"].ToString());
+                    objPlayer.Nome = reader["Nome"].ToString();
+                    objPlayer.Level = Convert.ToInt32(reader["Level"].ToString());
+                    objPlayer.PontoArena = Convert.ToInt32(reader["PontoArena"].ToString());
+                    objPlayer.Ativo = (reader["Status"].ToString() == "S") ? true : false;
+
+                    objRetorno.Add(objPlayer);
+
+                }
+                conn.Close();
+                conn.Dispose();
+                return objRetorno;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public List<Models.PlayerModels> ListarPlayersSemGuild()
         {
             SqlConnection conn = new SqlConnection();
@@ -160,7 +215,7 @@ namespace GPCLib.DataAccess
             }
         }
 
-        public CapivaraModels ObterPlayerCapivara(int idPlayer,long idGuilda)
+        public CapivaraModels ObterPlayerCapivara(int idPlayer, long idGuilda)
         {
             SqlConnection conexao = new SqlConnection();
             SqlCommand command = new SqlCommand();
@@ -356,6 +411,92 @@ namespace GPCLib.DataAccess
 
                 throw ex;
             }
+        }
+
+
+
+        public List<PlayerOponenteModels> ListarDefesasGVGOponente(long idBatalha)
+        {
+            try
+            {
+                SqlConnection conexao = new SqlConnection();
+                SqlCommand command = new SqlCommand();
+
+                conexao.ConnectionString = ConfigurationManager.ConnectionStrings["DB_SW"].ToString();
+                StringBuilder select = new StringBuilder();
+
+                select.AppendLine("SET DATEFORMAT dmy;");
+
+                select.AppendLine("select ");
+                select.AppendLine("a.idbatalha,a.idplayeroponente, ");
+                select.AppendLine("p.Nome NomeOponente, p.Bonus, ");
+                select.AppendLine("b.Id Monstro1Id, b.Nome Monstro1Nome, b.Imagem Monstro1Imagem, ");
+                select.AppendLine("c.Id Monstro2Id, c.Nome Monstro2Nome, c.Imagem Monstro2Imagem, ");
+                select.AppendLine("d.Id Monstro3Id, d.Nome Monstro3Nome, d.Imagem Monstro3Imagem, ");
+                select.AppendLine("e.Id Monstro4Id, e.Nome Monstro4Nome, e.Imagem Monstro4Imagem, ");
+                select.AppendLine("f.Id Monstro5Id, f.Nome Monstro5Nome, f.Imagem Monstro5Imagem, ");
+                select.AppendLine("g.Id Monstro6Id, g.Nome Monstro6Nome, g.Imagem Monstro6Imagem ");
+
+                select.AppendLine("from dbo.TimeDefesaGVG a ");
+
+                select.AppendLine("inner join dbo.PlayerOponente p on p.ID = a.idplayeroponente and p.IdBatalha = a.idBatalha ");
+                select.AppendLine("inner join dbo.Monstro b on b.Id = a.Monstro1 ");
+                select.AppendLine("inner join dbo.Monstro c on c.Id = a.Monstro2 ");
+                select.AppendLine("inner join dbo.Monstro d on d.Id = a.Monstro3 ");
+                select.AppendLine("inner join dbo.Monstro e on e.Id = a.Monstro4 ");
+                select.AppendLine("inner join dbo.Monstro f on f.Id = a.Monstro5 ");
+                select.AppendLine("inner join dbo.Monstro g on g.Id = a.Monstro6 ");
+                select.AppendLine("where a.idBatalha = @idBatalha ");
+                select.AppendLine("order by p.Bonus desc, p.Nome ");
+
+                command.CommandText = select.ToString();
+                command.CommandType = System.Data.CommandType.Text;
+
+                //Parametros
+
+                command.Parameters.Add(new SqlParameter("@idBatalha", System.Data.SqlDbType.BigInt));
+                command.Parameters["@idBatalha"].Value = idBatalha;
+
+                TimeDefesaModels objTimeDefesa = new TimeDefesaModels();
+                PlayerOponenteModels objPlayerOponente = new PlayerOponenteModels();
+                List<PlayerOponenteModels> objRetorno = new List<PlayerOponenteModels>();
+
+                conexao.Open();
+                command.Connection = conexao;
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    objTimeDefesa = new TimeDefesaModels();
+                    objTimeDefesa.Monstro1 = new MonstroModels() { Id = Convert.ToInt32(reader["Monstro1Id"].ToString()), Nome = reader["Monstro1Nome"].ToString(), Imagem = reader["Monstro1Imagem"].ToString() };
+                    objTimeDefesa.Monstro2 = new MonstroModels() { Id = Convert.ToInt32(reader["Monstro2Id"].ToString()), Nome = reader["Monstro2Nome"].ToString(), Imagem = reader["Monstro2Imagem"].ToString() };
+                    objTimeDefesa.Monstro3 = new MonstroModels() { Id = Convert.ToInt32(reader["Monstro3Id"].ToString()), Nome = reader["Monstro3Nome"].ToString(), Imagem = reader["Monstro3Imagem"].ToString() };
+                    objTimeDefesa.Monstro4 = new MonstroModels() { Id = Convert.ToInt32(reader["Monstro4Id"].ToString()), Nome = reader["Monstro4Nome"].ToString(), Imagem = reader["Monstro4Imagem"].ToString() };
+                    objTimeDefesa.Monstro5 = new MonstroModels() { Id = Convert.ToInt32(reader["Monstro5Id"].ToString()), Nome = reader["Monstro5Nome"].ToString(), Imagem = reader["Monstro5Imagem"].ToString() };
+                    objTimeDefesa.Monstro6 = new MonstroModels() { Id = Convert.ToInt32(reader["Monstro6Id"].ToString()), Nome = reader["Monstro6Nome"].ToString(), Imagem = reader["Monstro6Imagem"].ToString() };
+
+                    objPlayerOponente = new PlayerOponenteModels();
+                    objPlayerOponente.Id = long.Parse(reader["idplayeroponente"].ToString());
+                    objPlayerOponente.Bonus = int.Parse(reader["Bonus"].ToString());
+                    objPlayerOponente.Nome = reader["NomeOponente"].ToString();
+                    objPlayerOponente.TimeDefesa = objTimeDefesa;
+
+                    objRetorno.Add(objPlayerOponente);
+
+                }
+
+                conexao.Close();
+                conexao.Dispose();
+
+                return objRetorno;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
         }
 
     }

@@ -61,6 +61,7 @@
     <Compile Include="DataAccess\Batalha.cs" />
     <Compile Include="DataAccess\DefesaPlayer.cs" />
     <Compile Include="DataAccess\Guilda.cs" />
+    <Compile Include="DataAccess\Luta.cs" />
     <Compile Include="DataAccess\Monstro.cs" />
     <Compile Include="DataAccess\PainelControle.cs" />
     <Compile Include="DataAccess\Player.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Models\PlayerModels.cs" />
     <Compile Include="Models\PlayerOponenteModels.cs" />
     <Compile Include="Models\ResultadoGeralModels.cs" />
+    <Compile Include="Models\TorresGVG.cs" />
     <Compile Include="Models\UsuarioModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

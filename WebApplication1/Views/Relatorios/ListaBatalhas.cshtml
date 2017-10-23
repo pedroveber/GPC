@@ -94,6 +94,7 @@ else
                 Resultado
             </th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -132,8 +133,9 @@ else
             }
                 </td>
                 <td>
-                    @Html.ActionLink("Detalhes", "ResultadoGeral", new { id = item.Id })
+                    @Html.ActionLink("Lutas", "ResultadoGeral", new { id = item.Id })
                 </td>
+                <td>@Html.ActionLink("Torres", "ListaDefesasGVG", new { id = item.Id })</td>
             </tr>
         }
     </tbody>

@@ -12,7 +12,7 @@ namespace GPCLib.DataAccess
 {
     public class DefesaPlayer
     {
-        public DefesaSemanaModels ListarDefesasSemana(DateTime dataInicio, DateTime dataFim,long idGuilda)
+        public DefesaSemanaModels ListarDefesasSemana(DateTime dataInicio, DateTime dataFim, long idGuilda)
         {
             try
             {
@@ -97,7 +97,7 @@ namespace GPCLib.DataAccess
             }
         }
 
-        public List<DefesasPlayerConsolidado> ListarDefesaConsolidado(DateTime dataInicio, DateTime dataFim, int idPlayer,long idGuilda)
+        public List<DefesasPlayerConsolidado> ListarDefesaConsolidado(DateTime dataInicio, DateTime dataFim, int idPlayer, long idGuilda)
         {
             try
             {
@@ -269,7 +269,7 @@ namespace GPCLib.DataAccess
             }
         }
 
-        public TimeDefesaModels ObterTimeDefesaGVG(int idPlayer, DateTime data,long idGuilda)
+        public TimeDefesaModels ObterTimeDefesaGVG(int idPlayer, DateTime data, long idGuilda)
         {
             try
             {
@@ -289,11 +289,11 @@ namespace GPCLib.DataAccess
                 select.AppendLine("where a.ID = b.IdPlayer and Vitoria = 2 and DataHora>= @datainicio and DataHora<= @datafim)Vitoria,");
 
                 select.AppendLine("(select count(1) from dbo.PlayerDefesas c ");
-                    select.AppendLine("inner join dbo.Guilda_Player c1 on c1.idPlayer = c.IdPlayer and c1.ativo = 1 and c1.idGuilda = @idGuilda ");
+                select.AppendLine("inner join dbo.Guilda_Player c1 on c1.idPlayer = c.IdPlayer and c1.ativo = 1 and c1.idGuilda = @idGuilda ");
                 select.AppendLine("where a.ID = c.IdPlayer and Vitoria = 1 and DataHora>= @datainicio and DataHora<= @datafim)Empate,");
 
                 select.AppendLine("(select count(1) from dbo.PlayerDefesas d ");
-                    select.AppendLine("inner join dbo.Guilda_Player d1 on d1.idPlayer = d.IdPlayer and d1.ativo = 1 and d1.idGuilda = @idGuilda");
+                select.AppendLine("inner join dbo.Guilda_Player d1 on d1.idPlayer = d.IdPlayer and d1.ativo = 1 and d1.idGuilda = @idGuilda");
                 select.AppendLine("where a.ID = d.IdPlayer and Vitoria = 0 and DataHora>= @datainicio and DataHora<= @datafim)Derrota,");
 
                 select.AppendLine("e.Monstro1 Monstro1Id, f.Nome Monstro1Nome, f.Imagem Monstro1Imagem,");
@@ -364,5 +364,7 @@ namespace GPCLib.DataAccess
             }
 
         }
+
+       
     }
 }

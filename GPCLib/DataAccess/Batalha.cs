@@ -80,7 +80,7 @@ namespace GPCLib.DataAccess
             }
         }
 
-        public BatalhaModels ObterBatalha(int id)
+        public BatalhaModels ObterBatalha(long id)
         {
             SqlConnection conexao = new SqlConnection();
             SqlCommand command = new SqlCommand();
