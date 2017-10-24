@@ -7,7 +7,15 @@
     ViewBag.Title = "Lista Batalhas";
 }
 
-<h2>Lista de GVGs - @Html.DisplayFor(model => model.First().GuildaAtacante.Nome) </h2>
+@if (Model.Count() > 0)
+{
+    <h2>Lista de GVGs - @Html.DisplayFor(model => model.First().GuildaAtacante.Nome) </h2>
+}
+else
+{
+    <h2>Lista de GVGs</h2>
+}
+
 
 <script>
     $(document).ready(function () {
@@ -86,6 +94,7 @@
                 Resultado
             </th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -124,8 +133,9 @@
             }
                 </td>
                 <td>
-                    @Html.ActionLink("Detalhes", "ResultadoGeral", new { id = item.Id })
+                    @Html.ActionLink("Lutas", "ResultadoGeral", new { id = item.Id })
                 </td>
+                <td>@Html.ActionLink("Torres", "ListaDefesasGVG", new { id = item.Id })</td>
             </tr>
         }
     </tbody>

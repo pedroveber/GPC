@@ -10,7 +10,7 @@ using App.Extensions;
 
 
 namespace WebApplication1.Controllers
-{
+{[Authorize]
     public class RelatoriosController : Controller
     {
         // GET: Relatorios
@@ -50,6 +50,29 @@ namespace WebApplication1.Controllers
             lstBatalhas = lstBatalhas.OrderByDescending(x => x.Data).ToList();
             
             return View("ListaBatalhas", lstBatalhas);
+        }
+
+        public ActionResult ListaDefesasGVG(int id)
+        {
+            int idGuilda = 0;
+            int.TryParse(User.Identity.GetIdGuilda(), out idGuilda);
+
+            GPCLib.Models.TorresGVG objRetorno = new TorresGVG();
+            objRetorno.Oponente = new GPCLib.DataAccess.Player().ListarDefesasGVGOponente(id);
+
+            //Obter as Lutas e Filtrar
+            List<LutasModels> lstLutas = new GPCLib.DataAccess.Luta().ListarLutas(id, idGuilda);
+
+            objRetorno.Batalha = new GPCLib.DataAccess.Batalha().ObterBatalha(id);
+
+            foreach (PlayerOponenteModels item in objRetorno.Oponente)
+            {
+                //Obter as Lutas
+                item.Lutas = lstLutas.FindAll(x => x.PlayerOponente.Id == item.Id);
+            }
+            
+
+            return View(objRetorno);
         }
     }
 

@@ -1,0 +1,80 @@
+﻿@model GPCLib.Models.TorresGVG
+
+@{
+    ViewBag.Title = "Lista Defesas GVG";
+}
+
+
+
+<h2>@Html.DisplayFor(modelItem => modelItem.Batalha.GuildaOponente) - Torres</h2>
+
+
+<table class="table" style="width:auto">
+    <tr>
+        <th>
+            Oponente
+        </th>
+        <th>
+
+        </th>
+        <th>
+
+        </th>
+    </tr>
+
+    @foreach (var item in Model.Oponente)
+    {
+
+        <tr>
+            <td>
+                <h3>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </h3>(+@Html.DisplayFor(modelItem => item.Bonus).ToHtmlString())
+            </td>
+            <td>
+                <div id="Time1" style="background-color:#D1CAA1;border-color:black;border:solid;border-width:1px;width:320px">
+                    <div id="imagem1" style="float: left; width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.TimeDefesa.Monstro1.Imagem))" title="@Html.DisplayFor(modelItem => item.TimeDefesa.Monstro1.Nome)"></div>
+                    <div id="imagem2" style="float: left;width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.TimeDefesa.Monstro2.Imagem))"title="@Html.DisplayFor(modelItem => item.TimeDefesa.Monstro2.Nome)"></div>
+                    <div id="imagem3" style="width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.TimeDefesa.Monstro3.Imagem))"title="@Html.DisplayFor(modelItem => item.TimeDefesa.Monstro3.Nome)"></div>
+                </div><p></p>
+                <div id="Time2" style="background-color:#D4D6B9;border-color:black;border:solid;border-width:1px;width:320px">
+                    <div id="imagem4" style="float: left;width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.TimeDefesa.Monstro4.Imagem))"title="@Html.DisplayFor(modelItem => item.TimeDefesa.Monstro4.Nome)"></div>
+                    <div id="imagem5" style="float: left;width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.TimeDefesa.Monstro5.Imagem))"title="@Html.DisplayFor(modelItem => item.TimeDefesa.Monstro5.Nome)"></div>
+                    <div id="imagem6" style="width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.TimeDefesa.Monstro6.Imagem))"title="@Html.DisplayFor(modelItem => item.TimeDefesa.Monstro6.Nome)"></div>
+                </div>
+                
+            </td>
+            <td>
+                <h4>
+                    @foreach (var item2 in item.Lutas)
+                {
+                        @Html.DisplayFor(modelItem => item2.Player.Nome)
+                        if (item2.Vitoria == 2)
+                        {
+                            @: - V
+                    }
+                    if (item2.Vitoria == 1)
+                    {
+                            @: - E
+                    }
+
+                    if (item2.Vitoria == 0)
+                    {
+                            @: - D
+                    }
+                        <br />
+
+                    }
+                </h4>
+
+            </td>
+            
+        </tr>
+    }
+
+</table>
+<p></p>
+<div>
+    @Html.ActionLink("<< Voltar", "ListaBatalhas")
+</div>
+

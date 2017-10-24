@@ -458,6 +458,7 @@
     <Content Include="Views\Relatorios\ResultadoGeral.cshtml" />
     <Content Include="Views\Relatorios\ListaBatalhas.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Relatorios\ListaDefesasGVG.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

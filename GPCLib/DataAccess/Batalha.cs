@@ -26,7 +26,7 @@ namespace GPCLib.DataAccess
                 select.AppendLine("top 100");
 
             select.AppendLine("Guilda,life,data,PontuacaoOponente,PontuacaoGuild,RankGuild,idGuilda,Id,IdGuildaAtacante ");
-            select.AppendLine(",(select  case when count(1) > 1 then 1 else 0 end from dbo.lutas b where b.CodBatalhas = a.ID and b.MomentoVitoria = 'Win') Vitoria ");
+            select.AppendLine(",(select  case when count(1) >= 1 then 1 else 0 end from dbo.lutas b where b.CodBatalhas = a.ID and b.MomentoVitoria = 'Win') Vitoria ");
             select.AppendLine("from dbo.Batalhas a");
             select.AppendLine("where IdGuildaAtacante = @IdGuildaAtacante ");
             select.AppendLine("order by data desc ");
@@ -80,7 +80,7 @@ namespace GPCLib.DataAccess
             }
         }
 
-        public BatalhaModels ObterBatalha(int id)
+        public BatalhaModels ObterBatalha(long id)
         {
             SqlConnection conexao = new SqlConnection();
             SqlCommand command = new SqlCommand();
