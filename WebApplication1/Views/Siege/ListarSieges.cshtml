@@ -1,0 +1,140 @@
+﻿@model IEnumerable<GPCLib.Models.SiegeModels>
+
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+
+<h2>Sieges</h2>
+<script>
+    $(document).ready(function () {
+        jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+            "extract-date-pre": function (value) {
+                var date = $(value, 'span')[0].innerHTML;
+                date = date.split('/');
+                return Date.parse(date[1] + '/' + date[0] + '/' + date[2])
+            },
+            "extract-date-asc": function (a, b) {
+                return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+            },
+            "extract-date-desc": function (a, b) {
+                return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+            }
+        });
+        $('#tblListaSiege').DataTable(
+            {
+                "paging": true,
+                "searching": false,
+                "lengthChange": false,
+                "language": {
+                    search: "Pesquisar:",
+                    "lengthMenu": "Exibindo _MENU_ linhas por página",
+                    "zeroRecords": "Nenhum registro encontrado",
+                    "info": "Exibindo página _PAGE_ de _PAGES_",
+                    "infoFiltered": "(selecionado _MAX_ registros)",
+                    paginate: {
+                        first: "Primeira",
+                        previous: "Anterior",
+                        next: "Próxima",
+                        last: "Última"
+                    }
+                },
+                "pageLength": 20,
+                "order": [[1, "desc"]],
+                columnDefs: [{
+                    type: 'extract-date',
+                    targets: [1]
+                }
+
+                ]
+
+
+            }
+
+        );
+
+    });
+
+
+</script>
+
+<table class="table" id="tblListaSiege">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Data
+            </th>
+            <th><img src="http://54.94.213.182/SW/content/images/Icons/first.png" /></th>
+            <th><img src="http://54.94.213.182/SW/content/images/Icons/second.png" /></th>
+            <th><img src="http://54.94.213.182/SW/content/images/Icons/third.png" /></th>
+            <th></th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    <span id="@Html.DisplayFor(modelItem => item.Data)">
+                        @Html.DisplayFor(modelItem => item.Data)
+                    </span>
+                </td>
+                <td>
+                    @if (item.Guilda.First(x => x.Posicao == 1).Guilda.Id == item.IdGuildaUsuarioLogado)
+                    {
+                        <b>
+                            @Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 1).Guilda.Nome)
+                        </b>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 1).Guilda.Nome)
+                    }
+                    
+                    <img src="http://54.94.213.182/SW/content/images/Icons/@Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 1).ImagemRating)" alt="Alternate Text" height="50%" />
+
+
+        </td>
+        <td>
+            @if (item.Guilda.First(x => x.Posicao == 2).Guilda.Id == item.IdGuildaUsuarioLogado)
+            {
+                <b>
+                    @Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 2).Guilda.Nome)
+                </b>
+            }
+            else
+            {
+                @Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 2).Guilda.Nome)
+            }
+            <img src="http://54.94.213.182/SW/content/images/Icons/@Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 2).ImagemRating)" alt="Alternate Text" height="50%" />
+
+        </td>
+        <td>
+            @if (item.Guilda.First(x => x.Posicao == 3).Guilda.Id == item.IdGuildaUsuarioLogado)
+            {
+                <b>
+                    @Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 3).Guilda.Nome)
+                </b>
+            }
+            else
+            {
+                @Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 3).Guilda.Nome)
+            }
+            <img src="http://54.94.213.182/SW/content/images/Icons/@Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 3).ImagemRating)" alt="Alternate Text" height="50%" />
+
+        </td>
+        <td>@Html.ActionLink("Ataques", "ListarAtaquesConsolidado", new { idSiege = item.Id })| <a href="#">Defesas </a>| <a href="#">Decks </a></td>
+                
+
+
+    </tr>
+        }
+</tbody>
+</table>

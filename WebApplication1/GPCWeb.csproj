@@ -182,6 +182,7 @@
     <Compile Include="Controllers\PainelControleController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\RelatoriosController.cs" />
+    <Compile Include="Controllers\SiegeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -459,6 +460,8 @@
     <Content Include="Views\Relatorios\ListaBatalhas.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Relatorios\ListaDefesasGVG.cshtml" />
+    <Content Include="Views\Siege\ListarSieges.cshtml" />
+    <Content Include="Views\Siege\ListarAtaquesConsolidado.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
