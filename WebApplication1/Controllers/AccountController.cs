@@ -170,6 +170,11 @@ namespace WebApplication1.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    /*
+                     * EMAIL CONFIRMAÇÂO
+                     * 
+                     * */
+
                     ApplicationDbContext context = new ApplicationDbContext();
                     var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
 
@@ -190,13 +195,22 @@ namespace WebApplication1.Controllers
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = token }, protocol: Request.Url.Scheme);
                     UserManager.EmailService = new EmailService();
 
-                    StringBuilder Mensagem = new StringBuilder();
-                    Mensagem.AppendLine("Ólá! ");
-                    Mensagem.AppendLine("Recebemos uma requisição de cadastro no GPC - Guilda Painel de Controle. ");
-                    Mensagem.AppendLine("Para confirmar seu cadastro acesse o link abaixo.  ");
-                    Mensagem.AppendLine(@"<a href=" + callbackUrl + ">" + callbackUrl + " </a>");
-
-                    await UserManager.SendEmailAsync(user.Id, "GPC - Confirmação de Cadastro", Mensagem.ToString());
+                    //StringBuilder Mensagem = new StringBuilder();
+                    //Mensagem.AppendLine("Ólá! ");
+                    //Mensagem.AppendLine("Recebemos uma requisição de cadastro no GPC - Guilda Painel de Controle. ");
+                    //Mensagem.AppendLine("Para confirmar seu cadastro acesse o link abaixo.  ");
+                    string emailc = "<head></head><body> <div style=\"background-color:#fff;margin:0 auto 0 auto;padding:30px 0 30px 0;color:#4f565d;font-size:13px;line-height:20px;font-family:'Helvetica Neue',"+
+                                    "Arial,sans-serif;text-align:left;\"> <center> <table style=\"width:550px;text-align:center\"> <tbody> <tr> <td style=\"padding:0 0 20px 0;border-bottom:1px solid #e9edee;\">"+
+                                    "<h1> <a href=\"http://www.demonorange.party\" style=\"display:block; margin:0 auto;\" target=\"_blank\"> GPC - Guilda Painel de Controle </a></h1> </td> </tr> <tr> "+
+                                    "<td colspan=\"2\" style=\"padding:30px 0;\"> <p style=\"color:#1d2227;line-height:28px;font-size:22px;margin:12px 10px 20px 10px;font-weight:400;\">"+
+                                    "Olá Recebemos uma requisição de cadastro no GPC - Guilda Painel de Controle.</p> <p style=\"margin:0 10px 10px 10px;padding:0;\">Para confirmar seu cadastro acesse o link abaixo."+
+                                    "</p> <p> <a style=\"display:inline-block;text-decoration:none;padding:15px 20px;background-color:#2baaed;border:1px solid #2baaed;border-radius:3px;color:#FFF;font-weight:bold;\" "+
+                                    "href=\"" + callbackUrl + "\" target=\"_blank\">Confirmar Cadastro</a> </p> </td> </tr> <tr> <td colspan=\"2\" style=\"padding:30px 0 0 0;border-top:1px solid #e9edee;color:#9b9fa5\"> "+
+                                    "Se tiver dúvidas por favor entrar em contato com <a style=\"color:#666d74;text-decoration:none;\" href=\"mailto:swguildgpc@gmail.com\" target=\"_blank\">swguildgpc@gmail.com</a> "+
+                                    "</td> </tr> </tbody> </table> </center> </div> </body>";
+                    
+                        
+                    await UserManager.SendEmailAsync(user.Id, "GPC - Confirmação de Cadastro", emailc);
 
                     // Uncomment to debug locally 
                     // TempData["ViewBagLink"] = callbackUrl;
@@ -212,6 +226,8 @@ namespace WebApplication1.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
+       
 
         //
         // GET: /Account/ConfirmEmail

@@ -130,7 +130,10 @@
             <img src="http://54.94.213.182/SW/content/images/Icons/@Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 3).ImagemRating)" alt="Alternate Text" height="50%" />
 
         </td>
-        <td>@Html.ActionLink("Ataques", "ListarAtaquesConsolidado", new { idSiege = item.Id })| <a href="#">Defesas </a>| <a href="#">Decks </a></td>
+        <td>
+            | @Html.ActionLink("Ataques", "ListarAtaquesConsolidado", new { idSiege = item.Id }) |
+            @Html.ActionLink("Defesas", "ListarDefesasConsolidado", new { idSiege = item.Id }) |
+        </td>
                 
 
 

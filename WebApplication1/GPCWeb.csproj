@@ -462,6 +462,12 @@
     <Content Include="Views\Relatorios\ListaDefesasGVG.cshtml" />
     <Content Include="Views\Siege\ListarSieges.cshtml" />
     <Content Include="Views\Siege\ListarAtaquesConsolidado.cshtml" />
+    <Content Include="Views\Siege\ListarDefesasConsolidado.cshtml" />
+    <Content Include="Views\Siege\ListarDecks.cshtml" />
+    <Content Include="Views\Siege\ListarDeckPlayer.cshtml" />
+    <Content Include="Views\Siege\ListarAtaquesGeral.cshtml" />
+    <Content Include="Views\Siege\ListarDefesasGeral.cshtml" />
+    <Content Include="Views\Siege\ListarVitoriasTimes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
