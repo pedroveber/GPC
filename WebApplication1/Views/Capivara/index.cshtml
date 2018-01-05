@@ -523,6 +523,7 @@
         }
         #imagem6
         {
+
         display: inline-block;
             width: 100%;
             font-size: 0;
@@ -539,8 +540,10 @@
     </style>
     <div class="row">
         <div class="clearfix"></div>
-        <div class="col-md-12"><b>Time do dia: @Html.DisplayFor(m => m.TimeGVG.Data). </b></div>
-        <div class="col-md-12"><b>Vitórias: @Html.DisplayFor(m => m.TimeGVG.Vitoria) | Empates: @Html.DisplayFor(m => m.TimeGVG.Empate) | Derrotas: @Html.DisplayFor(m => m.TimeGVG.Derrota) </b></div>
+        <div class="col-md-12"><b>Última Defesa cadastrada. </b></div>
+        <div class="col-md-12"><b>Vitórias: @Html.DisplayFor(m => m.TimeGVG.Vitoria) | Empates: @Html.DisplayFor(m => m.TimeGVG.Empate) | Derrotas: @Html.DisplayFor(m => m.TimeGVG.Derrota) </b>
+        <i> (De @DateTime.Today.AddDays(((int)(DateTime.Today.DayOfWeek) * -1) + 1).AddDays(-8).ToShortDateString() a @DateTime.Today.AddDays(((int)(DateTime.Today.DayOfWeek) * -1) + 1).AddDays(-1).ToShortDateString())</i>
+        </div>
         <div class="col-md-6" style="background-color:coral;border-color:black;border:solid;border-width:1px;">
             <div>Time 1</div>
             <div style="width:500px;height:150px">

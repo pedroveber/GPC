@@ -1,0 +1,69 @@
+﻿@model IEnumerable<GPCLib.Models.AtaquesSiegeModels>
+
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+
+<h2>Sieges - Ataques Geral</h2>
+<script>
+    $(document).ready(function () {
+
+        $('#tblAtaqueConsolidado').DataTable(
+            {
+                "paging": true,
+                "searching": false,
+                "lengthChange": false,
+                "language": {
+                    search: "Pesquisar:",
+                    "lengthMenu": "Exibindo _MENU_ linhas por página",
+                    "zeroRecords": "Nenhum registro encontrado",
+                    "info": "Exibindo página _PAGE_ de _PAGES_",
+                    "infoFiltered": "(selecionado _MAX_ registros)",
+                    paginate: {
+                        first: "Primeira",
+                        previous: "Anterior",
+                        next: "Próxima",
+                        last: "Última"
+                    }
+                },
+                "pageLength": 20
+            }
+
+        );
+
+    });
+
+
+</script>
+
+<table class="table" id="tblAtaqueConsolidado">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th style="text-align:center">Vitória</th>
+            <th style="text-align:center">Derrota</th>
+            <th style="text-align:center">Qts. Siges</th>
+            <th style="text-align:center">Média Monstros Usados</th>
+            <th style="text-align:center">Ataques Realizados</th>
+            <th style="text-align:center">Ataques Possíveis</th>
+            <th style="text-align:center">% Vitória</th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Player.Nome)</td>
+                <td style="text-align:center">@Html.DisplayFor(modelItem => item.Vitoria)</td>
+                <td style="text-align:center">@Html.DisplayFor(modelItem => item.Derrota)</td>
+                <td style="text-align:center">@Html.DisplayFor(modelItem => item.QuantidadeSieges)</td>
+                <td style="text-align:center">@Html.DisplayFor(modelItem => item.MediaMonstros)</td>
+                <td style="text-align:center">@Html.DisplayFor(modelItem => item.AtaquesRealizados)</td>
+                <td style="text-align:center">@(item.QuantidadeSieges * 10)</td>
+                <td style="text-align:center">@Math.Round((Convert.ToDouble(item.Vitoria) / Convert.ToDouble(item.AtaquesRealizados)*100.00),2).ToString("F")</td>
+
+            </tr>
+        }
+    </tbody>
+</table>

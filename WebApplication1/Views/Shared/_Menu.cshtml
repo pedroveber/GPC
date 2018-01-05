@@ -4,12 +4,18 @@
 @{
     var menus = new[]
                 {
+                   new { LinkText="Resultado Geral", ActionName="ListarSieges",ControllerName="Siege",Roles="All"  },
+                   new { LinkText="Lista Ataques", ActionName="ListarAtaquesGeral",ControllerName="Siege",Roles="All"  },
+                   new { LinkText="Lista Defesas", ActionName="ListarDefesasGeral",ControllerName="Siege",Roles="All"  },
+                   new { LinkText="Melhores Defesas", ActionName="ListarVitoriasTimes",ControllerName="Siege",Roles="All"  },
                    new { LinkText="Resultado Geral", ActionName="ListaBatalhas",ControllerName="Relatorios",Roles="All"  },
                    new { LinkText="Ataques Semana", ActionName="index",ControllerName="PainelControle",Roles="All"  },
                    new { LinkText="Defesas Semana", ActionName="index",ControllerName="DefesasSemana",Roles="All"  },
                    new { LinkText="Capivara", ActionName="index/0",ControllerName="Capivara",Roles="All"  },
                    new { LinkText="Player x Guilda", ActionName="index",ControllerName="Guilda",Roles="Admin"  },
                    new { LinkText="Usuário x Player", ActionName="UsuarioPlayer",ControllerName="Guilda",Roles="Admin"  },
+                   new { LinkText="Sobre", ActionName="About",ControllerName="Home",Roles="Anonymous"  },
+                   new { LinkText="Contato", ActionName="Contact",ControllerName="Home",Roles="Anonymous"  },
 
                 };
 }
@@ -31,10 +37,34 @@
                     var userManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
                     var userRoles = userManager.GetRoles(User.Identity.GetUserId());
 
-                    var links = from item in menus
-                                where item.Roles.Split(new String[] { "," }, StringSplitOptions.RemoveEmptyEntries)
-                                .Any(x => x == "All")
-                                select item;
+                    var linksSiege = menus.Where(x => x.Roles == "All" && x.ControllerName == "Siege").ToList();
+                    @:<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Siege</a><ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+
+                    foreach (var link in linksSiege)
+                    {
+                        @:
+                        <li> @Html.ActionLink(link.LinkText, link.ActionName, link.ControllerName)</li>
+                    }
+
+                    @:</ul></li> 
+
+                    var linksGVG = menus.Where(x => x.Roles == "All" && x.ControllerName == "Relatorios" || x.ControllerName == "PainelControle" || x.ControllerName == "DefesasSemana").ToList();
+                    @:<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GVG</a><ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+
+                    foreach (var linkgvg in linksGVG)
+                    {
+                        @:
+                        <li> @Html.ActionLink(linkgvg.LinkText, linkgvg.ActionName, linkgvg.ControllerName)</li>
+                    }
+
+                    @:</ul></li>
+
+
+                    //var links = from item in menus
+                    //            where item.Roles.Split(new String[] { "," }, StringSplitOptions.RemoveEmptyEntries).Any(x => x == "All")
+                    //            select item;
+                    var links = menus.Where(x => x.Roles == "All" && x.ControllerName != "Siege" && x.ControllerName != "Relatorios" && x.ControllerName != "PainelControle" && x.ControllerName != "DefesasSemana").ToList();
+
                     foreach (var link in links)
                     {
                         @:
@@ -66,7 +96,7 @@
                 {
                     var links = from item in menus
                                 where item.Roles.Split(new String[] { "," }, StringSplitOptions.RemoveEmptyEntries)
-                                .Any(x => new String[] { "All", "Anonymous" }.Contains(x))
+                                .Any(x => new String[] { "Anonymous" }.Contains(x))
                                 select item;
                     foreach (var link in links)
                     {

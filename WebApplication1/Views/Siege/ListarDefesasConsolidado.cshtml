@@ -1,0 +1,69 @@
+﻿@model IEnumerable<GPCLib.Models.DefesaSiegeModels>
+
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+
+<h2>Defesas Consolidado - @Model.First().Siege.Data.ToShortDateString()  </h2>
+<div style="float: left;padding-right:5px"><img src="http://54.94.213.182/SW/content/images/Icons/first.png" /> @Model.First().Siege.Guilda.First(x => x.Posicao == 1).Guilda.Nome </div>
+<div style="float: left;padding-right:5px"><img src="http://54.94.213.182/SW/content/images/Icons/second.png" /> @Model.First().Siege.Guilda.First(x => x.Posicao == 2).Guilda.Nome</div>
+<div><img src="http://54.94.213.182/SW/content/images/Icons/third.png" /> @Model.First().Siege.Guilda.First(x => x.Posicao == 3).Guilda.Nome</div>
+
+<script>
+    $(document).ready(function () {
+
+        $('#tblDefesaConsolidado').DataTable(
+            {
+                "paging": true,
+                "searching": false,
+                "lengthChange": false,
+                "language": {
+                    search: "Pesquisar:",
+                    "lengthMenu": "Exibindo _MENU_ linhas por página",
+                    "zeroRecords": "Nenhum registro encontrado",
+                    "info": "Exibindo página _PAGE_ de _PAGES_",
+                    "infoFiltered": "(selecionado _MAX_ registros)",
+                    paginate: {
+                        first: "Primeira",
+                        previous: "Anterior",
+                        next: "Próxima",
+                        last: "Última"
+                    }
+                },
+                "pageLength": 20
+            }
+
+        );
+
+    });
+
+
+</script>
+
+
+<table class="table" id="tblDefesaConsolidado">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th style="text-align:center">Vitória</th>
+            <th style="text-align:center">Derrota</th>
+            <th style="text-align:center">Total Atq. Recebidos</th>
+            <th></th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Player.Nome)</td>
+                <td style="text-align:center">@Html.DisplayFor(modelItem => item.Vitoria)</td>
+                <td style="text-align:center">@Html.DisplayFor(modelItem => item.Derrota)</td>
+                <td style="text-align:center">@Html.DisplayFor(modelItem => item.TotalAtaquesRecebidos)</td>          
+                <td>@Html.ActionLink("Decks", "ListarDeckPlayer", new { idSiege = item.Siege.Id, idPlayer = item.Player.Id }) </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    @Html.ActionLink("<< Voltar", "ListarSieges")
+</div>

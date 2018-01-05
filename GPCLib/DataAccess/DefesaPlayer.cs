@@ -312,7 +312,7 @@ namespace GPCLib.DataAccess
                 select.AppendLine("left join dbo.Monstro j on j.Id = e.Monstro5");
                 select.AppendLine("left join dbo.Monstro k on k.Id = e.Monstro6");
                 select.AppendLine("where a.Id = @idplayer");
-                select.AppendLine("and e.data = @datafim");
+                select.AppendLine("and e.data = (select MAX(data) from dbo.TimeDefesa tim where tim.IdPlayer = a.ID)");
 
                 command.CommandText = select.ToString();
                 command.CommandType = System.Data.CommandType.Text;
