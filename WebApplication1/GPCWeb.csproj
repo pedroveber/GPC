@@ -332,6 +332,7 @@
     <Content Include="Resources\ataque.png" />
     <Content Include="Resources\capivara.png" />
     <Content Include="Resources\defesa.png" />
+    <Content Include="Resources\diagrama.png" />
     <Content Include="Resources\fred.png" />
     <Content Include="Resources\hazsenzo.png" />
     <Content Include="Resources\jdm.png" />
