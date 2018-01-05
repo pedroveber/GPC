@@ -431,22 +431,22 @@ namespace GPCLib.DataAccess
                 select.AppendLine("select ");
                 select.AppendLine("a.idbatalha,a.idplayeroponente, ");
                 select.AppendLine("p.Nome NomeOponente, p.Bonus, ");
-                select.AppendLine("b.Id Monstro1Id, b.Nome Monstro1Nome, b.Imagem Monstro1Imagem, ");
-                select.AppendLine("c.Id Monstro2Id, c.Nome Monstro2Nome, c.Imagem Monstro2Imagem, ");
-                select.AppendLine("d.Id Monstro3Id, d.Nome Monstro3Nome, d.Imagem Monstro3Imagem, ");
-                select.AppendLine("e.Id Monstro4Id, e.Nome Monstro4Nome, e.Imagem Monstro4Imagem, ");
-                select.AppendLine("f.Id Monstro5Id, f.Nome Monstro5Nome, f.Imagem Monstro5Imagem, ");
-                select.AppendLine("g.Id Monstro6Id, g.Nome Monstro6Nome, g.Imagem Monstro6Imagem ");
+                select.AppendLine("isnull(b.Id,0) Monstro1Id, isnull(b.Nome,'') Monstro1Nome, isnull(b.Imagem,'') Monstro1Imagem, ");
+                select.AppendLine("isnull(c.Id,0) Monstro2Id, isnull(c.Nome,'') Monstro2Nome, isnull(c.Imagem,'') Monstro2Imagem, ");
+                select.AppendLine("isnull(d.Id,0) Monstro3Id, isnull(d.Nome,'') Monstro3Nome, isnull(d.Imagem,'') Monstro3Imagem, ");
+                select.AppendLine("isnull(e.Id,0) Monstro4Id, isnull(e.Nome,'') Monstro4Nome, isnull(e.Imagem,'') Monstro4Imagem, ");
+                select.AppendLine("isnull(f.Id,0) Monstro5Id, isnull(f.Nome,'') Monstro5Nome, isnull(f.Imagem,'') Monstro5Imagem, ");
+                select.AppendLine("isnull(g.Id,0) Monstro6Id, isnull(g.Nome,'') Monstro6Nome, isnull(g.Imagem,'') Monstro6Imagem ");
 
                 select.AppendLine("from dbo.TimeDefesaGVG a ");
 
                 select.AppendLine("inner join dbo.PlayerOponente p on p.ID = a.idplayeroponente and p.IdBatalha = a.idBatalha ");
-                select.AppendLine("inner join dbo.Monstro b on b.Id = a.Monstro1 ");
-                select.AppendLine("inner join dbo.Monstro c on c.Id = a.Monstro2 ");
-                select.AppendLine("inner join dbo.Monstro d on d.Id = a.Monstro3 ");
-                select.AppendLine("inner join dbo.Monstro e on e.Id = a.Monstro4 ");
-                select.AppendLine("inner join dbo.Monstro f on f.Id = a.Monstro5 ");
-                select.AppendLine("inner join dbo.Monstro g on g.Id = a.Monstro6 ");
+                select.AppendLine("left join dbo.Monstro b on b.Id = a.Monstro1 ");
+                select.AppendLine("left join dbo.Monstro c on c.Id = a.Monstro2 ");
+                select.AppendLine("left join dbo.Monstro d on d.Id = a.Monstro3 ");
+                select.AppendLine("left join dbo.Monstro e on e.Id = a.Monstro4 ");
+                select.AppendLine("left join dbo.Monstro f on f.Id = a.Monstro5 ");
+                select.AppendLine("left join dbo.Monstro g on g.Id = a.Monstro6 ");
                 select.AppendLine("where a.idBatalha = @idBatalha ");
                 select.AppendLine("order by p.Bonus desc, p.Nome ");
 

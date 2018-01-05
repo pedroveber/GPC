@@ -41,7 +41,7 @@ namespace WebApplication1
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 Credentials = new NetworkCredential("swguildgpc@gmail.com", fromPassword),
                 Timeout = 20000
-            };
+                };
 
             using (var message2 = new MailMessage(fromAddress, toAddress)
             {
@@ -88,10 +88,10 @@ namespace WebApplication1
             manager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
-                RequireDigit = true,
+                RequireNonLetterOrDigit = false,
+                RequireDigit = false,
                 RequireLowercase = true,
-                RequireUppercase = true,
+                RequireUppercase = false,
             };
 
             // Configure user lockout defaults

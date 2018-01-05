@@ -191,10 +191,10 @@ namespace WebApplication1.Controllers
                     UserManager.EmailService = new EmailService();
 
                     StringBuilder Mensagem = new StringBuilder();
-                    Mensagem.AppendLine("Ólá! ");
+                    Mensagem.AppendLine("Olá! ");
                     Mensagem.AppendLine("Recebemos uma requisição de cadastro no GPC - Guilda Painel de Controle. ");
                     Mensagem.AppendLine("Para confirmar seu cadastro acesse o link abaixo.  ");
-                    Mensagem.AppendLine(@"<a href=" + callbackUrl + ">" + callbackUrl + " </a>");
+                    Mensagem.AppendLine(@"<a href='" + callbackUrl + "'>Clique para validar seu cadastro</a>");
 
                     await UserManager.SendEmailAsync(user.Id, "GPC - Confirmação de Cadastro", Mensagem.ToString());
 
