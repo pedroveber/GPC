@@ -19,4 +19,19 @@ namespace GPCLib.Models
         public long idGuilda { get; set; }
         public int Ativo { get; set; }
     }
+
+
+    public class ResumoGuildaModels
+    {
+        public GuildaModels Guilda { get; set; }
+        public int QtdGVGs { get; set; }
+        public int VitoriaGvg { get; set; }
+        public int DerrotaGVG { get; set; }
+        public int Siege { get; set; }
+
+        public int SiegePosicao1 { get; set; }
+        public int SiegePosicao2 { get; set; }
+        public int SiegePosicao3 { get; set; }
+
+    }
 }

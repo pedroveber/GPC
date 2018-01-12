@@ -9,6 +9,7 @@ namespace GPCLib.Models
     public class BatalhaModels
     {
         public long Id { get; set; }
+        public long IdGuildaOponente { get; set; }
         public string GuildaOponente { get; set; }
         public int Life { get; set; }
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
@@ -18,5 +19,6 @@ namespace GPCLib.Models
         public int RankGuild { get; set; }
         public GuildaModels GuildaAtacante { get; set; }
         public bool Vitoria { get; set; }
+        public int QuantidadeAtaques { get; set; }
     }
 }

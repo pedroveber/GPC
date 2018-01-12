@@ -24,9 +24,9 @@ namespace GPCLib.DataAccess
 
             select.AppendLine("select ");
             select.AppendLine("a.Id,a.data, ");
-            select.AppendLine("b.Posicao Posicao1, b.IdGuilda guild1, g1.Nome nome1, b.MatchScore MatchScore1, b.Rating Rating1, ");
-            select.AppendLine("c.Posicao Posicao2, c.IdGuilda guild2, g2.Nome nome2, c.MatchScore MatchScore2, c.Rating Rating2, ");
-            select.AppendLine("d.Posicao Posicao3, d.IdGuilda guild3, g3.Nome nome3, d.MatchScore MatchScore3, d.Rating Rating3 ");
+            select.AppendLine("b.Posicao Posicao1, b.IdGuilda guild1, g1.Nome nome1, b.MatchScore MatchScore1, b.Rating Rating1,b.Members Members1, ");
+            select.AppendLine("c.Posicao Posicao2, c.IdGuilda guild2, g2.Nome nome2, c.MatchScore MatchScore2, c.Rating Rating2,c.Members Members2, ");
+            select.AppendLine("d.Posicao Posicao3, d.IdGuilda guild3, g3.Nome nome3, d.MatchScore MatchScore3, d.Rating Rating3,d.Members Members3");
             select.AppendLine("from dbo.Siege a ");
             select.AppendLine("inner join dbo.SiegeGuilda b on b.IdSiege = a.Id and b.Posicao = 1 ");
             select.AppendLine("left join dbo.Guilda g1 on g1.Id = b.IdGuilda ");
@@ -64,11 +64,13 @@ namespace GPCLib.DataAccess
 
                     objSiege.Guilda = new List<SiegeGuildaModels>();
 
+                    //Guilda 1
                     objSiege.Guilda.Add(new SiegeGuildaModels()
                     {
                         MatchScore = double.Parse(reader["MatchScore1"].ToString()),
                         Posicao = int.Parse(reader["Posicao1"].ToString()),
                         Rating = int.Parse(reader["Rating1"].ToString()),
+                        Members = int.Parse(reader["Members1"].ToString()),
                         Guilda = new GuildaModels()
                         {
                             Id = long.Parse(reader["guild1"].ToString()),
@@ -76,11 +78,13 @@ namespace GPCLib.DataAccess
                         }
                     });
 
+                    //Guilda 2
                     objSiege.Guilda.Add(new SiegeGuildaModels()
                     {
                         MatchScore = double.Parse(reader["MatchScore2"].ToString()),
                         Posicao = int.Parse(reader["Posicao2"].ToString()),
                         Rating = int.Parse(reader["Rating2"].ToString()),
+                        Members = int.Parse(reader["Members2"].ToString()),
                         Guilda = new GuildaModels()
                         {
                             Id = long.Parse(reader["guild2"].ToString()),
@@ -89,11 +93,13 @@ namespace GPCLib.DataAccess
                     });
 
 
+                    //Guilda 3
                     objSiege.Guilda.Add(new SiegeGuildaModels()
                     {
                         MatchScore = double.Parse(reader["MatchScore3"].ToString()),
                         Posicao = int.Parse(reader["Posicao3"].ToString()),
                         Rating = int.Parse(reader["Rating3"].ToString()),
+                        Members = int.Parse(reader["Members3"].ToString()),
                         Guilda = new GuildaModels()
                         {
                             Id = long.Parse(reader["guild3"].ToString()),
@@ -313,6 +319,7 @@ namespace GPCLib.DataAccess
             select.AppendLine("inner join dbo.Player d on d.ID = a.IdPlayer ");
             select.AppendLine("where 1 = 1 ");
             select.AppendLine("and a.idSiege in (select guild.IdSiege from dbo.SiegeGuilda guild where guild.IdGuilda = @idGuilda)  ");
+            select.AppendLine("and d.Status = 'S'");
             select.AppendLine("group by a.IdPlayer,d.Nome ");
 
             sqlCom.CommandText = select.ToString();
@@ -454,6 +461,7 @@ namespace GPCLib.DataAccess
             select.AppendLine("inner join dbo.Player b on b.ID = a.IdPlayer ");
             select.AppendLine("where 1 = 1 ");
             select.AppendLine("and a.idSiege in (select guild.IdSiege from dbo.SiegeGuilda guild where guild.IdGuilda = @idGuilda) ");
+            select.AppendLine("and b.Status = 'S'");
             select.AppendLine("group by a.IdPlayer,b.nome ");
             select.AppendLine("order by 3 desc ");
 

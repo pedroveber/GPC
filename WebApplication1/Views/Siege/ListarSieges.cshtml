@@ -3,6 +3,7 @@
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
 
+
 <h2>Sieges</h2>
 <script>
     $(document).ready(function () {
@@ -22,7 +23,7 @@
         $('#tblListaSiege').DataTable(
             {
                 "paging": true,
-                "searching": false,
+                "searching": true,
                 "lengthChange": false,
                 "language": {
                     search: "Pesquisar:",
@@ -51,10 +52,74 @@
 
         );
 
+
+        //inicio 2
+        $(function () {
+            $("#dialog").dialog({
+                autoOpen: false,
+                modal: true,
+                title: "Detalhe Guilda",
+                closeText: "",
+                buttons: {
+                    Fechar: function () {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+            $("#tblListaSiege").on("click", ".anchorDetails", function (e) {
+
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+
+                $.ajax({
+                    type: "GET",
+                    cache: false,
+                    url: "@(Url.Action("ObterResumo", "Relatorios"))",
+                    contentType: "application/JSON;charset=utf-8",
+                    data: { "id": id },
+                    dataType: "json",
+                    success: function (r) {
+                        $("#dialog").html
+                            (
+                           
+                                    '<b>' + r.Guilda.Nome + '</b><BR>' +
+                                     'GVGs <span style="font-size:smaller">(ataques)</span>: | ' + r.QtdGVGs + ' | ' +
+                                               r.VitoriaGvg + 'V | ' +
+                                               r.DerrotaGVG + 'D | <br>' +
+                                     'Siege: | ' + r.Siege +  ' | ' + r.SiegePosicao1 +  '-1º | ' + r.SiegePosicao2 + '-2º | ' + r.SiegePosicao3 + '-3º |'
+                            );
+                        $("#dialog").dialog("open");
+                    }
+                });
+            });
+        });
+        
+        //fim 2
+
     });
 
 
 </script>
+<style>
+    .no-close .ui-dialog-titlebar-close {
+  display: none;
+}
+
+    div#pop-up {
+        display: none;
+        position: absolute;
+        width: 280px;
+        padding: 10px;
+        background: #eeeeee;
+        color: #000000;
+        border: 1px solid #1a1a1a;
+        font-size: 90%;
+    }
+</style>
+<!--INICIO YESYE-->
+<div id="dialog" style="display: none" title="Detalhes Guilda"></div>
+<!--FIM TESTE-->
+
 
 <table class="table" id="tblListaSiege">
     <thead>
@@ -89,55 +154,70 @@
                 <td>
                     @if (item.Guilda.First(x => x.Posicao == 1).Guilda.Id == item.IdGuildaUsuarioLogado)
                     {
+
                         <b>
                             @Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 1).Guilda.Nome)
+                            <span style="font-size:smaller" title="Número de Jogadores">(@Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 1).Members))</span>
                         </b>
                     }
                     else
                     {
-                        @Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 1).Guilda.Nome)
+                        <a href="javascript:void(0)" class="anchorDetails" data-id="@item.Guilda.First(x => x.Posicao == 1).Guilda.Id" data-name="Detalhes GVG">
+                            @Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 1).Guilda.Nome)
+                        </a>
+                        <span style="font-size:smaller" title="Número de Jogadores">(@Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 1).Members))</span>
                     }
-                    
+
                     <img src="http://54.94.213.182/SW/content/images/Icons/@Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 1).ImagemRating)" alt="Alternate Text" height="50%" />
 
 
-        </td>
-        <td>
-            @if (item.Guilda.First(x => x.Posicao == 2).Guilda.Id == item.IdGuildaUsuarioLogado)
-            {
-                <b>
-                    @Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 2).Guilda.Nome)
-                </b>
-            }
-            else
-            {
-                @Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 2).Guilda.Nome)
-            }
-            <img src="http://54.94.213.182/SW/content/images/Icons/@Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 2).ImagemRating)" alt="Alternate Text" height="50%" />
+                </td>
+                <td>
+                    @if (item.Guilda.First(x => x.Posicao == 2).Guilda.Id == item.IdGuildaUsuarioLogado)
+                    {
+                        <b>
+                            @Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 2).Guilda.Nome)
+                            <span style="font-size:smaller" title="Número de Jogadores">(@Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 2).Members))</span>
+                        </b>
+                    }
+                    else
+                    {
+                        <a href="javascript:void(0)" class="anchorDetails" data-id="@item.Guilda.First(x => x.Posicao == 2).Guilda.Id" data-name="Detalhes GVG">
+                            @Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 2).Guilda.Nome)
+                        </a>
+                        <span style="font-size:smaller" title="Número de Jogadores">(@Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 2).Members))</span>
+                    }
+                    <img src="http://54.94.213.182/SW/content/images/Icons/@Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 2).ImagemRating)" alt="Alternate Text" height="50%" />
 
-        </td>
-        <td>
-            @if (item.Guilda.First(x => x.Posicao == 3).Guilda.Id == item.IdGuildaUsuarioLogado)
-            {
-                <b>
+                </td>
+                <td>
+                    @if (item.Guilda.First(x => x.Posicao == 3).Guilda.Id == item.IdGuildaUsuarioLogado)
+                    {
+                        <b>
+                            @Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 3).Guilda.Nome)
+                            <span style="font-size:smaller" title="Número de Jogadores">(@Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 3).Members))</span>
+                        </b>
+                    }
+                    else
+                    {
+                    <a href="javascript:void(0)" class="anchorDetails" data-id="@item.Guilda.First(x => x.Posicao == 3).Guilda.Id" data-name="Detalhes GVG">
                     @Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 3).Guilda.Nome)
-                </b>
-            }
-            else
-            {
-                @Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 3).Guilda.Nome)
-            }
-            <img src="http://54.94.213.182/SW/content/images/Icons/@Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 3).ImagemRating)" alt="Alternate Text" height="50%" />
+                    </a> 
 
-        </td>
-        <td>
-            | @Html.ActionLink("Ataques", "ListarAtaquesConsolidado", new { idSiege = item.Id }) |
-            @Html.ActionLink("Defesas", "ListarDefesasConsolidado", new { idSiege = item.Id }) |
-        </td>
-                
+    
+                        <span style="font-size:smaller" title="Número de Jogadores">(@Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 3).Members))</span>
+                    }
+                    <img src="http://54.94.213.182/SW/content/images/Icons/@Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 3).ImagemRating)" alt="Alternate Text" height="50%" />
+
+                </td>
+                <td>
+                    | @Html.ActionLink("Ataques", "ListarAtaquesConsolidado", new { idSiege = item.Id }) |
+                    @Html.ActionLink("Defesas", "ListarDefesasConsolidado", new { idSiege = item.Id }) |
+                </td>
 
 
-    </tr>
+
+            </tr>
         }
-</tbody>
+    </tbody>
 </table>

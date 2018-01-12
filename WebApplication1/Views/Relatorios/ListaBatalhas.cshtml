@@ -64,10 +64,70 @@ else
 
             );
         
+        //inicio
+        $(function () {
+            $("#dialog").dialog({
+                autoOpen: false,
+                modal: true,
+                title: "Detalhe Guilda",
+                closeText: "",
+                buttons: {
+                    Fechar: function () {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+            $("#tblListaBatalhas").on("click", ".anchorDetails", function(e){
+
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+
+                $.ajax({
+                    type: "GET",
+                    cache: false,
+                    url: "@(Url.Action("ObterResumo", "Relatorios"))",
+                    contentType: "application/JSON;charset=utf-8",
+                data: { "id": id },
+                dataType: "json",
+                success: function (r) {
+                    $("#dialog").html
+                        (
+                           
+                                '<b>' + r.Guilda.Nome + '</b><BR>' +
+                                 'GVGs <span style="font-size:smaller">(ataques)</span>: | ' + r.QtdGVGs + ' | ' +
+                                           r.VitoriaGvg + 'V | ' +
+                                           r.DerrotaGVG + 'D | <br>' +
+                                 'Siege: | ' + r.Siege +  ' | ' + r.SiegePosicao1 +  '-1º | ' + r.SiegePosicao2 + '-2º | ' + r.SiegePosicao3 + '-3º |'
+                        );
+                    $("#dialog").dialog("open");
+                }
+            });
+        });
+    });
+        
+    //fim
+        
     });
 
    
 </script>
+<style>
+    .no-close .ui-dialog-titlebar-close {
+        display: none;
+    }
+
+    div#pop-up {
+        display: none;
+        position: absolute;
+        width: 280px;
+        padding: 10px;
+        background: #eeeeee;
+        color: #000000;
+        border: 1px solid #1a1a1a;
+        font-size: 90%;
+    }
+</style>
+<div id="dialog" style="display: none" title="Detalhes Guilda"></div>
 
 <table class="table" id="tblListaBatalhas">
     <thead>
@@ -93,6 +153,7 @@ else
             <th style="text-align:center">
                 Resultado
             </th>
+            <th>Qtd. GVgs</th>
             <th></th>
             <th></th>
         </tr>
@@ -103,7 +164,10 @@ else
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.GuildaOponente)
+                    <a href="javascript:void(0)" class="anchorDetails" data-id="@item.IdGuildaOponente" data-name="Detalhes GVG">
+                        @Html.DisplayFor(modelItem => item.GuildaOponente)
+                    </a>
+                    
                 </td>
                 <td style="text-align:center">
                     @Html.DisplayFor(modelItem => item.Life)
@@ -132,6 +196,7 @@ else
                         @:D
             }
                 </td>
+                <td style="text-align:center">@Html.DisplayFor(modelItem => item.QuantidadeAtaques)</td>
                 <td>
                     @Html.ActionLink("Lutas", "ResultadoGeral", new { id = item.Id })
                 </td>

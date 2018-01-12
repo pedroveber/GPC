@@ -26,7 +26,8 @@ namespace GPCLib.DataAccess
                 select.AppendLine("top 100");
 
             select.AppendLine("Guilda,life,data,PontuacaoOponente,PontuacaoGuild,RankGuild,idGuilda,Id,IdGuildaAtacante ");
-            select.AppendLine(",(select  case when count(1) >= 1 then 1 else 0 end from dbo.lutas b where b.CodBatalhas = a.ID and b.MomentoVitoria = 'Win') Vitoria ");
+            select.AppendLine(",(select  case when count(1) >= 1 then 1 else 0 end from dbo.lutas b where b.CodBatalhas = a.ID and b.MomentoVitoria = 'Win') Vitoria, ");
+            select.AppendLine("(select count(1) from dbo.Batalhas c where c.idGuilda = a.idguilda and c.IdGuildaAtacante = a.IdGuildaAtacante) QtsAtaques");
             select.AppendLine("from dbo.Batalhas a");
             select.AppendLine("where IdGuildaAtacante = @IdGuildaAtacante ");
             select.AppendLine("order by data desc ");
@@ -59,12 +60,14 @@ namespace GPCLib.DataAccess
                     
                     objBatalha.GuildaAtacante = guildas.First(m => m.Id == long.Parse(reader["IdGuildaAtacante"].ToString()));
                     objBatalha.GuildaOponente = reader["Guilda"].ToString();
+                    objBatalha.IdGuildaOponente = int.Parse(reader["idGuilda"].ToString());
                     objBatalha.RankGuild = int.Parse(reader["RankGuild"].ToString());
                     objBatalha.Vitoria = Convert.ToBoolean(int.Parse(reader["Vitoria"].ToString()));
                     objBatalha.Life = int.Parse(reader["life"].ToString());
                     objBatalha.PontuacaoGuild= int.Parse(reader["PontuacaoGuild"].ToString());
                     objBatalha.PontuacaoOponente = int.Parse(reader["PontuacaoOponente"].ToString());
                     objBatalha.Id = long.Parse(reader["Id"].ToString());
+                    objBatalha.QuantidadeAtaques = int.Parse(reader["QtsAtaques"].ToString());
 
                     objRetorno.Add(objBatalha);
 

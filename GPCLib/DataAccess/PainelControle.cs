@@ -49,6 +49,7 @@ namespace GPCLib.DataAccess
             select.AppendLine(", (select count(Vitoria) from DB_SW.dbo.Lutas y inner join dbo.Guilda_Player y2 on y2.IdPlayer = y.CodPlayer and y2.Ativo = 1 and y2.IdGuilda = @idGuilda where y.CodPlayer = pl.id and y.Vitoria = 1 and cast(y.DataHora as date) >= @InicioSemana and cast(y.DataHora as date) <= @FimSemana) Empate ");
             select.AppendLine(", (select count(Vitoria) from DB_SW.dbo.Lutas y inner join dbo.Guilda_Player y3 on y3.IdPlayer = y.CodPlayer and y3.Ativo = 1 and y3.IdGuilda = @idGuilda where y.CodPlayer = pl.id and y.Vitoria = 0 and cast(y.DataHora as date) >= @InicioSemana and cast(y.DataHora as date) <= @FimSemana) Derrota ");
             select.AppendLine("from DB_SW.dbo.Player pl ");
+            select.AppendLine("where pl.Status = 'S' ");
 
             command.CommandText = select.ToString();
             command.CommandType = System.Data.CommandType.Text;

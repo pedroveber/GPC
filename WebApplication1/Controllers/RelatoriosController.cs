@@ -74,6 +74,21 @@ namespace WebApplication1.Controllers
 
             return View(objRetorno);
         }
+
+        [HttpGet]
+        public JsonResult ObterResumo(int id)
+        {
+            int idGuilda = 0;
+            int.TryParse(User.Identity.GetIdGuilda(), out idGuilda);
+
+            Relatorios daRelatorio = new Relatorios();
+
+            ResumoGuildaModels objResumo = new ResumoGuildaModels();
+            objResumo.Guilda = new GuildaModels();
+            objResumo = daRelatorio.ListarResumoGuilda(idGuilda, id);
+
+            return Json(objResumo, JsonRequestBehavior.AllowGet);
+        }
     }
 
 }

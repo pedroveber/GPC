@@ -23,7 +23,7 @@ namespace WebApplication1.Controllers
             Siege daSiege = new Siege();
 
             List<SiegeModels> lstSiege = new List<SiegeModels>();
-            lstSiege= daSiege.ListarSieges(idGuilda);
+            lstSiege = daSiege.ListarSieges(idGuilda);
             lstSiege = lstSiege.OrderByDescending(x => x.Data).ToList();
 
             return View(lstSiege);
@@ -75,7 +75,7 @@ namespace WebApplication1.Controllers
             lstDecks = daSiege.ListarVitoriasTimes(idGuilda);
             return View(lstDecks);
         }
-        
+
 
         public ActionResult ListarAtaquesGeral()
         {
@@ -100,5 +100,6 @@ namespace WebApplication1.Controllers
 
             return View(lstDefesas);
         }
+
     }
 }

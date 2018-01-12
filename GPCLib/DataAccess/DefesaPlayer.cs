@@ -41,6 +41,7 @@ namespace GPCLib.DataAccess
                 select.AppendLine("cast(dataHora as date) between Cast(@dataini as date) and Cast(@datafim as date)) Derrota");
                 select.AppendLine("from dbo.Player a ");
                 select.AppendLine("inner join dbo.Guilda_Player a1 on a1.idPlayer = a.ID and a1.ativo = 1 and a1.idGuilda = @idGuilda ");
+                select.AppendLine("where a.Status='S' ");
                 select.AppendLine("order by 3 desc,4 desc,5 desc");
 
                 command.CommandText = select.ToString();

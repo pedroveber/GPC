@@ -22,7 +22,7 @@ namespace GPCLib.Models
         public int Posicao { get; set; }
         public int Rating { get; set; }
         public double MatchScore { get; set; }
-
+        public int Members { get; set; }
         public string ImagemRating
         {
             get
