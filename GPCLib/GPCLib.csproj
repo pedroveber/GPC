@@ -84,6 +84,7 @@
     <Compile Include="Models\PlayerOponenteModels.cs" />
     <Compile Include="Models\ResultadoGeralModels.cs" />
     <Compile Include="Models\SiegeModels.cs" />
+    <Compile Include="Models\TimeDefesaConsolidadoModels.cs" />
     <Compile Include="Models\TorresGVG.cs" />
     <Compile Include="Models\UsuarioModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -75,6 +75,17 @@ namespace WebApplication1.Controllers
             return View(objRetorno);
         }
 
+        public ActionResult ListarDefesasGVGConsolidado()
+        {
+            int idGuilda = 0;
+            int.TryParse(User.Identity.GetIdGuilda(), out idGuilda);
+
+            List<TimeDefesaConsolidadoModels> objRetorno = new List<TimeDefesaConsolidadoModels>();
+            objRetorno = new GPCLib.DataAccess.Relatorios().ListarDefesasGVGConsolidado(7640372);
+
+            return View(objRetorno);
+        }
+
         [HttpGet]
         public JsonResult ObterResumo(int id)
         {
@@ -89,6 +100,8 @@ namespace WebApplication1.Controllers
 
             return Json(objResumo, JsonRequestBehavior.AllowGet);
         }
+
+        
     }
 
 }

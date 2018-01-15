@@ -1,0 +1,79 @@
+﻿@model IEnumerable<GPCLib.Models.TimeDefesaConsolidadoModels>
+
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+
+<h1>Defesa GVG Consolidado</h1>
+
+<p></p>
+
+<script>
+    $(document).ready(function () {
+
+        $('#tblDefesasGVG').DataTable(
+            {
+                "paging": true,
+                "searching": true,
+                "lengthChange": false,
+                "language": {
+                    search: "Pesquisar:",
+                    "lengthMenu": "Exibindo _MENU_ linhas por página",
+                    "zeroRecords": "Nenhum registro encontrado",
+                    "info": "Exibindo página _PAGE_ de _PAGES_",
+                    "infoFiltered": "(selecionado _MAX_ registros)",
+                    paginate: {
+                        first: "Primeira",
+                        previous: "Anterior",
+                        next: "Próxima",
+                        last: "Última"
+                    }
+                },
+                "pageLength": 20,
+                "order": [[2, "desc"]]
+            }
+
+        );
+
+    });
+
+
+</script>
+
+<table class="table" id="tblDefesasGVG">
+    <thead>
+        <tr>
+
+            <th>Player</th>
+            <th>Time</th>
+            <th style="text-align:center">Vitoria</th>
+            <th style="text-align:center">Empate</th>
+            <th style="text-align:center">Derrotas</th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Player.Nome)</td>
+                <td>
+                    <div id="Time1" style="background-color:#D1CAA1;border-color:black;border:solid;border-width:1px;width:320px">
+                        <div id="imagem1" style="float: left; width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.Monstro1.Imagem))" title="@Html.DisplayFor(modelItem => item.Monstro1.Nome)"></div>
+                        <div id="imagem2" style="float: left;width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.Monstro2.Imagem))" title="@Html.DisplayFor(modelItem => item.Monstro2.Nome)"></div>
+                        <div id="imagem3" style="width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.Monstro3.Imagem))" title="@Html.DisplayFor(modelItem => item.Monstro3.Nome)"></div>
+                    </div><br />
+                    <div id="Time1" style="background-color:#D1CAA1;border-color:black;border:solid;border-width:1px;width:320px">
+                        <div id="imagem4" style="float: left; width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.Monstro4.Imagem))" title="@Html.DisplayFor(modelItem => item.Monstro4.Nome)"></div>
+                        <div id="imagem5" style="float: left;width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.Monstro5.Imagem))" title="@Html.DisplayFor(modelItem => item.Monstro5.Nome)"></div>
+                        <div id="imagem6" style="width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.Monstro6.Imagem))" title="@Html.DisplayFor(modelItem => item.Monstro6.Nome)"></div>
+                    </div><p></p>
+                </td>
+
+                <td style="text-align:center">@Html.DisplayFor(modelItem => item.Vitoria)</td>
+                <td style="text-align:center">@Html.DisplayFor(modelItem => item.Empate)</td>
+                <td style="text-align:center">@Html.DisplayFor(modelItem => item.Derrota)</td>
+            </tr>
+        }
+    </tbody>
+</table>

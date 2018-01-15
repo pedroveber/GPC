@@ -33,8 +33,23 @@ namespace WebApplication1.Controllers
             DateTime inicioSemana;
             DateTime fimSemana;
 
-            inicioSemana = Convert.ToDateTime(txtDataInicio);
-            fimSemana = Convert.ToDateTime(txtDataFim);
+            if (DateTime.TryParse(txtDataInicio, out inicioSemana))
+            {
+                inicioSemana = Convert.ToDateTime(txtDataInicio);
+            }
+            else
+            {
+                inicioSemana = DateTime.Today.AddDays(((int)(DateTime.Today.DayOfWeek) * -1) + 1);
+            }
+
+            if (DateTime.TryParse(txtDataFim, out fimSemana))
+            {
+                fimSemana = Convert.ToDateTime(txtDataFim);
+            }
+            else
+            {
+                inicioSemana.AddDays(6);
+            }
 
             return View("index", new GPCLib.DataAccess.DefesaPlayer().ListarDefesasSemana(inicioSemana,fimSemana, long.Parse(User.Identity.GetIdGuilda())));
         }

@@ -37,8 +37,27 @@ namespace WebApplication1.Controllers
             long idGuilda = 0;
             long.TryParse(User.Identity.GetIdGuilda(), out idGuilda);
 
-            inicioSemana = Convert.ToDateTime(txtDataInicio);
-            fimSemana = Convert.ToDateTime(txtDataFim);
+
+            if (DateTime.TryParse(txtDataInicio, out inicioSemana))
+            {
+                inicioSemana = Convert.ToDateTime(txtDataInicio);
+            }
+            else
+            {
+                inicioSemana = DateTime.Today.AddDays(((int)(DateTime.Today.DayOfWeek) * -1) + 1);
+            }
+
+            if (DateTime.TryParse(txtDataFim,out fimSemana))
+            {
+                fimSemana = Convert.ToDateTime(txtDataFim);
+            }
+            else
+            {
+                inicioSemana.AddDays(6);
+            }
+
+            
+            
 
             
             return View("index",new GPCLib.DataAccess.PainelControle().ListaConsolidada(inicioSemana, fimSemana, idGuilda));
