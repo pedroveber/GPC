@@ -185,7 +185,7 @@ namespace GPCLib.DataAccess
 
         }
 
-        public List<TimeDefesaConsolidadoModels> ListarDefesasGVGConsolidado(long idPlayer)
+        public List<TimeDefesaConsolidadoModels> ListarDefesasGVGConsolidado(long idPlayer, int idGuilda)
         {
             try
             {
@@ -199,29 +199,39 @@ namespace GPCLib.DataAccess
                 select.AppendLine("with Defesas(IdPlayer, monstro1, monstro2, monstro3, monstro4, monstro5, monstro6, Vitoria, Empate, Derrota) ");
                 select.AppendLine("as (select ");
                 select.AppendLine("a.IdPlayer,a.monstro1,a.monstro2,a.monstro3,a.monstro4,a.monstro5,a.monstro6, ");
+                //Vitoria
                 select.AppendLine("(select COUNT(1) from dbo.PlayerDefesas b where b.IdPlayer = a.IdPlayer ");
                 select.AppendLine("-- >= Segunda ");
-                select.AppendLine("and b.DataHora >= DATEADD(wk, DATEDIFF(wk, 0,case DATEPART(dw, a.data) when 1 then dateadd(d, -1, a.data) else a.data end), 0) ");
+                select.AppendLine("and convert(date,b.DataHora) >= DATEADD(wk, DATEDIFF(wk, 0,case DATEPART(dw, a.data) when 1 then dateadd(d, -1, a.data) else a.data end), 0) ");
                 select.AppendLine("-- <= Domingo ");
-                select.AppendLine("and b.DataHora <= DATEADD(d, 6, DATEADD(wk, DATEDIFF(wk, 0,case DATEPART(dw, a.data) when 1 then dateadd(d, -1, a.data) else a.data end), 0)) ");
-                select.AppendLine("and b.Vitoria = 1 ");
-                select.AppendLine(")Vitoria, ");
-                select.AppendLine("(select COUNT(1) from dbo.PlayerDefesas b where b.IdPlayer = a.IdPlayer ");
-                select.AppendLine("-- >= Segunda ");
-                select.AppendLine("and b.DataHora >= DATEADD(wk, DATEDIFF(wk, 0,case DATEPART(dw, a.data) when 1 then dateadd(d, -1, a.data) else a.data end), 0) ");
-                select.AppendLine("-- <= Domingo ");
-                select.AppendLine("and b.DataHora <= DATEADD(d, 6, DATEADD(wk, DATEDIFF(wk, 0,case DATEPART(dw, a.data) when 1 then dateadd(d, -1, a.data) else a.data end), 0)) ");
-                select.AppendLine("and b.Vitoria = 0 ");
-                select.AppendLine(")Empate, ");
-                select.AppendLine("(select COUNT(1) from dbo.PlayerDefesas b where b.IdPlayer = a.IdPlayer ");
-                select.AppendLine("-- >= Segunda ");
-                select.AppendLine("and b.DataHora >= DATEADD(wk, DATEDIFF(wk, 0,case DATEPART(dw, a.data) when 1 then dateadd(d, -1, a.data) else a.data end), 0) ");
-                select.AppendLine("-- <= Domingo ");
-                select.AppendLine("and b.DataHora <= DATEADD(d, 6, DATEADD(wk, DATEDIFF(wk, 0,case DATEPART(dw, a.data) when 1 then dateadd(d, -1, a.data) else a.data end), 0)) ");
+                select.AppendLine("and convert(date,b.DataHora) <= DATEADD(d, 6, DATEADD(wk, DATEDIFF(wk, 0,case DATEPART(dw, a.data) when 1 then dateadd(d, -1, a.data) else a.data end), 0)) ");
                 select.AppendLine("and b.Vitoria = 2 ");
+                select.AppendLine(")Vitoria, ");
+
+                //Empate
+                select.AppendLine("(select COUNT(1) from dbo.PlayerDefesas b where b.IdPlayer = a.IdPlayer ");
+                select.AppendLine("-- >= Segunda ");
+                select.AppendLine("and convert(date,b.DataHora) >= DATEADD(wk, DATEDIFF(wk, 0,case DATEPART(dw, a.data) when 1 then dateadd(d, -1, a.data) else a.data end), 0) ");
+                select.AppendLine("-- <= Domingo ");
+                select.AppendLine("and convert(date,b.DataHora) <= DATEADD(d, 6, DATEADD(wk, DATEDIFF(wk, 0,case DATEPART(dw, a.data) when 1 then dateadd(d, -1, a.data) else a.data end), 0)) ");
+                select.AppendLine("and b.Vitoria = 1 ");
+                select.AppendLine(")Empate, ");
+
+                //Derrota
+                select.AppendLine("(select COUNT(1) from dbo.PlayerDefesas b where b.IdPlayer = a.IdPlayer ");
+                select.AppendLine("-- >= Segunda ");
+                select.AppendLine("and convert(date,b.DataHora) >= DATEADD(wk, DATEDIFF(wk, 0,case DATEPART(dw, a.data) when 1 then dateadd(d, -1, a.data) else a.data end), 0) ");
+                select.AppendLine("-- <= Domingo ");
+                select.AppendLine("and convert(date,b.DataHora) <= DATEADD(d, 6, DATEADD(wk, DATEDIFF(wk, 0,case DATEPART(dw, a.data) when 1 then dateadd(d, -1, a.data) else a.data end), 0)) ");
+                select.AppendLine("and b.Vitoria = 0 ");
                 select.AppendLine(")Derrota ");
+
                 select.AppendLine("from dbo.TimeDefesa a where 1 = 1 ");
-                //select.AppendLine("and a.IdPlayer = @idPlayer ");
+                if (idPlayer >0)
+                {
+                    select.AppendLine("and a.IdPlayer = @idPlayer ");
+                }
+                
                 select.AppendLine("and Data = (select MAX(td.data) from dbo.TimeDefesa td where td.IdPlayer = a.IdPlayer ");
                 select.AppendLine("and td.Monstro1 = a.Monstro1 ");
                 select.AppendLine("and td.Monstro2 = a.Monstro2 ");
@@ -249,6 +259,7 @@ namespace GPCLib.DataAccess
                 select.AppendLine("inner join dbo.Monstro e on e.Id = a.Monstro4 ");
                 select.AppendLine("inner join dbo.Monstro f on f.Id = a.Monstro5 ");
                 select.AppendLine("inner join dbo.Monstro g on g.Id = a.Monstro6 ");
+                select.AppendLine("inner join dbo.Guilda_Player d1 on d1.IdPlayer = a.IdPlayer and d1.ativo = 1 and d1.IdGuilda = @idGuilda ");
                 select.AppendLine("group by ");
                 select.AppendLine("a.idPlayer,p.Nome ");
                 select.AppendLine(", a.Monstro1 ,b.Nome ,b.imagem , ");
@@ -261,9 +272,14 @@ namespace GPCLib.DataAccess
                 command.CommandText = select.ToString();
                 command.CommandType = System.Data.CommandType.Text;
 
+                if (idPlayer >0)
+                {
+                    command.Parameters.Add(new SqlParameter("@idPlayer", System.Data.SqlDbType.BigInt));
+                    command.Parameters["@idPlayer"].Value = idPlayer;
+                }
 
-                command.Parameters.Add(new SqlParameter("@idPlayer", System.Data.SqlDbType.BigInt));
-                command.Parameters["@idPlayer"].Value = idPlayer;
+                command.Parameters.Add(new SqlParameter("@idGuilda", System.Data.SqlDbType.Int));
+                command.Parameters["@idGuilda"].Value = idGuilda;
 
                 List<TimeDefesaConsolidadoModels> objRetorno = new List<TimeDefesaConsolidadoModels>();
                 TimeDefesaConsolidadoModels objItem;

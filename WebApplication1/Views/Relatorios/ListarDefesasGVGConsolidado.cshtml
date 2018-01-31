@@ -39,6 +39,17 @@
 
 </script>
 
+<div style="background-color:lightgrey;padding:10px 10px 10px 10px;">
+    @using (Html.BeginForm("ListarDefesasGVGConsolidado", "Relatorios", FormMethod.Post))
+    {
+        <div>
+            @Html.Action("ComboPlayers", "Player", new { id = ViewBag.idPlayerFiltro, incluirTodos = true })
+            <input type="submit" value="Filtrar Player" class="btn btn-primary btn-sm" />
+        </div>
+    }
+</div>
+<p></p>
+
 <table class="table" id="tblDefesasGVG">
     <thead>
         <tr>
@@ -48,12 +59,16 @@
             <th style="text-align:center">Vitoria</th>
             <th style="text-align:center">Empate</th>
             <th style="text-align:center">Derrotas</th>
-
+            <th style="text-align:center">Ataques Recebidos</th>
+            <th style="text-align:center">%Vitoria</th>
+            <th style="text-align:center">%Empate</th>
+            <th style="text-align:center">%Derrotas</th>
 
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @if ( Model != null ) {
+        foreach (var item in Model)
         {
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.Player.Nome)</td>
@@ -73,7 +88,17 @@
                 <td style="text-align:center">@Html.DisplayFor(modelItem => item.Vitoria)</td>
                 <td style="text-align:center">@Html.DisplayFor(modelItem => item.Empate)</td>
                 <td style="text-align:center">@Html.DisplayFor(modelItem => item.Derrota)</td>
+                <td style="text-align:center">@(item.Derrota + item.Empate + item.Vitoria)</td>
+                
+                <td style="text-align:center">@(Math.Round(double.Parse(item.Vitoria.ToString())/double.Parse((item.Derrota + item.Empate + item.Vitoria).ToString()),2)*100)%</td>
+                <td style="text-align:center">@(Math.Round(double.Parse(item.Empate.ToString()) / double.Parse((item.Derrota + item.Empate + item.Vitoria).ToString()), 2) * 100)%</td>
+                <td style="text-align:center">@(Math.Round(double.Parse(item.Derrota.ToString()) / double.Parse((item.Derrota + item.Empate + item.Vitoria).ToString()), 2) * 100)%</td>
             </tr>
+        }
         }
     </tbody>
 </table>
+<p></p>
+<div>
+    @Html.ActionLink("<< Voltar", "GVGConsolidado")
+</div>

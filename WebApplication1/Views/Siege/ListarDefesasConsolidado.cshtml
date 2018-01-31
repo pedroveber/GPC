@@ -2,11 +2,18 @@
 
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+@if (Model.Count() > 0)
+{
+    <h2>Defesas Consolidado - @Model.First().Siege.Data.ToShortDateString()  </h2>
+    <div style="float: left;padding-right:5px"><img src="http://54.94.213.182/SW/content/images/Icons/first.png" /> @Model.First().Siege.Guilda.First(x => x.Posicao == 1).Guilda.Nome </div>
+    <div style="float: left;padding-right:5px"><img src="http://54.94.213.182/SW/content/images/Icons/second.png" /> @Model.First().Siege.Guilda.First(x => x.Posicao == 2).Guilda.Nome</div>
+    <div><img src="http://54.94.213.182/SW/content/images/Icons/third.png" /> @Model.First().Siege.Guilda.First(x => x.Posicao == 3).Guilda.Nome</div>
+}
+else
+{
+    <h2>Defesas Consolidado</h2>
+}
 
-<h2>Defesas Consolidado - @Model.First().Siege.Data.ToShortDateString()  </h2>
-<div style="float: left;padding-right:5px"><img src="http://54.94.213.182/SW/content/images/Icons/first.png" /> @Model.First().Siege.Guilda.First(x => x.Posicao == 1).Guilda.Nome </div>
-<div style="float: left;padding-right:5px"><img src="http://54.94.213.182/SW/content/images/Icons/second.png" /> @Model.First().Siege.Guilda.First(x => x.Posicao == 2).Guilda.Nome</div>
-<div><img src="http://54.94.213.182/SW/content/images/Icons/third.png" /> @Model.First().Siege.Guilda.First(x => x.Posicao == 3).Guilda.Nome</div>
 
 <script>
     $(document).ready(function () {

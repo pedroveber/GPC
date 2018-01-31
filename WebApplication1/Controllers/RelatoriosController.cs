@@ -77,11 +77,21 @@ namespace WebApplication1.Controllers
 
         public ActionResult ListarDefesasGVGConsolidado()
         {
+            ViewBag.idPlayerFiltro = 0;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ListarDefesasGVGConsolidado(string ddlPlayer)
+        {
+            int idplayer = Convert.ToInt32(Request.Form[0]);
             int idGuilda = 0;
             int.TryParse(User.Identity.GetIdGuilda(), out idGuilda);
 
             List<TimeDefesaConsolidadoModels> objRetorno = new List<TimeDefesaConsolidadoModels>();
-            objRetorno = new GPCLib.DataAccess.Relatorios().ListarDefesasGVGConsolidado(7640372);
+            objRetorno = new GPCLib.DataAccess.Relatorios().ListarDefesasGVGConsolidado(idplayer, idGuilda);
+
+            ViewBag.idPlayerFiltro = idplayer;
 
             return View(objRetorno);
         }

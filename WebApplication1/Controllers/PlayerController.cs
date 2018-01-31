@@ -20,13 +20,19 @@ namespace WebApplication1.Controllers
             return View(dPlayer.ObterPlayer(7640372));
         }
 
-        public ActionResult ComboPlayers(int id)
+        public ActionResult ComboPlayers(int id,bool incluirTodos)
         {
             long idGuilda = 0;
             long.TryParse(User.Identity.GetIdGuilda(), out idGuilda);
 
             List<GPCLib.Models.PlayerModels> players = new List<GPCLib.Models.PlayerModels>();
             players = new GPCLib.DataAccess.Player().ListarPlayers(idGuilda);
+
+            if (incluirTodos)
+            {
+                players.Insert(0, new GPCLib.Models.PlayerModels { Id = 0, Nome = "TODOS" });
+            }
+            
 
             var model = new GPCLib.Models.PlayerComboModels();
             model.SelectOptions = players.Select(x => new SelectListItem

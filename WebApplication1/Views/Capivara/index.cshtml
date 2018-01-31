@@ -212,7 +212,7 @@
         <div>
             <h2>Player</h2>
 
-            @Html.Action("ComboPlayers", "Player",new {id = Model.Player.Id })
+            @Html.Action("ComboPlayers", "Player",new {id = Model.Player.Id, incluirTodos = false })
             <input type="submit" value="Filtrar Player" class="btn btn-primary btn-sm" />
         </div>
     }
