@@ -309,11 +309,11 @@ namespace GPCLib.DataAccess
 
             select.AppendLine("select ");
             select.AppendLine("a.IdPlayer,d.Nome, ");
-            select.AppendLine("(select count(Vitoria) from dbo.SiegeAtaques b where b.IdPlayer = a.IdPlayer and b.Vitoria = 1) Vitoria, ");
-            select.AppendLine("(select count(Vitoria) from dbo.SiegeAtaques c where c.IdPlayer = a.IdPlayer and c.Vitoria = 2) Derrota, ");
-            select.AppendLine("(select count(distinct idSiege) from dbo.SiegeAtaques e where e.IdPlayer = a.IdPlayer) QtsSieges, ");
-            select.AppendLine("(select AVG(UsedUnitCount) from dbo.SiegePlayers f where f.IdPlayer = a.IdPlayer) MediaMonstros, ");
-            select.AppendLine("(select sum(1) from dbo.SiegeAtaques g where g.IdPlayer = a.IdPlayer) AtaquesRealizados ");
+            select.AppendLine("(select count(Vitoria) from dbo.SiegeAtaques b where b.IdPlayer = a.IdPlayer and b.Vitoria = 1 and b.IdSiege in (select guild.IdSiege from dbo.SiegeGuilda guild where guild.IdGuilda = @idGuilda)) Vitoria, ");
+            select.AppendLine("(select count(Vitoria) from dbo.SiegeAtaques c where c.IdPlayer = a.IdPlayer and c.Vitoria = 2 and c.IdSiege in (select guild.IdSiege from dbo.SiegeGuilda guild where guild.IdGuilda = @idGuilda)) Derrota, ");
+            select.AppendLine("(select count(distinct idSiege) from dbo.SiegeAtaques e where e.IdPlayer = a.IdPlayer and e.IdSiege in (select guild.IdSiege from dbo.SiegeGuilda guild where guild.IdGuilda = @idGuilda)) QtsSieges, ");
+            select.AppendLine("(select AVG(UsedUnitCount) from dbo.SiegePlayers f where f.IdPlayer = a.IdPlayer and f.IdSiege in (select guild.IdSiege from dbo.SiegeGuilda guild where guild.IdGuilda = @idGuilda)) MediaMonstros, ");
+            select.AppendLine("(select sum(1) from dbo.SiegeAtaques g where g.IdPlayer = a.IdPlayer and g.IdSiege in (select guild.IdSiege from dbo.SiegeGuilda guild where guild.IdGuilda = @idGuilda)) AtaquesRealizados ");
 
             select.AppendLine("from dbo.SiegePlayers a ");
             select.AppendLine("inner join dbo.Player d on d.ID = a.IdPlayer ");
@@ -455,8 +455,8 @@ namespace GPCLib.DataAccess
 
             select.AppendLine("select ");
             select.AppendLine("a.IdPlayer,b.nome, ");
-            select.AppendLine("(select count(Vitoria) from dbo.SiegePlayerDefesa b where b.IdPlayer = a.IdPlayer and b.Vitoria = 1) Vitoria, ");
-            select.AppendLine("(select count(Vitoria) from dbo.SiegePlayerDefesa b where b.IdPlayer = a.IdPlayer and b.Vitoria = 2) Derrota ");
+            select.AppendLine("(select count(Vitoria) from dbo.SiegePlayerDefesa b where b.IdPlayer = a.IdPlayer and b.Vitoria = 1 and b.IdSiege in (select guild.IdSiege from dbo.SiegeGuilda guild where guild.IdGuilda = @idGuilda)) Vitoria, ");
+            select.AppendLine("(select count(Vitoria) from dbo.SiegePlayerDefesa b where b.IdPlayer = a.IdPlayer and b.Vitoria = 2 and b.IdSiege in (select guild.IdSiege from dbo.SiegeGuilda guild where guild.IdGuilda = @idGuilda)) Derrota ");
             select.AppendLine("from dbo.SiegePlayers a ");
             select.AppendLine("inner join dbo.Player b on b.ID = a.IdPlayer ");
             select.AppendLine("where 1 = 1 ");
