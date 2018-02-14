@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Services;
 using System.IO;
+using System.Configuration;
 
 namespace WebApplication1
 {
@@ -27,7 +28,7 @@ namespace WebApplication1
                 {
                     string strdocPath;
                     //TODO: Colocar parâmetro para a Pasta
-                    strdocPath = @"C:\ArquivosProxy\Pendente\" + DateTime.Now.ToString("yyyyMMddhhmmss") + (tipo ==1 ? "GVG":(tipo==2? "SIEGE":"DEF")) + ".txt";
+                    strdocPath = ConfigurationManager.AppSettings["LocalPastaPendente"].ToString() + DateTime.Now.ToString("yyyyMMddhhmmss") + (tipo ==1 ? "GVG":(tipo==2? "SIEGE":"DEF")) + ".txt";
                     FileStream objfilestream = new FileStream(strdocPath, FileMode.Create, FileAccess.ReadWrite);
                     objfilestream.Write(docbinaryarray, 0, docbinaryarray.Length);
                     objfilestream.Close();
