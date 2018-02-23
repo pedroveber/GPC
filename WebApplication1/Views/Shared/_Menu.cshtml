@@ -13,6 +13,7 @@
                    new { LinkText="Defesas Semana", ActionName="index",ControllerName="DefesasSemana",Roles="All"  },
                    new { LinkText="Defesa Consolidado", ActionName="ListarDefesasGVGConsolidado",ControllerName="Relatorios",Roles="All"  },
                    new { LinkText="Capivara", ActionName="index/0",ControllerName="Capivara",Roles="All"  },
+                   new { LinkText="Sobre", ActionName="About",ControllerName="Home",Roles="All"  },
                    new { LinkText="Player x Guilda", ActionName="index",ControllerName="Guilda",Roles="Admin"  },
                    new { LinkText="Usuário x Player", ActionName="UsuarioPlayer",ControllerName="Guilda",Roles="Admin"  },
                    new { LinkText="Sobre", ActionName="About",ControllerName="Home",Roles="Anonymous"  },
@@ -37,7 +38,8 @@
                 {
                     var userManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
                     var userRoles = userManager.GetRoles(User.Identity.GetUserId());
-
+                
+                    //Pega todos os Menus com da Siege
                     var linksSiege = menus.Where(x => x.Roles == "All" && x.ControllerName == "Siege").ToList();
                     @:<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Siege</a><ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
 
@@ -49,6 +51,7 @@
 
                     @:</ul></li> 
 
+                    //Todos os Menus da GVG
                     var linksGVG = menus.Where(x => x.Roles == "All" && x.ControllerName == "Relatorios" || x.ControllerName == "PainelControle" || x.ControllerName == "DefesasSemana").ToList();
                     @:<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GVG</a><ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
 
@@ -61,9 +64,7 @@
                     @:</ul></li>
 
 
-                    //var links = from item in menus
-                    //            where item.Roles.Split(new String[] { "," }, StringSplitOptions.RemoveEmptyEntries).Any(x => x == "All")
-                    //            select item;
+                    //Todos que Não são SIEGE, GVG e Re
                     var links = menus.Where(x => x.Roles == "All" && x.ControllerName != "Siege" && x.ControllerName != "Relatorios" && x.ControllerName != "PainelControle" && x.ControllerName != "DefesasSemana").ToList();
 
                     foreach (var link in links)

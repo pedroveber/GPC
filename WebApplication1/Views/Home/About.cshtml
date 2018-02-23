@@ -1,10 +1,23 @@
-﻿@{
+﻿
+@{
     ViewBag.Title = "Sobre GPC";
 }
+<p></p>
+<ul>
+    <li><a href="#sobre"> Sobre</a></li>
+    <li><a href="#comofunciona"> Como Funciona</a></li>
+    <li><a href="#passoapasso"> Passo a Passo</a></li>
+    <li><a href="#atualizandogvg"> Atualizando a GVG</a></li>
+    <li><a href="#atualizandodefesas"> Atualizando Defesas</a></li>
+    <li><a href="#atualizandosiege"> Atualizando a Siege</a></li>
+    <li><a href="#errosconhecidos"> Erros conhecidos</a></li>
+    <li><a href="#funcionalidades"> Funcionalidades</a></li>
+    <li><a href="#quantocusta"> Quanto custa</a></li>
+</ul>
+<p></p>
+
 <h2>@ViewBag.Title.</h2>
-
-
-<p>O GPC - Guilda Painel de Controle surgiu como uma iniciativa independente, pois eu como líder de Guilda tinha uma vontade de tornar o controle mais profissional. Conseguir identificar quem são os jogadores que não respeitam as regras,
+<p id="sobre">O GPC - Guilda Painel de Controle surgiu como uma iniciativa independente, pois eu como líder de Guilda tinha uma vontade de tornar o controle mais profissional. Conseguir identificar quem são os jogadores que não respeitam as regras,
     como é nosso padrão de ataques e defesas e quais são nossos melhores times de defesa? </p> 
 <p>
     Manter um histórico de todas as GVGs, o ranking, quem são nossos melhores atacantes, e os melhores defensores? Tentei criar funcionalidades e relatórios que respondam a estas perguntas.
@@ -15,7 +28,7 @@
     O site está em constante evolução, e aceito sugestões para torná-lo cada vez melhor. 
 </p>
 
-<h1>Como Funciona?</h1>
+<h1 id="comofunciona">Como Funciona?</h1>
 
 <p>
     Para ter todo esse controle citado acima, o mais importante são os dados. Mas como tirar as informações de dentro do Summoners War e passar para o site? Para isso foi desenvolvido um aplicativo que deve ser executado em seu computador.
@@ -30,7 +43,7 @@
 <p>
     <img src="~/Resources/diagrama.png" />
 </p>
-<h1>Passo a Passo</h1>
+<h1 id="passoapasso">Passo a Passo</h1>
 <h4>1- Iniciar o Proxy</h4>
 1.1) Executar o arquivo Proxy.exe<p></p>
 1.2) Na primeira utilização não esquecer de configurar o local onde será gravado o arquivo que será capturado do jogo. <p></p>
@@ -44,7 +57,7 @@
 Se estiver tudo certo, enquanto o jogo abre já é possível ver o proxy em funcionamento.<p></p>
 <img src="~/Resources/proxy02.png"  width="80%"/>
 
-<h4>4.1 - Atualizando a GVG</h4><p></p>
+<h4 id="atualizandogvg">4.1 - Atualizando a GVG</h4><p></p>
 4.1.1)Abra a tela principal da GVG.<br /> Neste momento, já deve ficar "verde" as 3 últimas linhas no GPC.
 <div style="color:red">
     Importante!
@@ -60,14 +73,76 @@ Uma coisa que aprendi foi, quando o jogo abrir, espere alguns segundos (aproxima
 4.1.4)Clique em "Contribuição"<br />
 <img src="~/Resources/proxy06.png" width="80%" /><p></p>
 4.1.5)Pronto! Agora todas as linhas devem estar verdes. Basta pressionar o botão "Atualizar Dados GVG" e esperar alguns segundos.<br />
-4.1.6)Só isso. Todo o processo deve demorar apenas alguns minutos. <br />
+4.1.6)<span style="color:red">Atenção!</span> Se quiser gravar os times da guilda oponente basta clicar em cada uma das torres antes de atualizar. =) <br />
+As defesas aparecerão no menu GVG \ Resultado Geral\ Link "Torres"<br />
+<img src="~/Resources/torresgvg.png" width="80%" /><p></p>
+<img src="~/Resources/torresgvg2.png" width="60%" /><p></p>
+4.1.7)Só isso. Todo o processo deve demorar apenas alguns minutos. <br />
 
 
-<h4>4.2 - Atualizando Defesas</h4>
-<h4>5 - Atualizando a Siege</h4>
+<h4 id="atualizandodefesas">4.2 - Atualizando Defesas</h4>
+4.2.1)No programa GPC vá na aba "Defesa"<br />
+<img src="~/Resources/abadefesa.png" width="60%" /><p></p>
+4.2.2)Clique em "Membros".<br />
+<img src="~/Resources/membros.png" /><p></p>
+4.2.3)Para cada membro clique em "Info de Batalha" e depois em "Info de Defesa"<br /> 
+<img src="~/Resources/infodefesa.png" width="60%" /><p></p>
+4.2.4)Volte ao programa GPC e clique em "Validar Arquivo". Deve ser exibida uma lista com o nome de todos os jogadores que você clicou.<br />
+<img src="~/Resources/Validararquivo.png" width="60%" /><p></p>
+4.2.5)Clique em "Efetivar Carga"<br />
+4.2.6)Pronto! as defesas aparecem nos menus:<br />
+<ul>
+    <li>Capivara</li>
+    <li>GVG - Defesa Consolidado</li>
+</ul>
 
-<h1>Funcionalidades</h1>
+<h4 id="atualizandosiege">5 - Atualizando a Siege</h4>
+5.1) No programa GPC vá na aba "Atualizar Siege""<br />
+<img src="~/Resources/abaatualizarsiege.png" width="60%" /><p></p>
+5.2) Abra a tela principal da Siege<br />
+<img src="~/Resources/siege.png" /><p></p>
+5.3) Clique em "Info"<br />
+5.4) Clique nas abas: "Ataque", "Defesas", "Registro de Batalha" e "Contribuição"<br />
+5.5) Feche esta janela e clique agora em "Membro"<br />
+5.6) Para cada membro clique em "Info de Batalha". Depois em "Info de Ataque" e "Info de Defesa".<br />
+<img src="~/Resources/siegeinfo.png" /><p></p>
+5.7) Depois no GPC só clicar em "Atualizar Dados Siege"<br />
+5.8) As informações das Siege aparecem em todo o menu "Siege" no site. 
+<p></p>
+<h4 id="errosconhecidos">6 - Erros conhecidos</h4>
+6.1) Durante a leitura do arquivo full_log.txt pode acontecer um erro de concorrência entre o GPC e o Proxy. Estou analisando uma solução para este problema, mas até lá 
+apenas clicar em "OK" e continuar o processo. <br />
+<img src="~/Resources/erroaoatt.png" /><p></p>
 
-<h1>Quanto custa?</h1>
+<h1 id="funcionalidades">Funcionalidades</h1>
+<h3>Siege</h3>
+<ul>
+    <li>Resultado Geral</li>
+    Lista de todas as Sieges que a Guild participou, encontramos aqui a lista dos ataques e defesas de cada Siege. 
+    <li>Lista Ataques</li>
+    Lista geral de todos os ataques de todas as sieges. O total de vitórias, derrotas, % de vitória, etc.
+    <li>Lista Defesas</li>
+    Lista geral de todas as defesas de todas as sieges. O total de vitórias, derrotas, % de vitória, etc.
+    <li>Melhores Defesas</li>
+    Lista todos os times que tiveram pelo menos 1 vitória com sucesso na defesa da Siege. 
+</ul>
+<p></p>
+<h3>GVG</h3>
+<ul>
+    <li>Resultado Geral</li>
+    Lista de todas as GVGs que a Guild participou, encontramos aqui a lista dos ataques  e as torres inimigas. 
+    <li>Ataques Semana</li>
+    Lista todos os ataques da semana atual. É nesta funcionalidade que o líder irá acompanhar se o membro deixou de atacar, 
+    se infrigiu a regra dos 6 pontos, além do consolidado (semanal) das vitórias, empates e derrotas. 
+    <li>Defesas Semana</li>
+    Lista das defesas da semana de cada membro da Guilda.
+    <li>Defesa Consolidado</li>
+    Lista o time e a quantidade de defesa. Esta tela mostra dados de todas as guildas que você fez parte, e não somente da atual. 
+</ul>
+<h2>Capivara</h2>
+Aqui é um consolidado de quase todas as informações das GVGs, tem-se o percentual de vitórias, empates, derrotas
+
+
+<h1 id="quantocusta">Quanto custa?</h1>
 
 
