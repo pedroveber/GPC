@@ -4,6 +4,7 @@
 @{
     var menus = new[]
                 {
+                   //Usuario Logado
                    new { LinkText="Resultado Geral", ActionName="ListarSieges",ControllerName="Siege",Roles="All"  },
                    new { LinkText="Lista Ataques", ActionName="ListarAtaquesGeral",ControllerName="Siege",Roles="All"  },
                    new { LinkText="Lista Defesas", ActionName="ListarDefesasGeral",ControllerName="Siege",Roles="All"  },
@@ -13,9 +14,15 @@
                    new { LinkText="Defesas Semana", ActionName="index",ControllerName="DefesasSemana",Roles="All"  },
                    new { LinkText="Defesa Consolidado", ActionName="ListarDefesasGVGConsolidado",ControllerName="Relatorios",Roles="All"  },
                    new { LinkText="Capivara", ActionName="index/0",ControllerName="Capivara",Roles="All"  },
+                   new { LinkText="Download", ActionName="Download",ControllerName="Home",Roles="All"  },
                    new { LinkText="Sobre", ActionName="About",ControllerName="Home",Roles="All"  },
+
+                   //Admin
                    new { LinkText="Player x Guilda", ActionName="index",ControllerName="Guilda",Roles="Admin"  },
                    new { LinkText="Usuário x Player", ActionName="UsuarioPlayer",ControllerName="Guilda",Roles="Admin"  },
+
+                   //Não Logado
+                   new { LinkText="Download", ActionName="Download",ControllerName="Home",Roles="Anonymous"  },
                    new { LinkText="Sobre", ActionName="About",ControllerName="Home",Roles="Anonymous"  },
                    new { LinkText="Contato", ActionName="Contact",ControllerName="Home",Roles="Anonymous"  },
 

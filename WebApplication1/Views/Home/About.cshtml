@@ -17,15 +17,17 @@
 <p></p>
 
 <h2>@ViewBag.Title.</h2>
-<p id="sobre">O GPC - Guilda Painel de Controle surgiu como uma iniciativa independente, pois eu como líder de Guilda tinha uma vontade de tornar o controle mais profissional. Conseguir identificar quem são os jogadores que não respeitam as regras,
-    como é nosso padrão de ataques e defesas e quais são nossos melhores times de defesa? </p> 
+<p id="sobre">
+    O GPC - Guilda Painel de Controle surgiu como uma iniciativa independente, pois eu como líder de Guilda tinha uma vontade de tornar o controle mais profissional. Conseguir identificar quem são os jogadores que não respeitam as regras,
+    como é nosso padrão de ataques e defesas e quais são nossos melhores times de defesa?
+</p>
 <p>
     Manter um histórico de todas as GVGs, o ranking, quem são nossos melhores atacantes, e os melhores defensores? Tentei criar funcionalidades e relatórios que respondam a estas perguntas.
     Abaixo vou explicar como esta ferramenta funciona.
 </p>
 
 <p>
-    O site está em constante evolução, e aceito sugestões para torná-lo cada vez melhor. 
+    O site está em constante evolução, e aceito sugestões para torná-lo cada vez melhor.
 </p>
 
 <h1 id="comofunciona">Como Funciona?</h1>
@@ -33,7 +35,7 @@
 <p>
     Para ter todo esse controle citado acima, o mais importante são os dados. Mas como tirar as informações de dentro do Summoners War e passar para o site? Para isso foi desenvolvido um aplicativo que deve ser executado em seu computador.
 </p>
-    <p>
+<p>
     Ele é integrado com o SWProxy desenvolvido por um membro da comunidade (<a href="https://github.com/kakaroto">kakaroto</a>).
     O proxy intercepta os dados enviado para o jogo e gera um arquivo em seu computador. O aplicativo GPC lê este arquivo e envia para o site. Todo o processo não demora mais do que 5 min.
 </p>
@@ -55,7 +57,7 @@
 <img src="~/Resources/gpc01.png" />
 <h4>3- Iniciar o Jogo</h4><p></p>
 Se estiver tudo certo, enquanto o jogo abre já é possível ver o proxy em funcionamento.<p></p>
-<img src="~/Resources/proxy02.png"  width="80%"/>
+<img src="~/Resources/proxy02.png" width="80%" />
 
 <h4 id="atualizandogvg">4.1 - Atualizando a GVG</h4><p></p>
 4.1.1)Abra a tela principal da GVG.<br /> Neste momento, já deve ficar "verde" as 3 últimas linhas no GPC.
@@ -85,7 +87,7 @@ As defesas aparecerão no menu GVG \ Resultado Geral\ Link "Torres"<br />
 <img src="~/Resources/abadefesa.png" width="60%" /><p></p>
 4.2.2)Clique em "Membros".<br />
 <img src="~/Resources/membros.png" /><p></p>
-4.2.3)Para cada membro clique em "Info de Batalha" e depois em "Info de Defesa"<br /> 
+4.2.3)Para cada membro clique em "Info de Batalha" e depois em "Info de Defesa"<br />
 <img src="~/Resources/infodefesa.png" width="60%" /><p></p>
 4.2.4)Volte ao programa GPC e clique em "Validar Arquivo". Deve ser exibida uma lista com o nome de todos os jogadores que você clicou.<br />
 <img src="~/Resources/Validararquivo.png" width="60%" /><p></p>
@@ -107,42 +109,44 @@ As defesas aparecerão no menu GVG \ Resultado Geral\ Link "Torres"<br />
 5.6) Para cada membro clique em "Info de Batalha". Depois em "Info de Ataque" e "Info de Defesa".<br />
 <img src="~/Resources/siegeinfo.png" /><p></p>
 5.7) Depois no GPC só clicar em "Atualizar Dados Siege"<br />
-5.8) As informações das Siege aparecem em todo o menu "Siege" no site. 
+5.8) As informações das Siege aparecem em todo o menu "Siege" no site.
 <p></p>
 <h4 id="errosconhecidos">6 - Erros conhecidos</h4>
-6.1) Durante a leitura do arquivo full_log.txt pode acontecer um erro de concorrência entre o GPC e o Proxy. Estou analisando uma solução para este problema, mas até lá 
+6.1) Durante a leitura do arquivo full_log.txt pode acontecer um erro de concorrência entre o GPC e o Proxy. Estou analisando uma solução para este problema, mas até lá
 apenas clicar em "OK" e continuar o processo. <br />
 <img src="~/Resources/erroaoatt.png" /><p></p>
 
 <h1 id="funcionalidades">Funcionalidades</h1>
 <h3>Siege</h3>
 <ul>
-    <li>Resultado Geral</li>
-    Lista de todas as Sieges que a Guild participou, encontramos aqui a lista dos ataques e defesas de cada Siege. 
-    <li>Lista Ataques</li>
-    Lista geral de todos os ataques de todas as sieges. O total de vitórias, derrotas, % de vitória, etc.
-    <li>Lista Defesas</li>
-    Lista geral de todas as defesas de todas as sieges. O total de vitórias, derrotas, % de vitória, etc.
-    <li>Melhores Defesas</li>
-    Lista todos os times que tiveram pelo menos 1 vitória com sucesso na defesa da Siege. 
+    <li>
+        <b> Resultado Geral: </b>Lista de todas as Sieges que a Guild participou, encontramos aqui a lista dos ataques e defesas de cada Siege.
+    </li>
+    <li><b>Lista Ataques:</b> Lista geral de todos os ataques de todas as sieges. O total de vitórias, derrotas, % de vitória, etc.</li>
+    <li><b>Lista Defesas:</b> Lista geral de todas as defesas de todas as sieges. O total de vitórias, derrotas, % de vitória, etc.</li>
+    <li><b>Melhores Defesas:</b> Lista todos os times que tiveram pelo menos 1 vitória com sucesso na defesa da Siege. </li>
+
 </ul>
 <p></p>
 <h3>GVG</h3>
 <ul>
-    <li>Resultado Geral</li>
-    Lista de todas as GVGs que a Guild participou, encontramos aqui a lista dos ataques  e as torres inimigas. 
-    <li>Ataques Semana</li>
-    Lista todos os ataques da semana atual. É nesta funcionalidade que o líder irá acompanhar se o membro deixou de atacar, 
-    se infrigiu a regra dos 6 pontos, além do consolidado (semanal) das vitórias, empates e derrotas. 
-    <li>Defesas Semana</li>
-    Lista das defesas da semana de cada membro da Guilda.
-    <li>Defesa Consolidado</li>
-    Lista o time e a quantidade de defesa. Esta tela mostra dados de todas as guildas que você fez parte, e não somente da atual. 
+    <li><b>Resultado Geral:</b> Lista de todas as GVGs que a Guild participou, encontramos aqui a lista dos ataques  e as torres inimigas. </li>
+
+    <li>
+        <b>Ataques Semana:</b>Lista todos os ataques da semana atual. É nesta funcionalidade que o líder irá acompanhar se o membro deixou de atacar,
+        se infrigiu a regra dos 6 pontos, além do consolidado (semanal) das vitórias, empates e derrotas.
+    </li>
+
+    <li><b>Defesas Semana:</b> Lista das defesas da semana de cada membro da Guilda.</li>
+
+    <li><b>Defesa Consolidado:</b> Lista o time e a quantidade de defesa. Esta tela mostra dados de todas as guildas que você fez parte, e não somente da atual. </li>
+
 </ul>
 <h2>Capivara</h2>
-Aqui é um consolidado de quase todas as informações das GVGs, tem-se o percentual de vitórias, empates, derrotas
+Aqui é um consolidado de quase todas as informações das GVGs, tem-se o percentual de vitórias, empates e derrotas.
 
 
 <h1 id="quantocusta">Quanto custa?</h1>
-
+O valor por guilda é <b>R$ 30,00</b> por mês e dá direito a qualquer número de integrantes. Por favor entrar em contato pelo email <u>swguildgpc@gmail.com</u> para eu enviar os dados de pagamento. 
+Futuramente o site será integrado com o Paypal.
 
