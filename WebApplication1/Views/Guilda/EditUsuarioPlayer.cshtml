@@ -1,7 +1,8 @@
 ﻿@model GPCLib.Models.PlayerUsuarioModels
 
 @{
-    ViewBag.Title = "EditUsuarioPlayer";
+    ViewBag.Title = "Editar Usuario x Guilda";
+    ViewBag.MetaDescription = "Possibilita o cadastramento de usuários do site com o respectivo player de uma guilda.";
 }
 
 <h2>EditUsuarioPlayer</h2>
@@ -10,7 +11,7 @@
 @using (Html.BeginForm("GravarUsuariosPlayer", "Guilda", FormMethod.Post, new { id = "myForm" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>PlayerUsuarioModels</h4>
         <hr />
@@ -36,7 +37,7 @@
             @Html.LabelFor(model => model.Player, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
-                   @Html.DisplayFor(model => model.Player.Id) - @Html.DisplayFor(model => model.Player.Nome)
+                    @Html.DisplayFor(model => model.Player.Id) - @Html.DisplayFor(model => model.Player.Nome)
                 </div>
             </div>
         </div>
@@ -46,13 +47,13 @@
             <div class="col-md-10">
                 <div class="checkbox">
                     @Html.DropDownListFor(model => model.UsuarioCombo.SelectedOption, Model.UsuarioCombo.SelectOptions, new { @id = "ddlPlayer", @class = "control-label" })
-                    @Html.HiddenFor(Model => Model.Player.Id, new {id = "hdnIdPlayer" })
+                    @Html.HiddenFor(Model => Model.Player.Id, new { id = "hdnIdPlayer" })
                     @Html.HiddenFor(Model => Model.Guilda.Id, new { id = "hdnIdGuilda" })
                 </div>
             </div>
         </div>
         <p></p>
-        
+
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

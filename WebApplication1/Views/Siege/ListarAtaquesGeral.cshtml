@@ -1,5 +1,9 @@
 ﻿@model IEnumerable<GPCLib.Models.AtaquesSiegeModels>
 
+@{
+    ViewBag.Title = "Lista de Ataques Geral Siege";
+    ViewBag.MetaDescription = "Exibe lista de todos os ataques realizados pelos integrantes da guilda nas Sieges. Consolido das vitórias, empate e derrotas de todas as Sieges.";
+}
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
 
@@ -61,7 +65,7 @@
                 <td style="text-align:center">@Html.DisplayFor(modelItem => item.MediaMonstros)</td>
                 <td style="text-align:center">@Html.DisplayFor(modelItem => item.AtaquesRealizados)</td>
                 <td style="text-align:center">@(item.QuantidadeSieges * 10)</td>
-                <td style="text-align:center">@Math.Round((Convert.ToDouble(item.Vitoria) / Convert.ToDouble(item.AtaquesRealizados)*100.00),2).ToString("F")</td>
+                <td style="text-align:center">@Math.Round((Convert.ToDouble(item.Vitoria) / Convert.ToDouble(item.AtaquesRealizados) * 100.00), 2).ToString("F")</td>
 
             </tr>
         }

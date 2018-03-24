@@ -1,5 +1,11 @@
 ﻿@model IEnumerable<GPCLib.Models.DefesaSiegeModels>
 
+@{
+    ViewBag.Title = "Defesas Consolidado Siege";
+    ViewBag.MetaDescription = "Exibe quantidade de ataques recebidos, vitórias e derrotas das defesas de uma Siege.";
+}
+
+
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
 @if (Model.Count() > 0)
@@ -55,7 +61,7 @@ else
             <th style="text-align:center">Derrota</th>
             <th style="text-align:center">Total Atq. Recebidos</th>
             <th></th>
-            
+
         </tr>
     </thead>
     <tbody>
@@ -65,7 +71,7 @@ else
                 <td>@Html.DisplayFor(modelItem => item.Player.Nome)</td>
                 <td style="text-align:center">@Html.DisplayFor(modelItem => item.Vitoria)</td>
                 <td style="text-align:center">@Html.DisplayFor(modelItem => item.Derrota)</td>
-                <td style="text-align:center">@Html.DisplayFor(modelItem => item.TotalAtaquesRecebidos)</td>          
+                <td style="text-align:center">@Html.DisplayFor(modelItem => item.TotalAtaquesRecebidos)</td>
                 <td>@Html.ActionLink("Decks", "ListarDeckPlayer", new { idSiege = item.Siege.Id, idPlayer = item.Player.Id }) </td>
             </tr>
         }

@@ -3,7 +3,12 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guild Painel Controle</title>
+    <title>GPC - @ViewBag.Title</title>
+
+    @if (ViewBag.MetaDescription != null)
+    {
+        <meta name="description" content="@ViewBag.MetaDescription" />
+    }
 
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/jqueryui")
@@ -19,14 +24,13 @@
 </head>
 <body>
     <nav>
-        
         @if (Session["MyMenu"] == null)
         {
             Session["MyMenu"] = Html.Partial("~/Views/Shared/_Menu.cshtml");
         }
         @Session["MyMenu"]
     </nav>
-
+    <p></p>
 
     <div class="container body-content">
         @RenderBody()

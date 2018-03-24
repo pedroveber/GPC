@@ -1,5 +1,10 @@
 ﻿@model IEnumerable<GPCLib.Models.BatalhaModels>
 
+@{
+    ViewBag.Title = "Lista de GVGs";
+    ViewBag.MetaDescription = "Lista de todas as GVGs que foram carregadas no site. Contém informações de Data, Pontuação, Rank, Resultado, as defesas do inimigo (Torres), etc. ";
+}
+
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
 
@@ -63,7 +68,7 @@ else
             }
 
             );
-        
+
         //inicio
         $(function () {
             $("#dialog").dialog({
@@ -92,7 +97,7 @@ else
                 success: function (r) {
                     $("#dialog").html
                         (
-                           
+
                                 '<b>' + r.Guilda.Nome + '</b><BR>' +
                                  'GVGs <span style="font-size:smaller">(ataques)</span>: | ' + r.QtdGVGs + ' | ' +
                                            r.VitoriaGvg + 'V | ' +
@@ -104,12 +109,12 @@ else
             });
         });
     });
-        
+
     //fim
-        
+
     });
 
-   
+
 </script>
 <style>
     .no-close .ui-dialog-titlebar-close {
@@ -167,7 +172,7 @@ else
                     <a href="javascript:void(0)" class="anchorDetails" data-id="@item.IdGuildaOponente" data-name="Detalhes GVG">
                         @Html.DisplayFor(modelItem => item.GuildaOponente)
                     </a>
-                    
+
                 </td>
                 <td style="text-align:center">
                     @Html.DisplayFor(modelItem => item.Life)
@@ -190,11 +195,11 @@ else
                     @if (item.Vitoria)
                     {
                         @:V
-            }
+                    }
                     else
                     {
                         @:D
-            }
+                    }
                 </td>
                 <td style="text-align:center">@Html.DisplayFor(modelItem => item.QuantidadeAtaques)</td>
                 <td>

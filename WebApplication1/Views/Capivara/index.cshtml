@@ -1,5 +1,10 @@
 ﻿@model GPCLib.Models.CapivaraModels
 
+@{
+    ViewBag.Title = "Capivara";
+    ViewBag.MetaDescription = "Consolidado de todas as informações dos integrantes da guild. Total de ataques e defesas, percentual de vitórias e derrotas. Geração de gráfico";
+}
+
 <!--CAPIVARA-->
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
@@ -155,7 +160,7 @@
 
             }
 
-            );
+        );
 
         $('#tblAtaqueSemana').DataTable(
             {
@@ -181,7 +186,7 @@
 
             }
 
-            );
+        );
 
     });
 
@@ -212,7 +217,7 @@
         <div>
             <h2>Player</h2>
 
-            @Html.Action("ComboPlayers", "Player",new {id = Model.Player.Id, incluirTodos = false })
+            @Html.Action("ComboPlayers", "Player", new { id = Model.Player.Id, incluirTodos = false })
             <input type="submit" value="Filtrar Player" class="btn btn-primary btn-sm" />
         </div>
     }
@@ -266,7 +271,7 @@
                 </thead>
                 <tbody>
                     @foreach (var item in Model.AtaquesConsolidado)
-            {
+                    {
                         <tr>
                             <td>
                                 @Html.DisplayFor(model => item.Data)
@@ -387,7 +392,7 @@
                 </thead>
                 <tbody>
                     @foreach (var item in Model.DefesasConsolidado)
-            {
+                    {
                         <tr>
                             <td>
                                 @Html.DisplayFor(model => item.Data)
@@ -541,8 +546,9 @@
     <div class="row">
         <div class="clearfix"></div>
         <div class="col-md-12"><b>Última Defesa cadastrada. </b></div>
-        <div class="col-md-12"><b>Vitórias: @Html.DisplayFor(m => m.TimeGVG.Vitoria) | Empates: @Html.DisplayFor(m => m.TimeGVG.Empate) | Derrotas: @Html.DisplayFor(m => m.TimeGVG.Derrota) </b>
-        <i> (De @DateTime.Today.AddDays(((int)(DateTime.Today.DayOfWeek) * -1) + 1).AddDays(-8).ToShortDateString() a @DateTime.Today.AddDays(((int)(DateTime.Today.DayOfWeek) * -1) + 1).AddDays(-1).ToShortDateString())</i>
+        <div class="col-md-12">
+            <b>Vitórias: @Html.DisplayFor(m => m.TimeGVG.Vitoria) | Empates: @Html.DisplayFor(m => m.TimeGVG.Empate) | Derrotas: @Html.DisplayFor(m => m.TimeGVG.Derrota) </b>
+            <i> (De @DateTime.Today.AddDays(((int)(DateTime.Today.DayOfWeek) * -1) + 1).AddDays(-8).ToShortDateString() a @DateTime.Today.AddDays(((int)(DateTime.Today.DayOfWeek) * -1) + 1).AddDays(-1).ToShortDateString())</i>
         </div>
         <div class="col-md-6" style="background-color:coral;border-color:black;border:solid;border-width:1px;">
             <div>Time 1</div>

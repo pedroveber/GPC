@@ -1,5 +1,11 @@
 ﻿@model IEnumerable<GPCLib.Models.DefesaSiegeModels>
 
+@{
+    ViewBag.Title = "Defesas Geral Siege";
+    ViewBag.MetaDescription = "Exibe lista de todos as defesas realizados pelos integrantes da guilda em todas as Sieges.";
+}
+
+
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
 
@@ -42,7 +48,7 @@
             <th style="text-align:center">Vitória</th>
             <th style="text-align:center">Derrota</th>
             <th style="text-align:center">Total Atq. Recebidos</th>
-            
+
 
         </tr>
     </thead>
@@ -54,7 +60,7 @@
                 <td style="text-align:center">@Html.DisplayFor(modelItem => item.Vitoria)</td>
                 <td style="text-align:center">@Html.DisplayFor(modelItem => item.Derrota)</td>
                 <td style="text-align:center">@Html.DisplayFor(modelItem => item.TotalAtaquesRecebidos)</td>
-             </tr>
+            </tr>
         }
     </tbody>
 </table>

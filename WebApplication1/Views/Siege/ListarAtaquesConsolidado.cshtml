@@ -1,8 +1,13 @@
 ﻿@model IEnumerable<GPCLib.Models.AtaquesSiegeModels>
 
+@{
+    ViewBag.Title = "Ataques Consolidado Siege";
+    ViewBag.MetaDescription = "Exibe lista de todos os ataques realizados pelos integrantes da guilda de uma Siege.";
+}
+
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
-@if (Model.Count() >0)
+@if (Model.Count() > 0)
 {
     <h2>Ataques Consolidado - @Model.First().Siege.Data.ToShortDateString()  </h2>
     <div style="float: left;padding-right:5px"><img src="http://54.94.213.182/SW/content/images/Icons/first.png" /> @Model.First().Siege.Guilda.First(x => x.Posicao == 1).Guilda.Nome </div>
@@ -51,10 +56,10 @@ else
     <thead>
         <tr>
             <th>Nome</th>
-            <th  style="text-align:center">Vitória</th>
-            <th  style="text-align:center">Derrota</th>
-            <th  style="text-align:center">Monstros Não Usados</th>
-            
+            <th style="text-align:center">Vitória</th>
+            <th style="text-align:center">Derrota</th>
+            <th style="text-align:center">Monstros Não Usados</th>
+
 
         </tr>
     </thead>
@@ -63,10 +68,10 @@ else
         {
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.Player.Nome)</td>
-                <td  style="text-align:center">@Html.DisplayFor(modelItem => item.Vitoria)</td>
-                <td  style="text-align:center">@Html.DisplayFor(modelItem => item.Derrota)</td>
-                <td  style="text-align:center">@Html.DisplayFor(modelItem => item.MonstrosNaoUsados)</td>
-                
+                <td style="text-align:center">@Html.DisplayFor(modelItem => item.Vitoria)</td>
+                <td style="text-align:center">@Html.DisplayFor(modelItem => item.Derrota)</td>
+                <td style="text-align:center">@Html.DisplayFor(modelItem => item.MonstrosNaoUsados)</td>
+
             </tr>
         }
     </tbody>

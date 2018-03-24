@@ -1,5 +1,10 @@
 ﻿@model GPCLib.Models.DefesaSemanaModels
 
+@{
+    ViewBag.Title = "Defesas da Semana";
+    ViewBag.MetaDescription = "Exibe lista de todos as defesas realizados pelos integrantes da guilda nas GVGs.";
+}
+
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
 
@@ -26,7 +31,7 @@
 
             }
 
-            );
+        );
 
     });
 
@@ -95,7 +100,7 @@
     </thead>
     <tbody>
         @foreach (var item in Model.Defesas)
-            {
+        {
             <tr>
                 <td>
                     @Html.DisplayFor(model => model.DataInicio) a

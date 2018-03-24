@@ -1,5 +1,10 @@
 ﻿@model GPCLib.Models.ResultadoGeralModels
 
+@{
+    ViewBag.Title = "Resultado Geral";
+    ViewBag.MetaDescription = "Exibe lista de todas as GVGs";
+}
+
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
 
@@ -30,7 +35,7 @@
 
             }
 
-            );
+        );
 
     });
 
@@ -45,13 +50,13 @@
             <h1>
                 @Html.DisplayFor(Model => Model.Batalha.GuildaAtacante.Nome) x @Html.DisplayFor(Model => Model.Batalha.GuildaOponente) -
                 @if (Model.Batalha.Vitoria)
-            {
+                {
                     @:Vitória
-            }
-            else
-            {
+                }
+                else
+                {
                     @:Derrota
-            }
+                }
             </h1>
         </div>
     </div>
@@ -91,7 +96,7 @@
                 </thead>
                 <tbody>
                     @foreach (var item in Model.Item)
-            {
+                    {
                         <tr>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Player.Nome)

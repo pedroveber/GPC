@@ -1,4 +1,9 @@
 ﻿@model GPCLib.Models.PainelControleModels
+
+@{
+    ViewBag.Title = "Ataques da Semana GVG";
+    ViewBag.MetaDescription = "Exibe consolidado de todos os ataques realizados pelos integrantes da guilda nas GVGs, com o número de vitórias, derrotas, empates e GVG que não teve ataque.";
+}
 <p></p>
 
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
@@ -27,7 +32,7 @@
 
             }
 
-            );
+        );
 
     });
 
@@ -96,13 +101,13 @@
             <th style="text-align:center">
                 @Html.DisplayNameFor(model => model.Ataques[0].Derrota)
             </th>
-            
+
 
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.Ataques)
-            {
+        {
             <tr>
                 <td>
                     @Html.ActionLink(item.Player.Nome, "index", "Capivara", new { id = item.Player.Id }, null)
@@ -122,7 +127,7 @@
                 <td style="text-align:center">
                     @Html.DisplayFor(modelItem => item.Derrota)
                 </td>
-               
+
             </tr>
         }
     </tbody>

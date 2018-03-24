@@ -1,5 +1,10 @@
 ﻿@model IEnumerable<GPCLib.Models.SiegeModels>
 
+@{
+    ViewBag.Title = "Listar Sieges";
+    ViewBag.MetaDescription = "Exibe lista de todas as sieges que foram carregadas no sistema.";
+}
+
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
 
@@ -81,7 +86,7 @@
                     success: function (r) {
                         $("#dialog").html
                             (
-                           
+
                                     '<b>' + r.Guilda.Nome + '</b><BR>' +
                                      'GVGs <span style="font-size:smaller">(ataques)</span>: | ' + r.QtdGVGs + ' | ' +
                                                r.VitoriaGvg + 'V | ' +
@@ -93,7 +98,7 @@
                 });
             });
         });
-        
+
         //fim 2
 
     });
@@ -102,8 +107,8 @@
 </script>
 <style>
     .no-close .ui-dialog-titlebar-close {
-  display: none;
-}
+        display: none;
+    }
 
     div#pop-up {
         display: none;
@@ -200,11 +205,11 @@
                     }
                     else
                     {
-                    <a href="javascript:void(0)" class="anchorDetails" data-id="@item.Guilda.First(x => x.Posicao == 3).Guilda.Id" data-name="Detalhes GVG">
-                    @Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 3).Guilda.Nome)
-                    </a> 
+                        <a href="javascript:void(0)" class="anchorDetails" data-id="@item.Guilda.First(x => x.Posicao == 3).Guilda.Id" data-name="Detalhes GVG">
+                            @Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 3).Guilda.Nome)
+                        </a>
 
-    
+
                         <span style="font-size:smaller" title="Número de Jogadores">(@Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 3).Members))</span>
                     }
                     <img src="http://54.94.213.182/SW/content/images/Icons/@Html.DisplayFor(modelItem => item.Guilda.First(x => x.Posicao == 3).ImagemRating)" alt="Alternate Text" height="50%" />

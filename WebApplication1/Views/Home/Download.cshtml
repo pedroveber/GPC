@@ -1,9 +1,11 @@
-﻿<div class="row">
-
-    
+﻿@{
+    ViewBag.Title = "Download";
+    ViewBag.MetaDescription = "Link para download da versão mais estável do programa e lista das funcionalidades futuras.";
+}
+<div class="row">
     <div class="col-md-12">
-        <h3 class="h3cus">Download</h3>
-     </div>
+        <h1 class="h3cus">Download</h1>
+    </div>
 
 </div>
 <div class="row">
@@ -11,12 +13,16 @@
     <div class="col-md-12">
         <h3 class="h3cus">V1.0: <a href="www.demonrange.party\download\GPCSW.zip"> DOWNLOAD</a></h3>
     </div>
+    <div>
+        Clique no link para obter instruções de como utilizar.<br />
+        <a class="btn btn-default" href='@Url.Action("About", "Home")'>Mais Detalhes &raquo;</a></p>
+    </div>
 
 </div>
 <div class="row">
 
     <div class="col-md-12">
-        <h5 class="h3cus">Funcionalidades Previstas para as próximas versões</h5>
+        <h5 class="h3cus">Funcionalidades e melhorias previstas para as próximas versões</h5>
     </div>
 
 </div>
@@ -24,9 +30,12 @@
 
     <div class="col-md-12">
         <ul>
+            <li>Integração com o PAYPAL para efetuar os pagamentos</li>
             <li>Exibir qual time da GVG ganhou ou perdeu a defesa. Hoje exibe o resultado das 2 lutas </li>
             <li>Gravar os ataques recebidos pela Guild e pelos players.</li>
             <li>Colocar imagem para os integrantes da Guild.</li>
+            <li>Ferramenta que analisa as melhores defesas.</li>
+            <li>Melhorias geral em todo o site</li>
         </ul>
     </div>
 

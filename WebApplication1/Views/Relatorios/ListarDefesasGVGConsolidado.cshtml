@@ -1,5 +1,10 @@
 ﻿@model IEnumerable<GPCLib.Models.TimeDefesaConsolidadoModels>
 
+@{
+    ViewBag.Title = "Lista Defesas GVG Consolidado";
+    ViewBag.MetaDescription = "Exibe lista das melhores defesas em GVG. Contém informaçãoes de vitórias, derrotas, empates, ataques recebidos, percentual de vitória e derrota.";
+}
+
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
 
@@ -67,34 +72,35 @@
         </tr>
     </thead>
     <tbody>
-        @if ( Model != null ) {
-        foreach (var item in Model)
+        @if (Model != null)
         {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => item.Player.Nome)</td>
-                <td>
-                    <div id="Time1" style="background-color:#D1CAA1;border-color:black;border:solid;border-width:1px;width:320px">
-                        <div id="imagem1" style="float: left; width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.Monstro1.Imagem))" title="@Html.DisplayFor(modelItem => item.Monstro1.Nome)"></div>
-                        <div id="imagem2" style="float: left;width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.Monstro2.Imagem))" title="@Html.DisplayFor(modelItem => item.Monstro2.Nome)"></div>
-                        <div id="imagem3" style="width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.Monstro3.Imagem))" title="@Html.DisplayFor(modelItem => item.Monstro3.Nome)"></div>
-                    </div><br />
-                    <div id="Time1" style="background-color:#D1CAA1;border-color:black;border:solid;border-width:1px;width:320px">
-                        <div id="imagem4" style="float: left; width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.Monstro4.Imagem))" title="@Html.DisplayFor(modelItem => item.Monstro4.Nome)"></div>
-                        <div id="imagem5" style="float: left;width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.Monstro5.Imagem))" title="@Html.DisplayFor(modelItem => item.Monstro5.Nome)"></div>
-                        <div id="imagem6" style="width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.Monstro6.Imagem))" title="@Html.DisplayFor(modelItem => item.Monstro6.Nome)"></div>
-                    </div><p></p>
-                </td>
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Player.Nome)</td>
+                    <td>
+                        <div id="Time1" style="background-color:#D1CAA1;border-color:black;border:solid;border-width:1px;width:320px">
+                            <div id="imagem1" style="float: left; width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.Monstro1.Imagem))" title="@Html.DisplayFor(modelItem => item.Monstro1.Nome)"></div>
+                            <div id="imagem2" style="float: left;width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.Monstro2.Imagem))" title="@Html.DisplayFor(modelItem => item.Monstro2.Nome)"></div>
+                            <div id="imagem3" style="width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.Monstro3.Imagem))" title="@Html.DisplayFor(modelItem => item.Monstro3.Nome)"></div>
+                        </div><br />
+                        <div id="Time1" style="background-color:#D1CAA1;border-color:black;border:solid;border-width:1px;width:320px">
+                            <div id="imagem4" style="float: left; width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.Monstro4.Imagem))" title="@Html.DisplayFor(modelItem => item.Monstro4.Nome)"></div>
+                            <div id="imagem5" style="float: left;width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.Monstro5.Imagem))" title="@Html.DisplayFor(modelItem => item.Monstro5.Nome)"></div>
+                            <div id="imagem6" style="width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.Monstro6.Imagem))" title="@Html.DisplayFor(modelItem => item.Monstro6.Nome)"></div>
+                        </div><p></p>
+                    </td>
 
-                <td style="text-align:center">@Html.DisplayFor(modelItem => item.Vitoria)</td>
-                <td style="text-align:center">@Html.DisplayFor(modelItem => item.Empate)</td>
-                <td style="text-align:center">@Html.DisplayFor(modelItem => item.Derrota)</td>
-                <td style="text-align:center">@(item.Derrota + item.Empate + item.Vitoria)</td>
-                
-                <td style="text-align:center">@(Math.Round(double.Parse(item.Vitoria.ToString())/double.Parse((item.Derrota + item.Empate + item.Vitoria).ToString()),2)*100)%</td>
-                <td style="text-align:center">@(Math.Round(double.Parse(item.Empate.ToString()) / double.Parse((item.Derrota + item.Empate + item.Vitoria).ToString()), 2) * 100)%</td>
-                <td style="text-align:center">@(Math.Round(double.Parse(item.Derrota.ToString()) / double.Parse((item.Derrota + item.Empate + item.Vitoria).ToString()), 2) * 100)%</td>
-            </tr>
-        }
+                    <td style="text-align:center">@Html.DisplayFor(modelItem => item.Vitoria)</td>
+                    <td style="text-align:center">@Html.DisplayFor(modelItem => item.Empate)</td>
+                    <td style="text-align:center">@Html.DisplayFor(modelItem => item.Derrota)</td>
+                    <td style="text-align:center">@(item.Derrota + item.Empate + item.Vitoria)</td>
+
+                    <td style="text-align:center">@(Math.Round(double.Parse(item.Vitoria.ToString()) / double.Parse((item.Derrota + item.Empate + item.Vitoria).ToString()), 2) * 100)%</td>
+                    <td style="text-align:center">@(Math.Round(double.Parse(item.Empate.ToString()) / double.Parse((item.Derrota + item.Empate + item.Vitoria).ToString()), 2) * 100)%</td>
+                    <td style="text-align:center">@(Math.Round(double.Parse(item.Derrota.ToString()) / double.Parse((item.Derrota + item.Empate + item.Vitoria).ToString()), 2) * 100)%</td>
+                </tr>
+            }
         }
     </tbody>
 </table>
