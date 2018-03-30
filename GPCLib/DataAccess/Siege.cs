@@ -351,7 +351,7 @@ namespace GPCLib.DataAccess
                     objAtaque.Vitoria = int.Parse(reader["Vitoria"].ToString());
                     objAtaque.QuantidadeSieges = int.Parse(reader["QtsSieges"].ToString());
                     objAtaque.MediaMonstros = int.Parse(reader["MediaMonstros"].ToString());
-                    objAtaque.AtaquesRealizados = int.Parse(reader["AtaquesRealizados"].ToString());
+                    objAtaque.AtaquesRealizados = reader["AtaquesRealizados"].ToString() == string.Empty ? 0 : int.Parse(reader["AtaquesRealizados"].ToString());
 
                     objRetorno.Add(objAtaque);
 

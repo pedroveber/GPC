@@ -7,9 +7,9 @@
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
 
 <h2>Defesas Consolidado - @Model.First().Siege.Data.ToShortDateString()  </h2>
-<div style="float: left;padding-right:5px"><img src="http://54.94.213.182/SW/content/images/Icons/first.png" /> @Model.First().Siege.Guilda.First(x => x.Posicao == 1).Guilda.Nome </div>
-<div style="float: left;padding-right:5px"><img src="http://54.94.213.182/SW/content/images/Icons/second.png" /> @Model.First().Siege.Guilda.First(x => x.Posicao == 2).Guilda.Nome</div>
-<div><img src="http://54.94.213.182/SW/content/images/Icons/third.png" /> @Model.First().Siege.Guilda.First(x => x.Posicao == 3).Guilda.Nome</div>
+<div style="float: left;padding-right:5px"><img src="http://www.gpcsw.party/content/images/Icons/first.png" /> @Model.First().Siege.Guilda.First(x => x.Posicao == 1).Guilda.Nome </div>
+<div style="float: left;padding-right:5px"><img src="http://www.gpcsw.party/content/images/Icons/second.png" /> @Model.First().Siege.Guilda.First(x => x.Posicao == 2).Guilda.Nome</div>
+<div><img src="http://www.gpcsw.party/content/images/Icons/third.png" /> @Model.First().Siege.Guilda.First(x => x.Posicao == 3).Guilda.Nome</div>
 
 <script>
     $(document).ready(function () {
@@ -61,13 +61,13 @@
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.Player.Nome)</td>
                 <td>
-                    <div id="imagem1" style="float: left; width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.Monstro1.Imagem))" title="@Html.DisplayFor(modelItem => item.Monstro1.Nome)"></div>
+                    <div id="imagem1" style="float: left; width:100px;height:100px; content:url(http://www.gpcsw.party/content/images/monsters/small/@Html.DisplayFor(m => item.Monstro1.Imagem))" title="@Html.DisplayFor(modelItem => item.Monstro1.Nome)"></div>
                 </td>
                 <td>
-                    <div id="imagem2" style="float: left; width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.Monstro1.Imagem))" title="@Html.DisplayFor(modelItem => item.Monstro1.Nome)"></div>
+                    <div id="imagem2" style="float: left; width:100px;height:100px; content:url(http://www.gpcsw.party/content/images/monsters/small/@Html.DisplayFor(m => item.Monstro1.Imagem))" title="@Html.DisplayFor(modelItem => item.Monstro1.Nome)"></div>
                 </td>
                 <td>
-                    <div id="imagem3" style="float: left; width:100px;height:100px; content:url(http://54.94.213.182/SW/content/images/monsters/small/@Html.DisplayFor(m => item.Monstro1.Imagem))" title="@Html.DisplayFor(modelItem => item.Monstro1.Nome)"></div>
+                    <div id="imagem3" style="float: left; width:100px;height:100px; content:url(http://www.gpcsw.party/content/images/monsters/small/@Html.DisplayFor(m => item.Monstro1.Imagem))" title="@Html.DisplayFor(modelItem => item.Monstro1.Nome)"></div>
                 </td>
                 <td style="text-align:center">@Html.DisplayFor(modelItem => item.Vitoria)</td>
                 <td style="text-align:center">@Html.DisplayFor(modelItem => item.Derrota)</td>
