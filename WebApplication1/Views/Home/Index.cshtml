@@ -2,7 +2,41 @@
     ViewBag.Title = "Home";
     ViewBag.MetaDescription = "Summoner Wars painel de controle. Página principal com alguns links para o site e menus para login.";
 }
+<head>
+    <style>
+        ul.gallery {
+            margin-left: 3vw;
+            margin-right: 3vw;
+        }
+        .zoom {
+            -webkit-transition: all 0.35s ease-in-out;
+            -moz-transition: all 0.35s ease-in-out;
+            transition: all 0.35s ease-in-out;
+            cursor: -webkit-zoom-in;
+            cursor: -moz-zoom-in;
+            cursor: zoom-in;
+        }
 
+            .zoom:hover,
+            .zoom:active,
+            .zoom:focus {
+                /**adjust scale to desired size,
+add browser prefixes**/
+                -ms-transform: scale(2.5);
+                -moz-transform: scale(2.5);
+                -webkit-transform: scale(2.5);
+                -o-transform: scale(2.5);
+                transform: scale(2.5);
+                position: relative;
+                z-index: 100;
+            }
+
+        /**TIP: Easy escape for touch screens,
+give gallery's parent container a cursor: pointer.**/
+.DivName {cursor: pointer}
+}
+    </style>
+</head>
 <div class="jumbotron" style="padding-top:5px">
     <h1>GPC - Guild Painel de Controle</h1>
     <p class="lead">GPC é um sistema integrado de controle de Guildas de Summoner Wars. Ele permite pesquisar o histórico de GVGs e Sieges, analisar performance de jogadores e seus times de defesas e muito mais!
@@ -18,16 +52,19 @@
         <p>
             Relatórios das derrotas, vitórias, melhor rank, membros que que infrigiram as regras de 6 pontos e muito mais!
         </p>
+        <p><img src="~/Resources/ListaGVG.png" class="img-thumbnail zoom" style="width:250px;height:250px;" /></p>
         <p><a class="btn btn-default" href='@Url.Action("About", "Home")'>Mais Detalhes &raquo;</a></p>
     </div>
     <div class="col-md-4">
         <h2>Relatório de Sieges</h2>
         <p>Quer descobrir quais defesas ganham mais? Quem é o jogador com o melhor índice de vitórias? A respostas para estas perguntas e muitas outras. </p>
+        <p><img src="~/Resources/Siegehome.png" class="img-thumbnail zoom" style="width:250px;height:250px;" /></p>
         <p><a class="btn btn-default" href='@Url.Action("About", "Home")'>Mais Detalhes &raquo;</a></p>
     </div>
     <div class="col-md-4">
         <h2>Planejar e Organizar</h2>
         <p>Com as ferramentas disponibilizadas neste site sua guild se tornará muito mais profissional. Suba no rank, evolua!</p>
+        <p><img src="~/Resources/melhoresdefesas.png" class="img-thumbnail zoom" style="width:350px;height:250px;" /></p>
         <p><a class="btn btn-default" href='@Url.Action("About", "Home")'>Mais Detalhes &raquo;</a></p>
     </div>
 </div>
