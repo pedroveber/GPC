@@ -65,7 +65,14 @@
                 <td style="text-align:center">@Html.DisplayFor(modelItem => item.MediaMonstros)</td>
                 <td style="text-align:center">@Html.DisplayFor(modelItem => item.AtaquesRealizados)</td>
                 <td style="text-align:center">@(item.QuantidadeSieges * 10)</td>
-                <td style="text-align:center">@Math.Round((Convert.ToDouble(item.Vitoria) / Convert.ToDouble(item.AtaquesRealizados) * 100.00), 2).ToString("F")</td>
+                <td style="text-align:center">
+
+                    @if (item.Vitoria != 0 && item.AtaquesRealizados != 0)
+                    {@Math.Round((Convert.ToDouble(item.Vitoria) / Convert.ToDouble(item.AtaquesRealizados) * 100.00), 2).ToString("F");}
+                    else
+                    {@Html.DisplayName("0,00");}
+
+                </td>
 
             </tr>
         }
