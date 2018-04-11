@@ -162,8 +162,63 @@ namespace GPCLib.DataAccess
                 throw ex;
             }
         }
+        public List<Models.PlayerModels> ListarPlayersSemUsuarios(long idGuilda)
+        {
+            SqlConnection conn = new SqlConnection();
+            SqlCommand sqlCom = new SqlCommand();
 
-        
+            conn.ConnectionString = ConfigurationManager.ConnectionStrings["DB_SW"].ToString();
+
+
+            StringBuilder cmd = new StringBuilder();
+            cmd.Append("SELECT A.*FROM DBO.PLAYER A ");
+            cmd.Append("INNER JOIN DBO.GUILDA_PLAYER B ON B.IDPLAYER = A.ID ");
+            cmd.Append("WHERE ");
+            cmd.Append("A.STATUS = 'S' ");
+            cmd.Append("AND B.IDGUILDA = @idGuilda ");
+            cmd.Append("AND B.IdUsuario IS NULL ");
+            cmd.Append("ORDER BY NOME ");
+
+            sqlCom.Parameters.Add(new SqlParameter("@idGuilda", System.Data.SqlDbType.BigInt));
+            sqlCom.Parameters["@idGuilda"].Value = idGuilda;
+
+            sqlCom.CommandText = cmd.ToString();
+            sqlCom.CommandType = System.Data.CommandType.Text;
+
+            try
+            {
+                Models.PlayerModels objPlayer;
+                List<Models.PlayerModels> objRetorno = new List<PlayerModels>();
+                conn.Open();
+
+                sqlCom.Connection = conn;
+                SqlDataReader reader = sqlCom.ExecuteReader();
+
+
+                while (reader.Read())
+                {
+                    objPlayer = new Models.PlayerModels();
+                    objPlayer.Id = Convert.ToInt32(reader["ID"].ToString());
+                    objPlayer.Nome = reader["Nome"].ToString();
+                    objPlayer.Level = Convert.ToInt32(reader["Level"].ToString());
+                    objPlayer.PontoArena = Convert.ToInt32(reader["PontoArena"].ToString());
+                    objPlayer.Ativo = (reader["Status"].ToString() == "S") ? true : false;
+
+                    objRetorno.Add(objPlayer);
+
+                }
+                conn.Close();
+                conn.Dispose();
+                return objRetorno;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+
         public List<Models.PlayerModels> ListarPlayersSemGuild()
         {
             SqlConnection conn = new SqlConnection();

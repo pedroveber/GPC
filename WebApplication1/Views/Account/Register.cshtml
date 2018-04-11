@@ -4,6 +4,25 @@
     ViewBag.MetaDescription = "Formulário para cadastro e posteriomente acesso ao site.";
 }
 
+<script>
+    
+    function PreencherJogador(d) {
+        $.ajax({
+            type: 'POST',
+            url: '/Player/ListarPlayersSemUsuarios',
+            dataType: 'json',
+            data: { "idGuilda": d.selectedOptions[0].value},
+            success: function (data) {
+                $('#ddlJogador').empty();
+                for (var i = 0; i < data.SelectOptions.length; i++) {
+                    $('#ddlJogador').append('<option value=' + data.SelectOptions[i].Value + '>' + data.SelectOptions[i].Text + '</option > ');
+                }
+            }
+        });
+    }
+
+</script>
+
 <h2>@ViewBag.Title.</h2>
 
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
@@ -30,6 +49,23 @@
             @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
         </div>
     </div>
+
+    <div class="form-group">
+        <div class="col-md-2 control-label"><b>Guilda</b></div>
+        <div class="col-md-10">
+            @Html.DropDownListFor(x => x.Guildas.SelectedOption, Model.Guildas.SelectOptions, new { @class = "form-control", onchange = "PreencherJogador(this)" })
+            
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <div class="col-md-2 control-label"><b>Jogador</b></div>
+        <div class="col-md-10">
+            <select id="ddlJogador" name="ddlJogador" class="form-control"></select>
+            Caso seu nome não apareça na lista é porque algum outro jogador já selecionou ou a lista ainda não foi atualizada. Entrar em contato com o Líder da sua guild ou em swguildgpc@gmail.com.
+        </div>
+    </div>
+
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" class="btn btn-default" value="Registrar" />

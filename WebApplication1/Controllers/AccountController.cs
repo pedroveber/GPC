@@ -12,6 +12,8 @@ using WebApplication1.Models;
 using Microsoft.Owin.Security.DataProtection;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Text;
+using GPCLib;
+using System.Collections.Generic;
 
 namespace WebApplication1.Controllers
 {
@@ -25,7 +27,7 @@ namespace WebApplication1.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -37,9 +39,9 @@ namespace WebApplication1.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -93,7 +95,7 @@ namespace WebApplication1.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    
+
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -135,7 +137,7 @@ namespace WebApplication1.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -154,7 +156,24 @@ namespace WebApplication1.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+            GPCLib.DataAccess.Guilda daGuilda = new GPCLib.DataAccess.Guilda();
+            List<GPCLib.Models.GuildaModels> lstGuildas =  daGuilda.ListarGuildas().OrderBy(x=>x.Nome).ToList();
+
+            lstGuildas.Insert(0, new GPCLib.Models.GuildaModels { Id = 0, Nome = "Selecione..." });
+
+            lstGuildas.RemoveAll(x => x.Nome.Contains("???"));
+
+            var model = new GPCLib.Models.GuildaComboModels();
+            model.SelectOptions = lstGuildas.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Nome
+            }).ToList();
+            
+            Models.RegisterViewModel modelG = new RegisterViewModel();
+            modelG.Guildas = model;
+
+            return View(modelG);
         }
 
         //
@@ -165,11 +184,32 @@ namespace WebApplication1.Controllers
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
-            {   
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+            {
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email,IdGuilda  = long.Parse(model.Guildas.SelectedOption)};
                 var result = await UserManager.CreateAsync(user, model.Password);
+
                 if (result.Succeeded)
                 {
+                    try
+                    {
+                        //Liga Usuario x Player
+
+                        GPCLib.DataAccess.Player daPlayer = new GPCLib.DataAccess.Player();
+                        GPCLib.Models.PlayerUsuarioModels playerUsuario = daPlayer.ObterPlayerUsuario(int.Parse(Request.Form[5]));
+
+                        playerUsuario.UsuarioCombo = new GPCLib.Models.UsuarioCombo();
+                        playerUsuario.UsuarioCombo.SelectedOption = user.Id;
+
+                        GPCLib.DataAccess.Guilda daGuilda = new GPCLib.DataAccess.Guilda();
+                        daGuilda.AtualizarPlayerUsuario(playerUsuario);
+                    }
+                    catch (Exception)
+                    {
+
+                        //nao é para dar pau nesta etapa. Se nao der certo, segue a vida. 
+                    }
+                    
+
                     /*
                      * EMAIL CONFIRMAÇÂO
                      * 
@@ -199,24 +239,24 @@ namespace WebApplication1.Controllers
                     //Mensagem.AppendLine("Ólá! ");
                     //Mensagem.AppendLine("Recebemos uma requisição de cadastro no GPC - Guilda Painel de Controle. ");
                     //Mensagem.AppendLine("Para confirmar seu cadastro acesse o link abaixo.  ");
-                    string emailc = "<head></head><body> <div style=\"background-color:#fff;margin:0 auto 0 auto;padding:30px 0 30px 0;color:#4f565d;font-size:13px;line-height:20px;font-family:'Helvetica Neue',"+
-                                    "Arial,sans-serif;text-align:left;\"> <center> <table style=\"width:550px;text-align:center\"> <tbody> <tr> <td style=\"padding:0 0 20px 0;border-bottom:1px solid #e9edee;\">"+
-                                    "<h1> <a href=\"http://www.demonorange.party\" style=\"display:block; margin:0 auto;\" target=\"_blank\"> GPC - Guilda Painel de Controle </a></h1> </td> </tr> <tr> "+
-                                    "<td colspan=\"2\" style=\"padding:30px 0;\"> <p style=\"color:#1d2227;line-height:28px;font-size:22px;margin:12px 10px 20px 10px;font-weight:400;\">"+
-                                    "Olá Recebemos uma requisição de cadastro no GPC - Guilda Painel de Controle.</p> <p style=\"margin:0 10px 10px 10px;padding:0;\">Para confirmar seu cadastro acesse o link abaixo."+
-                                    "</p> <p> <a style=\"display:inline-block;text-decoration:none;padding:15px 20px;background-color:#2baaed;border:1px solid #2baaed;border-radius:3px;color:#FFF;font-weight:bold;\" "+
-                                    "href=\"" + callbackUrl + "\" target=\"_blank\">Confirmar Cadastro</a> </p> </td> </tr> <tr> <td colspan=\"2\" style=\"padding:30px 0 0 0;border-top:1px solid #e9edee;color:#9b9fa5\"> "+
-                                    "Se tiver dúvidas por favor entrar em contato com <a style=\"color:#666d74;text-decoration:none;\" href=\"mailto:swguildgpc@gmail.com\" target=\"_blank\">swguildgpc@gmail.com</a> "+
+                    string emailc = "<head></head><body> <div style=\"background-color:#fff;margin:0 auto 0 auto;padding:30px 0 30px 0;color:#4f565d;font-size:13px;line-height:20px;font-family:'Helvetica Neue'," +
+                                    "Arial,sans-serif;text-align:left;\"> <center> <table style=\"width:550px;text-align:center\"> <tbody> <tr> <td style=\"padding:0 0 20px 0;border-bottom:1px solid #e9edee;\">" +
+                                    "<h1> <a href=\"http://www.demonorange.party\" style=\"display:block; margin:0 auto;\" target=\"_blank\"> GPC - Guilda Painel de Controle </a></h1> </td> </tr> <tr> " +
+                                    "<td colspan=\"2\" style=\"padding:30px 0;\"> <p style=\"color:#1d2227;line-height:28px;font-size:22px;margin:12px 10px 20px 10px;font-weight:400;\">" +
+                                    "Olá Recebemos uma requisição de cadastro no GPC - Guilda Painel de Controle.</p> <p style=\"margin:0 10px 10px 10px;padding:0;\">Para confirmar seu cadastro acesse o link abaixo." +
+                                    "</p> <p> <a style=\"display:inline-block;text-decoration:none;padding:15px 20px;background-color:#2baaed;border:1px solid #2baaed;border-radius:3px;color:#FFF;font-weight:bold;\" " +
+                                    "href=\"" + callbackUrl + "\" target=\"_blank\">Confirmar Cadastro</a> </p> </td> </tr> <tr> <td colspan=\"2\" style=\"padding:30px 0 0 0;border-top:1px solid #e9edee;color:#9b9fa5\"> " +
+                                    "Se tiver dúvidas por favor entrar em contato com <a style=\"color:#666d74;text-decoration:none;\" href=\"mailto:swguildgpc@gmail.com\" target=\"_blank\">swguildgpc@gmail.com</a> " +
                                     "</td> </tr> </tbody> </table> </center> </div> </body>";
-                    
-                        
+
+
                     await UserManager.SendEmailAsync(user.Id, "GPC - Confirmação de Cadastro", emailc);
 
                     // Uncomment to debug locally 
                     // TempData["ViewBagLink"] = callbackUrl;
 
                     ViewBag.Message = "Um email de confirmação foi enviado a seu email de cadastro. Por favor acesse o link recebido para validação do seu cadastro. ";
-                         
+
                     return View("Info");
                     //return RedirectToAction("Index", "Home");
                 }
@@ -227,7 +267,7 @@ namespace WebApplication1.Controllers
             return View(model);
         }
 
-       
+
 
         //
         // GET: /Account/ConfirmEmail

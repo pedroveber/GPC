@@ -29,7 +29,7 @@ namespace WebApplication1.Models
         public string Provider { get; set; }
 
         [Required]
-        [Display(Name = "Code")]
+        [Display(Name = "Código")]
         public string Code { get; set; }
         public string ReturnUrl { get; set; }
 
@@ -78,7 +78,11 @@ namespace WebApplication1.Models
         [DataType(DataType.Password)]
         [Display(Name = "Confirme senha")]
         [Compare("Password", ErrorMessage = "As senhas não são iguais, por favor digite novamente.")]
+
         public string ConfirmPassword { get; set; }
+
+        public GPCLib.Models.GuildaComboModels Guildas { get; set; }
+        
     }
 
     public class ResetPasswordViewModel
@@ -91,11 +95,11 @@ namespace WebApplication1.Models
         [Required]
         [StringLength(100, ErrorMessage = "A {0} deve conter pelo menos {2} caracteres.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Senha")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
+        [Display(Name = "Confirmar senha")]
         [Compare("Password", ErrorMessage = "As senhas não são iguais, por favor digite novamente.")]
         public string ConfirmPassword { get; set; }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace GPCLib.Models
 {
@@ -34,4 +35,12 @@ namespace GPCLib.Models
         public int SiegePosicao3 { get; set; }
 
     }
+
+    public class GuildaComboModels
+    {
+        public string SelectedOption { get; set; }
+
+        public IEnumerable<SelectListItem> SelectOptions { get; set; }
+    }
+
 }
